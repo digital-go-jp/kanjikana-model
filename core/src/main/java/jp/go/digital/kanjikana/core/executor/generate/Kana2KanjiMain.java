@@ -1,0 +1,88 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2024 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package jp.go.digital.kanjikana.core.executor.generate;
+
+import jp.go.digital.kanjikana.core.utils.FileReader;
+import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.Namespace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+
+/**
+ * AIを用いて，カナから漢字の候補を作成する実行クラス
+ * バッチ処理で行い，ログファイルに出力する
+ * 
+ * <p>実行方法</p>
+ * 
+ * <pre>{@code
+ * java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml -classpath path/to/jarfile jp.go.digital.kanjikana.core.executor.generate.Kana2KanjiMain  --infile path/to/inputfile --n_best number_ge_1
+ * }
+ * </pre>
+ * 
+ * <p>オプション</p>
+ *
+ * <pre>{@code
+ *  -Xmx4096M \   4G以上のメモリが必要
+ *  -Dlog4j.configurationFile=path/to/log4j2.xml \ 必要ならばlog4jの定義ファイル
+ *  -classpath path/to/jarfile \ jarfileまでのパス
+ * jp.go.digital.kanjikana.core.executor.match.KanjiKanaMatchMain \ このクラス
+ *  --infile path/to/inputfile \ 入力ファイル　１つのカナ姓名が１行に格納されている，複数行可
+ *  --n_best number_ge_1 \ 漢字姓名の推論結果を幾つ出力するか
+ *  }
+ *  </pre>
+ */
+public class Kana2KanjiMain {
+    private static final Logger logger = LogManager.getLogger(Kana2KanjiMain.class);
+
+    public static void main(String[] args) throws Exception {
+        ArgumentParser parser = ArgumentParsers.newFor("kanjikana").build()
+                .defaultHelp(true)
+                .description("カナから漢字を推測");
+
+        parser.addArgument("--infile");
+        parser.addArgument("--n_best").setDefault(5).help("出力数");
+
+        Namespace ns = parser.parseArgs(args);
+
+        String input = ns.getString("infile");
+        int n_best= Integer.parseInt(ns.getString("n_best"));
+
+        FileReader reader = new FileReader(true);
+        List<String> lines = reader.getFileText(input);
+
+        Kana2Kanji kk = new Kana2Kanji();
+        for(String line:lines) {
+            logger.info(line);
+            List<SearchResult> res = kk.run(line, n_best);
+            for (SearchResult r : res) {
+                logger.info(r.toString());
+            }
+        }
+    }
+}

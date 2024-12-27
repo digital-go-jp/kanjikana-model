@@ -1,0 +1,242 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>jp.go.digital.kanjikana</groupId>
+    <artifactId>kanjikana_core_oss</artifactId>
+    <version>1.6o</version>
+
+    <description>Kanji Kana Core OSS</description>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.argparse4j/argparse4j -->
+        <dependency>
+            <groupId>net.sourceforge.argparse4j</groupId>
+            <artifactId>argparse4j</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.terasoluna.gfw/terasoluna-gfw-common -->
+        <dependency>
+            <groupId>org.terasoluna.gfw</groupId>
+            <artifactId>terasoluna-gfw-common</artifactId>
+            <version>5.9.0.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.terasoluna.gfw/terasoluna-gfw-string -->
+        <dependency>
+            <groupId>org.terasoluna.gfw</groupId>
+            <artifactId>terasoluna-gfw-string</artifactId>
+            <version>5.9.0.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ai.djl/api -->
+        <dependency>
+            <groupId>ai.djl</groupId>
+            <artifactId>api</artifactId>
+            <version>0.28.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ai.djl.pytorch/pytorch-engine -->
+        <dependency>
+            <groupId>ai.djl.pytorch</groupId>
+            <artifactId>pytorch-engine</artifactId>
+            <version>0.28.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+            <version>2.0.13</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.skyscreamer/jsonassert -->
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.3</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <configuration>
+                    <quiet>true</quiet>
+                    <outputDirectory>javadoc</outputDirectory> 
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <target>
+                        <property name="model" value="../train/model" />
+                        <property name="model_r" value="../train/model_r" />
+                        <property name="json" value="../dict" />
+                        <property name="ai" value="src/main/resources/ai" />
+                        <property name="ai_r" value="src/main/resources/ai" />
+                        <property name="dict" value="src/main/resources/dict" />
+
+                        <copy file="${json}/crawl.json" tofile="${dict}/crawl.json" />
+                        <copy file="${json}/statistics.json" tofile="${dict}/statistics.json" />
+                        <copy file="${json}/seimei.json" tofile="${dict}/seimei.json" />
+                        <copy file="${json}/tankanji.json" tofile="${dict}/tankanji.json" />
+                        <copy file="${json}/oss.json" tofile="${dict}/oss.json" />
+                        <copy file="${json}/itaiji.json" tofile="${dict}/itaiji.json" />
+
+                        <copy file="${model}/decoder.pt" tofile="${ai}/decoder.pt" />
+                        <copy file="${model}/encoder.pt" tofile="${ai}/encoder.pt" />
+                        <copy file="${model}/generator.pt" tofile="${ai}/generator.pt" />
+                        <copy file="${model}/params.json" tofile="${ai}/params.json" />
+                        <copy file="${model}/positional_encoding.pt" tofile="${ai}/positional_encoding.pt" />
+                        <copy file="${model}/script.pt" tofile="${ai}/script.pt" />
+                        <copy file="${model}/src_tok_emb.pt" tofile="${ai}/src_tok_emb.pt" />
+                        <copy file="${model}/tgt_tok_emb.pt" tofile="${ai}/tgt_tok_emb.pt" />
+                        <copy file="${model}/vocab_src.txt" tofile="${ai}/vocab_src.txt" />
+                        <copy file="${model}/vocab_tgt.txt" tofile="${ai}/vocab_tgt.txt" />
+
+                        <copy file="${model_r}/decoder.pt" tofile="${ai_r}/decoder.pt" />
+                        <copy file="${model_r}/encoder.pt" tofile="${ai_r}/encoder.pt" />
+                        <copy file="${model_r}/generator.pt" tofile="${ai_r}/generator.pt" />
+                        <copy file="${model_r}/params.json" tofile="${ai_r}/params.json" />
+                        <copy file="${model_r}/positional_encoding.pt" tofile="${ai_r}/positional_encoding.pt" />
+                        <copy file="${model_r}/script.pt" tofile="${ai_r}/script.pt" />
+                        <copy file="${model_r}/src_tok_emb.pt" tofile="${ai_r}/src_tok_emb.pt" />
+                        <copy file="${model_r}/tgt_tok_emb.pt" tofile="${ai_r}/tgt_tok_emb.pt" />
+                        <copy file="${model_r}/vocab_src.txt" tofile="${ai_r}/vocab_src.txt" />
+                        <copy file="${model_r}/vocab_tgt.txt" tofile="${ai_r}/vocab_tgt.txt" />
+                    </target>
+                </configuration>
+            </plugin>
+            <!--
+            https://yoh1496.hatenablog.com/entry/2021/07/13/235608
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>pt</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>txt</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>json</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>dic</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+
+            <!-- any other plugins -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

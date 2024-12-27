@@ -1,0 +1,17 @@
+jp.go.digital.kanjikana.core
+jp.go.digital.kanjikana.core.engine
+jp.go.digital.kanjikana.core.engine.ai
+jp.go.digital.kanjikana.core.engine.dict
+jp.go.digital.kanjikana.core.engine.dict.impl
+jp.go.digital.kanjikana.core.engine.foreigner
+jp.go.digital.kanjikana.core.engine.foreigner.aligner
+jp.go.digital.kanjikana.core.engine.foreigner.lib
+jp.go.digital.kanjikana.core.executor
+jp.go.digital.kanjikana.core.executor.etc
+jp.go.digital.kanjikana.core.executor.generate
+jp.go.digital.kanjikana.core.executor.match
+jp.go.digital.kanjikana.core.executor.match.strategy
+jp.go.digital.kanjikana.core.executor.match.strategy.impl
+jp.go.digital.kanjikana.core.model
+jp.go.digital.kanjikana.core.model.impl
+jp.go.digital.kanjikana.core.utils
