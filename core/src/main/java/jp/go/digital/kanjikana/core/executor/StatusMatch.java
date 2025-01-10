@@ -57,6 +57,34 @@ public enum StatusMatch {
         }
     }
 
+
+    public static StatusMatch getStatus(int modelSize, int okCnt) throws Exception{
+        if(okCnt==0){
+            return NG;
+        }
+        if(modelSize==1){
+            switch(okCnt) {
+                case 1: return ENSEMBLE3;
+                default: throw new Exception("okCnt is invalid");
+            }
+        }else if(modelSize==2){
+            switch(okCnt){
+                case 1: return ENSEMBLE1;
+                case 2: return ENSEMBLE3;
+                default: throw new Exception("okCnt is invalid");
+            }
+        }else if(modelSize==3){
+            switch(okCnt){
+                case 1:return ENSEMBLE1;
+                case 2:return ENSEMBLE2;
+                case 3:return ENSEMBLE3;
+                default: throw new Exception("okCnt is invalid");
+            }
+        }
+        throw new Exception("modelSize is invalid");
+    }
+
+
     @JsonValue
     public int toValue(){ // JSON出力の際に，数字で出すため
         return val;

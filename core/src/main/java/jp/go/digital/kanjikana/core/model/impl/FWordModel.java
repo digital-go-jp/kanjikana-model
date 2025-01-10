@@ -36,13 +36,11 @@ import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
  * 外国人モデルを用いて，単語単位で検査する
  *
  */
-public class FWordModel  extends AbstWordModel implements ModelIF {
-
+public final class FWordModel  extends AbstWordModel {
 
     public FWordModel() throws Exception{
-        this.engine = new FWordEngine();
+        super(new FWordEngine());
     }
-
 
     @Override
     public ModelData run(ModelData modelData) throws Exception {
@@ -78,7 +76,7 @@ public class FWordModel  extends AbstWordModel implements ModelIF {
             ResultEngineParts prevResult = null;
             ResultEngineParts nowResult = null;
             for (int i = 0; i < kanji_parts.length; i++) {
-                nowResult = engine.check(kanji_parts[i], kana_parts[i]);
+                nowResult = getEngine().check(kanji_parts[i], kana_parts[i]);
                 if (prevResult != null) {
                     prevResult.setNextResult(nowResult);
                     nowResult.setPrevResult(prevResult);

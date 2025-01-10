@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
@@ -43,10 +44,14 @@ import java.util.Arrays;
  * 単漢字辞書や調達で作成した辞書も入るので信頼度が落ちる
  * 文字単位なので単漢字辞書なども用いるために，信頼度は低くなる
  */
-public class DictCharModel extends AbstCharModel implements ModelIF {
+public class DictCharModel extends AbstCharModel  {
 
     public DictCharModel() throws Exception{
-        this.engine = new CharEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance()),false);
+        super(new CharEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance()),false));
+    }
+
+    public DictCharModel(EngineIF engine) throws Exception{
+        super(engine);
     }
 
     @Override

@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ import java.util.stream.Collectors;
  * この場合「渡辺」と「ワタナベ」がマッチするので，その単位でResultEnginePartsを作成していく
  */
 public abstract class AbstCharModel extends AbstModel {
+
+    public AbstCharModel(EngineIF engine){
+        super(engine);
+    }
 
     /**
      * 単漢字チェックなどでOKだったけど，やっぱりもう一回やり直してみるかどうか。
@@ -154,6 +159,6 @@ public abstract class AbstCharModel extends AbstModel {
     }
     @Override
     protected ResultEngineParts run_sub(String kanji_str, String kana_str)throws Exception {
-        return engine.check(kanji_str, kana_str);
+        return getEngine().check(kanji_str, kana_str);
     }
 }

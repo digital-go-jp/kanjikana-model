@@ -30,7 +30,8 @@ import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
 /**
  * オープンソース辞書を保持するシングルトンクラス
- * ipadic, mozc, skkの人名辞書から作成している，信頼度高い
+ * 最も信頼度が高い辞書
+ * ipadic, mozc, skkの人名辞書から作成している，
  */
 public class DictOSS extends Dict {
     private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_OSS);

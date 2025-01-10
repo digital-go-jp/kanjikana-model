@@ -45,9 +45,10 @@ import java.util.Arrays;
  * 異体字辞書で順次「邉」を「辺」に置き換えていくことで辞書とマッチできる
  *
  */
-public class ICrawlOSSWordModel extends CrawlOSSWordModel {
+public final class ICrawlOSSWordModel extends CrawlOSSWordModel {
+
     public ICrawlOSSWordModel() throws Exception{
-        this.engine = new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), true);
+        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), true));
     }
 
     @Override

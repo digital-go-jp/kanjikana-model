@@ -26,12 +26,14 @@ package jp.go.digital.kanjikana.core.executor.generate;
 
 import jp.go.digital.kanjikana.core.utils.FileReader;
 import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import jp.go.digital.kanjikana.core.utils.FileWriter;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,22 +69,29 @@ public class Kana2KanjiMain {
 
         parser.addArgument("--infile");
         parser.addArgument("--n_best").setDefault(5).help("出力数");
+        parser.addArgument("--outfile");
 
         Namespace ns = parser.parseArgs(args);
 
         String input = ns.getString("infile");
+        String outfile = ns.getString("outfile");
         int n_best= Integer.parseInt(ns.getString("n_best"));
 
         FileReader reader = new FileReader(true);
         List<String> lines = reader.getFileText(input);
 
+        List<String> output = new ArrayList<>();
         Kana2Kanji kk = new Kana2Kanji();
         for(String line:lines) {
             logger.info(line);
             List<SearchResult> res = kk.run(line, n_best);
             for (SearchResult r : res) {
-                logger.info(r.toString());
+                //logger.info(r.toString());
+                output.add(r.toString());
             }
         }
+
+        FileWriter o = new FileWriter(outfile);
+        o.write(output);
     }
 }

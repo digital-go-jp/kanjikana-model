@@ -36,11 +36,12 @@ import org.apache.logging.log4j.Logger;
  * AIモデル
  * 文字単位で漢字とカナを分割しつつ検査
  */
-public class AiCharModel extends AbstCharModel implements ModelIF {
+public final class AiCharModel extends AbstCharModel{
     private static final Logger logger = LogManager.getLogger(AiCharModel.class);
 
+
     public AiCharModel() throws Exception {
-        this.engine = new AiCharEngine();
+        super(new AiCharEngine());
     }
 
     @Override

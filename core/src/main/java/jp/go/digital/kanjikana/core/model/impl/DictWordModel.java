@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
@@ -42,10 +43,14 @@ import java.util.Arrays;
  * 単語単位で漢字とカナを辞書を用いて突合する
  * 調達で作成した辞書も入るので信頼度が落ちる
  */
-public class DictWordModel extends AbstWordModel implements ModelIF {
+public class DictWordModel extends AbstWordModel {
 
     public DictWordModel() throws Exception{
-        this.engine = new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance()),false);
+        super(new WordEngine(false));
+    }
+
+    public DictWordModel(EngineIF engine) throws Exception{
+        super(engine);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class DictWordModel extends AbstWordModel implements ModelIF {
 
     @Override
     protected ResultEngineParts run_sub(String kanji_parts, String kana_parts) throws Exception{
-        ResultEngineParts topResult = engine.check(kanji_parts,kana_parts);
+        ResultEngineParts topResult = getEngine().check(kanji_parts,kana_parts);
         return topResult;
     }
 }

@@ -39,11 +39,12 @@ import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
  *
  *
  */
-public class FCharModel extends AbstCharModel implements ModelIF {
+public final class FCharModel extends AbstCharModel {
 
     public FCharModel() throws Exception{
-        this.engine = new FCharEngine();
+        super(new FCharEngine());
     }
+
     @Override
     public ModelData run(ModelData modelData) throws Exception {
         String kanji_item = modelData.getKanji();

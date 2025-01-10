@@ -29,7 +29,7 @@ import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
 /**
- * デジタル庁で作成した辞書を保持するシングルトンクラス
+ * 作成した辞書を保持するシングルトンクラス
  * たまに間違いがあるのであまり信頼度高くない
  */
 public class DictSeimei extends Dict {

@@ -78,6 +78,7 @@ public abstract class Dict implements DictIF{
         }
         this.max_key_len = max_key_len;
         this.max_val_len = max_val_len;
+
     }
 
     /**

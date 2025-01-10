@@ -41,9 +41,10 @@ import java.util.Arrays;
  * カナ「メグミ」
  * これらを拾うモデル
  */
-public class AsIsCharModel  extends DictCharModel {
+public final class AsIsCharModel  extends DictCharModel {
+
     public AsIsCharModel() throws Exception {
-        this.engine = new CharEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false);
+        super(new CharEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false));
     }
 
     @Override

@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * AIを用いて単語単位で突合するエンジン
  */
-public class AiWordEngine implements  EngineIF{
+public class AiWordEngine extends  AbstEngine{
     private static final Logger logger = LogManager.getLogger(AiWordEngine.class);
     public AiWordEngine() throws Exception{
     }
@@ -44,6 +44,12 @@ public class AiWordEngine implements  EngineIF{
     private boolean checkMoji(String a, String b){
         return Moji.normalize(a).equals(Moji.normalize(b));
     }
+
+    @Override
+    public boolean isValidEngine(){
+        return true;
+    }
+
 
     /**
      * 単語単位，文字単位を入力としてマッチング

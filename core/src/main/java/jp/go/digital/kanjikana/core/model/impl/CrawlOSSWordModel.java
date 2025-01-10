@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.engine.WordEngine;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
@@ -42,10 +43,14 @@ import java.util.Arrays;
  * クロール , OSS辞書を用いて単語単位で突合する，最も信頼度高い
  *
  */
-public class CrawlOSSWordModel extends AbstWordModel implements ModelIF {
+public class CrawlOSSWordModel extends AbstWordModel  {
 
     public CrawlOSSWordModel() throws Exception {
-        this.engine = new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), false);
+        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), false));
+    }
+
+    public CrawlOSSWordModel(EngineIF engine) throws Exception{
+        super(engine);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class CrawlOSSWordModel extends AbstWordModel implements ModelIF {
 
     @Override
     protected ResultEngineParts run_sub(String kanji_parts, String kana_parts) throws Exception {
-        ResultEngineParts topResult = engine.check(kanji_parts, kana_parts);
+        ResultEngineParts topResult = getEngine().check(kanji_parts, kana_parts);
         return topResult;
     }
 }

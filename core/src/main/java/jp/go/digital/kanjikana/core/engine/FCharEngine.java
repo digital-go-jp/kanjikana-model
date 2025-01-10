@@ -27,7 +27,7 @@ package jp.go.digital.kanjikana.core.engine;
 /**
  * 外国人モデルを用いて，文字単位にチェックする
  */
-public class FCharEngine extends FWordEngine{
+public final class FCharEngine extends FWordEngine{
     public FCharEngine() throws Exception {
         super();
     }

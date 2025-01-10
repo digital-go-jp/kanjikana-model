@@ -24,6 +24,8 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
+import jp.go.digital.kanjikana.core.executor.Output;
+import jp.go.digital.kanjikana.core.executor.OutputMaker;
 import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
@@ -46,6 +48,7 @@ import jp.go.digital.kanjikana.core.model.impl.IDictWordModel;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,9 +70,28 @@ public final class StrategyEnsemble extends AbstStrategy {
 
     private StrategyEnsemble() throws Exception{
         super(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
-        UnReliableModels.add(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel())); // 辞書モデル
-        UnReliableModels.add(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel())); // 統計モデル
-        UnReliableModels.add(Arrays.asList(new AiWordModel(),new AiCharModel()));  // AIモデル
+        //UnReliableModels.add(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel())); // 辞書モデル
+        //UnReliableModels.add(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel())); // 統計モデル
+        //UnReliableModels.add(Arrays.asList(new AiWordModel(),new AiCharModel()));  // AIモデル
+
+        // 辞書モデル
+        setUnReliableModels(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel()));
+        // 統計モデル
+        setUnReliableModels(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel()));
+        // AIモデル
+        setUnReliableModels(Arrays.asList(new AiWordModel(),new AiCharModel()));
+    }
+
+    private void setUnReliableModels(List<ModelIF> models){
+        List<ModelIF> validModels=new ArrayList<>();
+        for(ModelIF model:models){
+            if(model.isValidModel()){
+                validModels.add(model);
+            }
+        }
+        if(!validModels.isEmpty()){
+            this.UnReliableModels.add(validModels);
+        }
     }
 
     /**
@@ -90,7 +112,7 @@ public final class StrategyEnsemble extends AbstStrategy {
             return true;
         }
         int idx=0;
-        double okcnt=0.0; // モデルがOKを出した数
+        int okcnt=0; // モデルがOKを出した数
         for(List<ModelIF> unreliable: UnReliableModels){
             Date stdate=new Date();
             logger.debug(idx+",start,"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(stdate));
@@ -115,7 +137,7 @@ public final class StrategyEnsemble extends AbstStrategy {
             }
 
             if (md.isOk()) {
-                okcnt+=1.0;  // モデルがOKを出した数を数えておく
+                okcnt+=1;  // モデルがOKを出した数を数えておく
             }
             modelData.getEnsembleResults().add(md);
             Date eddate = new Date();
@@ -125,7 +147,7 @@ public final class StrategyEnsemble extends AbstStrategy {
         }
 
         // 複数のモデルでOKが出たモデルの数を数えておき，閾値以上の正解数ならばOKを返す
-        if(okcnt/(double)UnReliableModels.size()>EnsembleOkUnderLimit){
+        if(okcnt/(double)UnReliableModels.size()>=EnsembleOkUnderLimit){
             modelData.setStatus(ModelStatus.OK);
             return true;
         }

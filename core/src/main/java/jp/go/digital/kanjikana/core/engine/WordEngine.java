@@ -39,6 +39,8 @@ import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
+import jp.go.digital.kanjikana.core.model.impl.AsIsCharModel;
+import jp.go.digital.kanjikana.core.model.impl.AsIsWordModel;
 import jp.go.digital.kanjikana.core.utils.Moji;
 
 import java.util.Arrays;
@@ -47,45 +49,15 @@ import java.util.List;
 /**
  * 単語単位でチェック
  */
-public class WordEngine implements  EngineIF{
+public class WordEngine extends  AbstEngine{
     private final List<DictIF> dics;
     private final List<DictIF> defaultDics=Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictOSS.newInstance(), DictOSSNormalized.newInstance(), DictCrawl.newInstance(), DictCrawlNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance());;
 
-    private int SKIP_KANJI_GE_KANA_DIFF=0;
+    private int SKIP_KANJI_GE_KANA_DIFF=0; // 漢字文字数よりもカナ文字数が少ない場合にはスキップするときの，バッファ文字数。　漢字文字数　＞＝　カナ文字数　＋　SKIP_KANJI_GE_KANA_DIFF　で判定
 
     private int max_key_len;  // 辞書の値の最大単語長さ
     private int max_val_len; // 辞書のキーの最大単語長さ
     private final DictIF idic; // 異体字
-
-    private void init(){
-        SKIP_KANJI_GE_KANA_DIFF = Integer.parseInt(Resources.getProperty(Resources.PropKey.SKIP_KANJI_GE_KANA_DIFF));
-
-        int max_key_len=0;
-        int max_val_len=0;
-        for(DictIF dict:dics){
-            if(dict.getMaxKeyLen()>=Integer.MAX_VALUE){ // AsIs辞書は除く
-                continue;
-            }
-            max_key_len=max_key_len>dict.getMaxKeyLen()?max_key_len:dict.getMaxKeyLen();
-            max_val_len=max_val_len>dict.getMaxValLen()?max_val_len:dict.getMaxValLen();
-        }
-        if(max_val_len<=0){ // AsIs辞書のみの時は最大値をいれる
-            max_val_len=Integer.MAX_VALUE;
-            max_key_len=Integer.MAX_VALUE;
-        }
-        this.max_key_len = max_key_len;
-        this.max_val_len = max_val_len;
-    }
-
-    /**
-     * 異体字チェックも必ずする場合のコンストラクタ
-     * @param dics 　辞書一覧
-     * @throws Exception 一般的なエラー
-     */
-    /*
-    public WordEngine(List<DictIF> dics) throws Exception{
-        this(dics, true);
-    }*/
 
     /**
      * 異体字チェックをしない場合が選べるコンストラクタ
@@ -93,9 +65,8 @@ public class WordEngine implements  EngineIF{
      * @param hasItainji falseのとき異体字を使わない
      * @throws Exception 一般的なエラー
      */
-
     public WordEngine(List<DictIF> dics, boolean hasItainji) throws Exception{
-        this.dics = dics;
+        this.dics = omitInvalidDict(dics);
         if(hasItainji) {
             this.idic = DictItaiji.newInstance();
         }else{
@@ -110,7 +81,7 @@ public class WordEngine implements  EngineIF{
      * @throws Exception
      */
     public WordEngine(boolean hasItainji) throws Exception{
-        this.dics = defaultDics;
+        this.dics =omitInvalidDict( defaultDics);
         if(hasItainji) {
             this.idic = DictItaiji.newInstance();
         }else{
@@ -118,6 +89,47 @@ public class WordEngine implements  EngineIF{
         }
         init();
     }
+
+
+    private void init(){
+        SKIP_KANJI_GE_KANA_DIFF = Integer.parseInt(Resources.getProperty(Resources.PropKey.SKIP_KANJI_GE_KANA_DIFF));
+
+        int max_key_len=0;
+        int max_val_len=0;
+        for(DictIF dict:dics){
+            if(dict instanceof DictAsIs || dict instanceof DictAsIsNormalized){
+                continue;
+            }
+            //if(dict.getMaxKeyLen()>=Integer.MAX_VALUE){ // AsIs辞書は除く
+            //    continue;
+            //}
+            max_key_len=max_key_len>dict.getMaxKeyLen()?max_key_len:dict.getMaxKeyLen();
+            max_val_len=max_val_len>dict.getMaxValLen()?max_val_len:dict.getMaxValLen();
+        }
+        if(max_val_len<=0){ // AsIs辞書のみの時は最大値をいれる
+            max_val_len=Integer.MAX_VALUE;
+            max_key_len=Integer.MAX_VALUE;
+        }
+        this.max_key_len = max_key_len;
+        this.max_val_len = max_val_len;
+    }
+
+
+    @Override
+    public boolean isValidEngine(){
+        int max_key_len=0;
+        for(DictIF dict:dics) {
+            if (dict instanceof DictAsIs || dict instanceof DictAsIsNormalized) {
+                continue;
+            }
+            max_key_len=max_key_len<dict.getMaxValLen()?dict.getMaxKeyLen():max_val_len;
+        }
+        if(max_key_len==0){
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * 単語単位，文字単位，単語の一部などを入力としてマッチング

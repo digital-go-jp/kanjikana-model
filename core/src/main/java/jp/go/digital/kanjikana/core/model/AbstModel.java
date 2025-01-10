@@ -31,8 +31,21 @@ import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
  * implで定義するモデルの抽象クラス
  *
  */
-public abstract class AbstModel {
-    protected EngineIF engine;
+public abstract class AbstModel implements ModelIF{
+    private final EngineIF engine;
+
+    public AbstModel(EngineIF engine){
+        this.engine = engine;
+    }
+
+    protected EngineIF getEngine(){
+        return engine;
+    }
+
+    @Override
+    public boolean isValidModel(){
+        return engine.isValidEngine();
+    }
 
     /**
      * Topノードを見つける

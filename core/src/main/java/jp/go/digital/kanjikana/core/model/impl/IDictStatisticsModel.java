@@ -44,9 +44,10 @@ import java.util.Arrays;
  *
  */
 
-public class IDictStatisticsModel extends DictStatisticsModel {
+public final class IDictStatisticsModel extends DictStatisticsModel {
+
     public IDictStatisticsModel() throws Exception{
-        this.engine = new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictStatistics.newInstance(), DictStatisticsNormalized.newInstance()),true);
+        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictStatistics.newInstance(), DictStatisticsNormalized.newInstance()),true));
     }
 
     @Override

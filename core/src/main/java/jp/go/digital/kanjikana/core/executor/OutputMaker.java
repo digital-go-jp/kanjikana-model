@@ -50,7 +50,7 @@ public class OutputMaker {
     }
 
 
-    public static Output exec(ModelData modelData) {
+    public static Output exec(ModelData modelData) throws Exception{
         Output o = new Output();
         o.response = Response.OK;
         o.result = new Result();
@@ -76,12 +76,15 @@ public class OutputMaker {
                     okcnt += 1;
                 }
             }
+            o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS,StatusMatch.getStatus(modelData.getEnsembleResults().size(),okcnt));
+            /*
             switch (okcnt) {
                 case 0 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.NG);
                 case 1 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.ENSEMBLE1);
                 case 2 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.ENSEMBLE2);
                 case 3 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.ENSEMBLE3);
             }
+             */
         }
 
         String notes = modelData.getResult();

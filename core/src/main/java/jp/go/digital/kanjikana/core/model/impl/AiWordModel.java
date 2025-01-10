@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
@@ -38,11 +39,11 @@ import org.apache.logging.log4j.Logger;
  * AIモデル
  * スペースで区切られた単語単位で突合
  */
-public class AiWordModel extends AbstWordModel implements ModelIF {
+public final class AiWordModel extends AbstWordModel{
     private static final Logger logger = LogManager.getLogger(AiWordModel.class);
 
     public AiWordModel() throws Exception{
-        this.engine = new AiWordEngine();
+        super(new AiWordEngine());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class AiWordModel extends AbstWordModel implements ModelIF {
             ResultEngineParts prevResult = null;
             ResultEngineParts nowResult = null;
             for (int i = 0; i < kanji_parts.length; i++) {
-                nowResult = engine.check(kanji_parts[i], kana_parts[i]);
+                nowResult = getEngine().check(kanji_parts[i], kana_parts[i]);
 
                 logger.debug("AiWordModel.i="+i+",nowResult;"+nowResult.isOk());
                 if (prevResult != null) {

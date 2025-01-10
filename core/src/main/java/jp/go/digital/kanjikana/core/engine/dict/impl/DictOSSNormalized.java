@@ -31,7 +31,8 @@ import jp.go.digital.kanjikana.core.utils.Moji;
 
 /**
  * オープンソース辞書を保持するシングルトンクラス
- * ipadic, mozc, skkの人名辞書から作成している，信頼度高い
+ * 最も信頼度が高い辞書
+ * ipadic, mozc, skkの人名辞書から作成している，
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
 public class DictOSSNormalized extends Dict {

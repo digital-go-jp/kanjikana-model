@@ -31,6 +31,7 @@ import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 /**
  * クロールで集めた姓名辞書を保持するシングルトンクラス
  * 最も信頼度が高い辞書
+ * オープンソース版では空っぽ
  */
 public class DictCrawl  extends Dict {
     private static DictIF dict = null;

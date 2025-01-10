@@ -32,11 +32,17 @@ import org.apache.logging.log4j.Logger;
 /**
  * 外国人モデルを用いて，単語単位にチェックする
  */
-public class FWordEngine implements  EngineIF{
+public class FWordEngine extends  AbstEngine{
     private static final Logger logger = LogManager.getLogger(FWordEngine.class);
 
     public FWordEngine() throws Exception{
     }
+
+    @Override
+    public boolean isValidEngine(){
+        return true;
+    }
+
 
     /**
      * 単語単位，文字単位を入力としてマッチング

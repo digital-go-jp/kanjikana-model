@@ -33,6 +33,7 @@ import jp.go.digital.kanjikana.core.Resources;
  * クロールで集めた姓名辞書を保持するシングルトンクラス
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  * 最も信頼度が高い辞書
+ * オープンソース版では空っぽ
  */
 public class DictCrawlNormalized extends Dict {
     private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_CRAWL);

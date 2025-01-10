@@ -43,13 +43,9 @@ import java.util.List;
 /**
  * 単語を入力し，文字単位でチェック
  */
-public class CharEngine implements  EngineIF{
-    //private final List<DictIF> dics = Arrays.asList(DictCrawl.newInstance(), DictCrawlNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance());
-    private final List<DictIF> defaultDics = Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictOSS.newInstance(), DictOSSNormalized.newInstance(),DictCrawl.newInstance(), DictCrawlNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance());
-    private final List<DictIF> dics ;
+public class CharEngine extends  AbstEngine{
     private boolean hasItaiji = true;
     private final WordEngine engine;
-    //private final List<DictIF> dics;
 
     /**
      * 異体字を使わない場合にはこちらをつかう
@@ -58,9 +54,8 @@ public class CharEngine implements  EngineIF{
      * @throws Exception
      */
     public CharEngine(List<DictIF> dics,boolean hasItaiji) throws Exception{
-        this.dics = dics;
         this.hasItaiji = hasItaiji;
-        this.engine = new WordEngine(this.hasItaiji);
+        this.engine = new WordEngine(dics,this.hasItaiji);
     }
 
     /**
@@ -69,9 +64,14 @@ public class CharEngine implements  EngineIF{
      * @throws Exception
      */
     public CharEngine(boolean hasItaiji) throws Exception{
-        this.dics = defaultDics;
         this.hasItaiji = hasItaiji;
         this.engine = new WordEngine(this.hasItaiji);
+    }
+
+
+    @Override
+    public boolean isValidEngine(){
+        return this.engine.isValidEngine();
     }
 
     /**
@@ -87,7 +87,6 @@ public class CharEngine implements  EngineIF{
      */
     private ResultEngineParts check_short2long(String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kana_orig, int kana_begin_idx, int kana_end_idx ) throws Exception{
 
-        //WordEngine engine = new WordEngine(this.dics, this.hasItaiji);
         WordEngine engine = new WordEngine(this.hasItaiji);
 
         String kanji_chars = kanji_orig.substring(kanji_begin_idx,kanji_end_idx);
@@ -160,8 +159,6 @@ public class CharEngine implements  EngineIF{
      * @return 現在の結果が入っている next==null
      */
     private ResultEngineParts check_long2short(String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kana_orig, int kana_begin_idx, int kana_end_idx ) throws Exception{
-        //WordEngine engine = new WordEngine(this.dics, this.hasItaiji);
-        //WordEngine engine = new WordEngine(this.hasItaiji);
 
         String kanji_chars = kanji_orig.substring(kanji_begin_idx,kanji_end_idx);
         String kana_chars = kana_orig.substring(kana_begin_idx, kana_end_idx);

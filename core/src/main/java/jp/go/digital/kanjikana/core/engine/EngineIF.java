@@ -36,4 +36,11 @@ public interface EngineIF {
      * @throws Exception 一般的なエラー
      */
     ResultEngineParts check(String kanji_part, String kana_part) throws Exception;
+
+
+    /**
+     * 利用可能なエンジンかどうか。利用可能ならばTrueを返す。Falseの場合には，辞書データがないなどで利用できない。利用してもマッチしない
+     * @return Trueならば利用可能
+     */
+    boolean isValidEngine();
 }

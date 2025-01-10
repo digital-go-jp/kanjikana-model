@@ -41,9 +41,10 @@ import java.util.Arrays;
  * カナ「メグミ」
  * これらを拾うモデル
  */
-public class AsIsWordModel  extends DictWordModel {
+public final class AsIsWordModel  extends DictWordModel {
+
     public AsIsWordModel() throws Exception {
-        this.engine = new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false);
+        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false));
     }
 
     @Override

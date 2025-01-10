@@ -27,7 +27,7 @@ package jp.go.digital.kanjikana.core.engine;
 /**
  * AIを用いて文字単位で検査する
  */
-public class AiCharEngine extends AiWordEngine{
+public final class AiCharEngine extends AiWordEngine{
     public AiCharEngine() throws Exception {
         super();
     }

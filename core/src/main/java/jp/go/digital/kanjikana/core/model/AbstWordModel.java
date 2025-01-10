@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.model;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 
 /**
@@ -32,6 +33,9 @@ import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
  */
 public abstract class AbstWordModel extends AbstModel{
 
+    public AbstWordModel(EngineIF engine){
+        super(engine);
+    }
     /**
      * modelResultを見て，調べる漢字，カナの部分を絞る，
      * WordEngineのものは残す、がCharEngineのものはNGとしてくっつけて再検査

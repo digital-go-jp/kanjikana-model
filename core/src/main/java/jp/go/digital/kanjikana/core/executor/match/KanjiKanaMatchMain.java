@@ -77,24 +77,20 @@ public class KanjiKanaMatchMain {
 
         ArgumentParser parser = ArgumentParsers.newFor("kanjikana").build().defaultHelp(true).description("漢字カナ突合");
 
-        parser.addArgument("--infile").setDefault("input.txt").help("CSVファイル");
-        parser.addArgument("--okfile").setDefault("sample_ok.txt").help("CSVファイル");
-        parser.addArgument("--ngfile").setDefault("sample_ng.txt").help("CSVファイル");
-        parser.addArgument("--logfile").setDefault("sample_log.txt").help("txtファイル");
+        parser.addArgument("--infile").setDefault("input.txt").help("入力CSVファイル");
+        parser.addArgument("--outfile").setDefault("output.txt").help("出力CSVファイル");
         parser.addArgument("--kanji_idx").setDefault(1).help("漢字，アルファベット表記のフィールド番号 (先頭を0としたときの)");
         parser.addArgument("--kana_idx").setDefault(2).help("カタカナ表記のフィールド番号");
         parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
         parser.addArgument("--thread_num").type(Integer.class).setDefault(1).help("スレッド数");
-        parser.addArgument("--has_header").type(Boolean.class).setDefault(false).help("ヘッダがあるかどうか");
+        parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
         parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(),KanjiKanaMatchRunner.Strategy.AI.getVal(),
                 KanjiKanaMatchRunner.Strategy.ENSEMBLE.getVal())).setDefault(KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal()).help("モデル");
 
         Namespace ns = parser.parseArgs(args);
 
         String infile = ns.getString("infile");
-        String okfile = ns.getString("okfile");
-        String ngfile = ns.getString("ngfile");
-        String logfile = ns.getString("logfile");
+        String outfile = ns.getString("outfile");
         int kanji_idx= Integer.parseInt(ns.getString("kanji_idx"));
         int kana_idx= Integer.parseInt(ns.getString("kana_idx"));
         String sep = ns.getString("sep");
@@ -128,12 +124,12 @@ public class KanjiKanaMatchMain {
             for(int i=0;i<thread_num;i++){
 
                 Params params = new Params(has_header, kanji_idx,kana_idx,separator,newlines.get(i) );
-                pool.submit(new KanjiKanaMatchRunner(params,newlines.get(i), header,okfile+"."+i, ngfile+"."+i, logfile+"."+i, strategy));
+                pool.submit(new KanjiKanaMatchRunner(params,newlines.get(i), header,outfile+"."+i,  strategy));
             }
             pool.shutdown();
         }else{
             Params params = new Params(has_header,kanji_idx,kana_idx,separator,lines );
-            KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, header,okfile, ngfile, logfile, strategy);
+            KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, header,outfile, strategy);
             ch.run();
         }
     }

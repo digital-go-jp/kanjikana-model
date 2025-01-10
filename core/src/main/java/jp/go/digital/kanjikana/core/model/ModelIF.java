@@ -50,4 +50,11 @@ public interface ModelIF {
      * @throws Exception general exceptions
      */
     ModelData run(String kanji, String kana, ModelData modelData)throws Exception;
+
+
+    /**
+     * このモデルが利用可能かどうか
+     * @return Trueならば利用可能，Falseの場合には辞書データが入っていないなどで利用不可。使ってもFalseしか返ってこない
+     */
+    boolean isValidModel();
 }
