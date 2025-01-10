@@ -89,7 +89,7 @@ public final class Moji {
      */
     static String norm_kogaki( String s){
         s = ReplaceString( s,"ㇷ゚","プ");
-        
+
         s = ReplaceString( s,"ァ","ア");
         s = ReplaceString( s,"ィ","イ");
         s = ReplaceString( s,"ゥ","ウ");
