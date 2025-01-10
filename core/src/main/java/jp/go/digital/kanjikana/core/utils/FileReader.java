@@ -49,24 +49,27 @@ public final class FileReader {
         this.hasHeader = hasHeader;
     }
 
+    /*
     private File getFile(String filename,int suffix){
         if(filename==null || filename.isEmpty()){
             return null;
         }
         return new File(filename+"."+suffix);
     }
+    */
 
     /**
      * ファイル名からFileへ変換
      * @param filename　ファイル名
      * @return filenameのFileオブジェクト
      */
+    /*
     public File getFile(String filename){
         if(filename==null || filename.isEmpty()){
             return null;
         }
         return new File(filename);
-    }
+    }*/
 
     /**
      * ヘッダを取得する

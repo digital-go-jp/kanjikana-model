@@ -88,6 +88,8 @@ public final class Moji {
      * @return ヤマダ　ジヨウジ
      */
     static String norm_kogaki( String s){
+        s = ReplaceString( s,"ㇷ゚","プ");
+        
         s = ReplaceString( s,"ァ","ア");
         s = ReplaceString( s,"ィ","イ");
         s = ReplaceString( s,"ゥ","ウ");
@@ -97,6 +99,27 @@ public final class Moji {
         s = ReplaceString( s,"ャ","ヤ");
         s = ReplaceString( s,"ュ","ユ");
         s = ReplaceString( s,"ョ","ヨ");
+        s = ReplaceString( s,"ヮ","ワ");
+
+        s = ReplaceString( s,"ヵ","カ");
+        s = ReplaceString( s,"ㇰ","ク");
+        s = ReplaceString( s,"ヶ","ケ");
+        s = ReplaceString( s,"ㇱ","シ");
+        s = ReplaceString( s,"ㇲ","ス");
+        s = ReplaceString( s,"ㇳ","ト");
+        s = ReplaceString( s,"ㇴ","ヌ");
+        s = ReplaceString( s,"ㇵ","ハ");
+        s = ReplaceString( s,"ㇶ","ヒ");
+        s = ReplaceString( s,"ㇷ","フ");
+
+        s = ReplaceString( s,"ㇸ","ヘ");
+        s = ReplaceString( s,"ㇹ","ホ");
+        s = ReplaceString( s,"ㇺ","ム");
+        s = ReplaceString( s,"ㇻ","ラ");
+        s = ReplaceString( s,"ㇼ","リ");
+        s = ReplaceString( s,"ㇽ","ル");
+        s = ReplaceString( s,"ㇾ","レ");
+        s = ReplaceString( s,"ㇿ","ロ");
         s = ReplaceString( s,"ヮ","ワ");
         return s;
     }
