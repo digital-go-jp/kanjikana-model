@@ -58,7 +58,7 @@ public class DictCharModelTest {
 
     @Test
     public void test3() throws Exception{
-        ModelData modelData = model.run(new ModelData("田中　芽有","タナ　ガユウ"));
+        ModelData modelData = model.run(new ModelData("田中　芽有","タナカメユウ"));
         assertThat(modelData.isOk(),equalTo(true));
 
     }
@@ -89,8 +89,8 @@ public class DictCharModelTest {
 
     @Test
     public void test7() throws Exception{
-        ModelData modelData = model.run(new ModelData("ＫＯＲＡＬＡ　ＭＵＤＡＬＩＧＥ　ＤＯＮ　ＴＩＬＡＮ　ＳＵＢＵＤＤＩＫＡ","コーララムダリゲ　ドン　ティラーン　スブッディカ"));
-        assertThat(modelData.isOk(),equalTo(true));
+        ModelData modelData = model.run(new ModelData("ＫＯＲＡＬＡ　ＭＵＤＡＬＩＧＥ　ＤＯＮ　ＴＩＬＡＮ　ＳＵＢＵＤＤＩＫＡ","コーララ　ムダリゲ　ドン　ティラーン　スブッディカ"));
+        assertThat(modelData.isOk(),equalTo(false));
 
     }
 

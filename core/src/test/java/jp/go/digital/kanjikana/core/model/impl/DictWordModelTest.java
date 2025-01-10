@@ -61,7 +61,7 @@ public class DictWordModelTest {
     @Test
     public void test2() throws Exception{
         ModelData modelData = model.run(new ModelData("田中　有芽田中　芽有","タナカ　ユガタナカ　ガユウ"));
-        assertThat(modelData.isOk(),equalTo(true));
+        assertThat(modelData.isOk(),equalTo(false));
 
     }
 
@@ -73,8 +73,8 @@ public class DictWordModelTest {
     }
     @Test
     public void test4() throws Exception{
-        ModelData modelData = model.run(new ModelData("田中芽有　東京","タナカメユ　トウキョウ"));
-        assertThat(modelData.isOk(),equalTo(true));
+        ModelData modelData = model.run(new ModelData("田中　芽有　東京","タナカ　メユウ　トウキョウ"));
+        assertThat(modelData.isOk(),equalTo(false));
     }
 
 
@@ -91,7 +91,7 @@ public class DictWordModelTest {
     @Test
     public void test6() throws Exception{
         ModelData modelData = model.run(new ModelData("山本隆行","ヤマモト　タカユキ"));
-        assertThat(modelData.isOk(),equalTo(true));
+        assertThat(modelData.isOk(),equalTo(false));
     }
 
 

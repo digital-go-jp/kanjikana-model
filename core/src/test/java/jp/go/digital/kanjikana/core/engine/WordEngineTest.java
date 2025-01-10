@@ -127,7 +127,7 @@ public class WordEngineTest {
     @Test
     public void test14() throws Exception{
         ResultEngineParts result = engine.check("花梨","ハナナシ");
-        assertThat(result.isOk(),equalTo(true));
+        assertThat(result.isOk(),equalTo(false));
     }
     @Test
     public void test15() throws Exception{

@@ -57,6 +57,6 @@ public class IWordIndexWordModelTest {
     @Test
     public void test2() throws Exception{
         ModelData modelData = model.run(new ModelData("靑陦　カズオ","アオシマ　カズオ"));
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 }

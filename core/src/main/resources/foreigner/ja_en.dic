@@ -1,0 +1,1295 @@
+#
+# 日本語(ローマ字表記) - 英語表記 部分対応表
+#
+# created:  2017.03.30 佐藤理史
+# modified: 2017.03.31 佐藤理史
+# modified: 2023.07.08 佐藤理史
+#
+# [00] 記号
+# 「英語表記=@」は、スペースの意味
+!	*	1000
+-	-	10000
+# [0] 消失・湧き出し
+*	'	*
+*	ch	500	# ホーエンヴァルター/hochenwarter
+*	dt	*
+*	gh	*
+*	gha	*
+*	ghe	*
+*	ha	500
+*	ld	500
+*	ng	*
+*	nh	500
+*	st	500
+# [1] 母音/半母音/子音
+0	gn
+0	gne
+0	l
+0	ln
+0	m
+0	mb
+0	mbe
+0	mm
+0	mn
+0	mp
+0	n
+0	na
+0	nah
+0	nc
+0	nd
+0	ne
+0	ng
+0	ngue
+0	nh	2000
+0	ni
+0	nn
+0	nne
+0	nos
+0	ns
+0	nt
+0	nth
+0	ny
+0	nz
+0	o	*
+0	rn	2000
+0g	g
+0m	m	*	# モハンメッド/MOHAMED
+0n	n	*
+0s	s
+1	c
+1	cc
+1	ch
+1	ci
+1	ds
+1	esh
+1	hs
+1	hsi
+1	krz
+1	lj	# [2023.07.09] liljedahl/リシュダール
+1	lsy
+1	rz
+1	s
+1	sc
+1	sch
+1	sci	# [2023.07.09]
+1	sh
+1	shch
+1	shi
+1	si
+1	sj
+1	ss
+1	ssch
+1	ssh	# [2023.07.08]
+1	sy
+1	sz
+1	t
+1	tch
+1	th
+1	ti
+1	ts
+1	tsch
+1	tth
+1	tzsch
+1	x
+1	xi
+1	xy
+1	z
+1	zh
+1	zz	# [2023.07.08]
+1is	x
+2	c
+2	cs
+2	cz
+2	ds
+2	dt	# [2023.07.09]
+2	dts
+2	dz
+2	gts
+2	s
+2	sc
+2	st
+2	sz
+2	t
+2	th
+2	ts
+2	tts
+2	tx
+2	tz
+2	tw	# [2023.07.08]
+2	ws
+2	z
+2	zg	# [2023.07.08]
+2	zh	# [2023.07.08] zhe/ツェー
+2	zz
+3	c
+3	cz
+3	d
+3	dh	-500 # [2023.07.09]
+3	dg
+3	di
+3	dj
+3	drz
+3	dt
+3	dtch
+3	dy
+3	dz
+3	dzhy
+3	g
+3	ge	# [2023.07.09]
+3	gg
+3	ggi
+3	gi
+3	gj
+3	j
+3	jh	# [2023.07.08]
+3	ji	# [2023.07.08] jiali/ジャーリー
+3	jj	+20
+3	jy
+3	jw	# [2023.07.08]
+3	ll	*	# パジャス/PALLAS	
+3	nj
+3	r
+3	rz
+3	s
+3	si
+3	sj	# [2023.07.09]
+3	ss	# [2023.07.08]
+3	sz	# [2023.07.08] muszynski/ムジンスキー
+3	th	# [2023.07.08] northey/ノージー
+3	tj
+3	tz
+3	xh
+3	xi	*	# ジャオ/XIAO	
+3	y
+3	z
+3	zh
+3	zs
+3	zy
+3	zz
+3i	x	*	# ジヤン/XIAN	
+3iJ	j
+=	-	10000
+=	@	10000
+=	=	10000
+@	@	10000
+a	aa
+a	aael
+a	aah
+a	ac
+a	ae
+a	aew
+a	ah
+a	aha
+a	ai
+a	aj
+a	ak
+a	al	-10
+a	all	-10
+a	ao
+a	ap
+a	ar
+a	as
+a	at
+a	ate
+a	au
+a	aw
+a	ay	-10
+a	ayi
+a	az
+a	e
+a	ea
+a	ee
+a	eh
+a	ei
+a	eo
+a	eou
+a	er
+a	eu
+a	g
+a	ga
+a	h	-10
+a	ha
+a	haa
+a	hai
+a	he
+a	hr
+a	hu
+a	i
+a	ia
+a	ie
+a	ieh
+a	ii
+a	ir
+a	ire
+a	ja
+a	o
+a	oa
+a	oc
+a	oe
+a	oo
+a	or
+a	ora
+a	ou
+a	our	# [2023.07.08]
+a	r
+a	re
+a	rr
+a	sa
+a	u
+a	ua
+a	uat	# [2023.07.08]
+a	ue
+a	uei
+a	ui
+a	ur
+a	y	*	# 100
+a	ya
+a	a
+a+	aa
+a+	aar
+a+	ae
+a+	aeh
+a+	aer
+a+	ah
+a+	aha
+a+	ahe
+a+	aher
+a+	aho
+a+	ahr
+a+	ai
+a+	air
+a+	ak
+a+	al
+a+	ar
+a+	ard
+a+	are
+a+	arr
+a+	au
+a+	aur	# [2023.07.08]
+a+	aut
+a+	aw
+a+	aya
+a+	ea	# [2023.07.08]
+a+	ear
+a+	eau	# [2023.07.08]
+a+	eer	# [2023.07.08]
+a+	ehr
+a+	eir	# [2023.07.08]
+a+	eour	# [2023.07.08]
+a+	er
+a+	ere
+a+	erg
+a+	erh
+a+	err
+a+	ha
+a+	har
+a+	her
+a+	hrr
+a+	ia	# [2023.07.08]
+a+	iar	# [2023.07.08]
+a+	ie
+a+	ier
+a+	ir
+a+	ire
+a+	o
+a+	oa	# [2023.07.08]
+a+	oer	# [2023.07.08]
+a+	or
+a+	ore
+a+	our
+a+	r
+a+	re
+a+	ua
+a+	uar
+a+	uer
+a+	uh
+a+	uhr
+a+	uir	# [2023.07.08]
+a+	ur
+a+	urr	# [2023.07.08]
+a+	ure
+a+	yce
+a+	yr
+a+	a
+ae	a
+ai	a
+ai	al
+ai	e
+ai	ei
+ai	i
+ai	ia
+ai	ir	*	# 2000
+ai	is
+ai	y
+ai	ye
+ai	yi
+aia	iro
+aija+	ire
+ao	a	*	# エンタォン/entao (ポルトガル語)
+ao	u
+au	a
+au	ah
+au	al
+au	ar
+au	ouw
+au	ow
+au	owe
+au	ui
+awa+	hour
+b	b
+b	bb
+B	bh	# bhimrao/ビームラーオ [2023.07.08]
+b	db
+b	gb
+b	mb
+b	mp
+b	p
+b	pb
+b	ph
+b	v
+b	w
+b	zb
+bj	b
+bj	p
+c	c
+c	cc
+c	cch
+c	cci
+c	ch
+c	chitch
+c	chr
+c	chy
+c	ci	*	# 2000
+c	cs
+c	cz
+c	dch
+c	dcz
+C	dg	# [2023.07.08]
+C	pch
+c	q
+C	sch
+C	stch
+c	sz
+c	t
+c	tch
+c	th
+c	ti
+C	tiy
+c	tj
+c	tr
+c	ts
+c	tsc
+c	tsch
+c	tt	# [2023.07.08] ottis/オーチス
+c	ttch
+c	ttsch
+c	tx
+c	ty
+c	tzsch
+c	z
+C	zz	# abruzzi/アブルッチ [2023.07.08]
+Ci	ch	# [2023.07.08]
+Cu	te	# [2023.07.08]
+d	bd
+d	d
+d	dd
+d	dh
+d	ds
+d	dt
+d	dz
+d	gd
+d	kd
+d	nd
+d	t
+d	tt
+d	ud
+dj	d
+dju	de	*	# デュクロワ/DECROIX	
+do	dde
+do	de
+e	a
+e	ae
+e	ag
+e	ai
+e	ais
+e	ait
+e	ay
+e	aye
+e	ayi
+e	e
+e	ea
+e	eau
+e	eay
+e	ee
+e	eh
+e	ehe
+e	ei
+e	ej
+e	el
+e	eo
+e	er
+e	ere
+e	es
+e	est
+e	et
+e	ete
+e	eu
+e	ew
+e	ey
+e	ez
+e	ge
+e	ha
+e	hai
+e	he
+e	i
+e	ia
+e	ie
+e	iu
+e	j
+e	je
+e	le
+e	lle	+20
+e	llet	+20
+e	o
+e	oe
+e	oeh
+e	oi	*
+e	oo
+e	ou
+e	u
+e	ua
+e	uai	*	# アンリ・ゲノ/Henri Guaino
+e	ue
+e	uee
+e	uei
+e	uer	# [2023.07.08]
+e	ues	# [2023.07.08] 末尾(sは読まない)
+e	uet	# [2023.07.08] 末尾(tは読まない)
+e	uo
+e	w
+e	we
+e	y
+e	ya
+e	ye
+e	yoo
+e	yua
+e+	a
+e+	ae
+e+	aeh
+e+	aer
+e+	ah
+e+	ai
+e+	ais
+e+	arr
+e+	ay
+e+	e
+e+	ea
+e+	eau
+e+	ee
+e+	eer
+e+	eh
+e+	ehe
+e+	ei
+e+	er
+e+	eu
+e+	eue
+e+	eur
+e+	ey
+e+	g
+E+	he	# [2023.07.08]
+e+	hai
+e+	ie	# [2023.07.08]
+e+	ier	# [2023.07.08]
+e+	oe
+e+	oeh
+e+	oh
+e+	or
+e+	ua	# [2023.07.08]
+e+	ue
+e+a	are
+e+i	y
+e0	n
+ea	a
+ea	aew
+ea	eh
+ea	er
+ea	ir
+ee	e
+ee	er
+ee	j
+ei	a
+ei	e
+ei	ea
+ei	et
+ei	eu
+ei	o
+eI	y
+emu	m	*	# エムサ/msah
+ere	le	*	# エレオノール/leonor
+eu	e
+f	ch
+f	f
+f	ff
+f	fr
+f	g
+F	gh
+f	h
+F	hw	# [2023.07.08]
+F	k	# [2023.07.08]	zaczek/ザクチェフ
+F	j
+f	ju
+f	kh
+f	pf
+f	ph
+f	sh
+f	v
+F	w
+fj	f
+fu	f	# フレイア/freya
+Fu	w
+g	ck
+g	dg
+g	g
+g	gg
+g	gh
+g	gk
+G	gu	# [2023.07.09]
+G	gw	-500 # [2023.07.08]
+g	h
+g	k
+g	ng
+g	tg
+gj	g
+gj	gg
+gua	gh
+gus	x
+guz	x
+h	ch
+H	f
+H	ff	# [2023.07.08]	
+H	g
+H	gg
+H	gh
+h	h
+H	hw	# [2023.07.08]
+h	j
+h	kh
+H	kj
+H	ph
+H	r
+H	v
+h	wh
+H	x
+hi	g
+hj	ch
+Hj	fj
+hj	h
+HoW	wh
+i	a
+i	ae
+i	ai
+i	aik
+i	aoi
+i	ay
+i	e
+i	ea
+i	ee
+i	eh
+i	ei
+i	ej
+i	eu
+i	ey
+i	gi
+i	gj
+i	gy
+i	h
+i	hi
+i	hy
+i	i
+i	ia
+i	ic
+i	ie
+i	ig
+i	ih
+i	ihi
+i	ii
+i	ij
+i	ik
+i	il
+i	ill
+I	ill
+i	ille
+i	illi
+i	io
+i	ir
+i	is
+i	it
+i	ith
+i	iu
+i	iy
+i	j
+i	je
+i	ji
+i	jo
+i	jy
+i	ll
+i	lle
+I	lli	# [2023.07.09]
+i	lly
+i	nna	*	# カイテル/cannatella	
+i	o
+i	oi
+i	u
+i	ue
+i	ui	-10
+i	uil	# [2023.07.08]
+i	uill	# [2023.07.08]
+i	uy
+i	v
+i	wi
+i	y
+i	ya
+I	ye
+i	ye
+i	yh
+i	yi
+i	yll
+i	yu
+i	yy
+i+	ae
+i+	aio
+i+	ay
+i+	e
+i+	ea
+i+	eah
+i+	ee
+i+	eeh
+i+	eer
+i+	eh
+i+	ehee
+i+	ei
+i+	eii
+i+	er
+i+	ey
+i+	eye
+i+	gy
+i+	hy
+i+	i
+i+	ia
+i+	ie
+i+	ieh
+i+	ier
+i+	ih
+i+	ii
+i+	ij
+i+	io
+i+	ir
+i+	iy
+i+	oe
+i+	or
+i+	ue
+i+	ueh
+i+	ui	# aguilar/アギーラ [2023.07.08]
+i+	uie
+i+	uy	# zusperreguy/ズスペルギー [2023.07.08]
+i+	y
+i+	ya
+i+	ye
+i+	yea
+i+	yee
+i+	yh
+i+	yi
+i+	yy
+i+j	i
+ia	e
+ia	i
+ia	ir
+ie	e
+ie	ei
+ie	ui
+iI	e
+ii	ea
+ii	i
+ii	u
+ii	y
+ij	ay
+ij	hj	
+ij	i
+Ij	j
+ij	j
+ij	y
+iju	eu	*	# カラディュ/CARADEUX	
+io	eu
+iru	l
+j	e
+j	ee	*	# ミュー/MEEUW
+J	g
+J	ge
+j	gi
+j	gj
+J	gn
+j	h
+J	hj	# [2023.07.08]
+J	hy	# [2023.07.08]
+j	i
+J	ih	# [2023.07.09]
+J	ij
+j	iy
+j	j
+J	jh	# [2023.07.08]
+J	jj	+20
+J	l
+J	lh	# [2023.07.08]
+J	ll	+20
+J	lli	# [2023.07.09]
+j	ui
+J	y
+j	yi
+J	j
+j	y
+Ja	re
+Ja+	er
+Jo	yu
+ju	eu	*	# デスティユ/DESTHIEUX
+ju	eux
+ju	ew
+ju	u	*	# ドュリヴォ/DURIVAUX	
+ju	ue
+Ju+	e
+ju+	eau
+ju+	eu	*	# デューリンガー/DUERINGER	
+ju+	eur
+ju+	u
+ju+	ue
+ju+	uh
+ju+	uy
+ju+	y
+ju+	yh	*	# ミューラール/MYHRER	
+ju+	yy
+JuI	uu
+k	c
+k	cc
+K	cch	# [2023.07.09]
+k	cg
+k	ch
+k	cht
+k	ck
+k	ckx
+k	cq
+k	cz
+k	g
+k	gg
+k	gh
+k	gk
+k	h	-500
+k	k
+K	kh	-500
+k	kh	-1000
+k	kl	-500	# [2023.07.09]
+k	kk
+k	koc
+K	kw	-500 # [2023.07.08]
+k	pk
+k	q
+k	qu
+k	sk
+k	tc
+k	tk
+k	ttk
+k	x	# [2023.07.08]
+ki1	x
+kis	x
+kiz	x
+kj	c
+kj	cc
+kj	ch
+kj	k
+kj	qu
+ku1	x
+ku1	xx	# [2023.07.08]
+ku1	xs
+kus	cx
+kus	kx
+kus	x
+kus	xc
+kus	xs
+kus	xx
+KuV	qu
+kuz	x
+kw	q
+m	am
+m	b
+m	dm
+m	m
+m	mb
+m	mh
+m	mm
+m	n
+M	lm	# malcolm/マルカム [2023.07.27]
+Ma	mac
+Ma	mc
+Ma!	mc	# [2023.07.09]
+Ma!K	mc	-500 
+Ma!Ku	mc	-1500 # [2023.07.09]
+MaK	mc
+MaKu	mc	# [2023.07.08] mcguane/マクゲーン
+mj	m
+MoHaMaDo	mohd	# [2021.05.06]
+n	gn
+n	kn
+n	mn
+n	n
+n	nh
+n	nj
+n	nn
+N	nw	# [2023.07.08]
+n	sn
+n	tn
+nifu	la
+nj	gn
+nj	n
+nj	ng	# [2023.07.08]
+nj	nh
+o	a
+o	aa
+o	ah
+o	ai
+o	ao
+o	au	*	# ヴィディオ/VIDIAUX	
+o	aux
+o	aw
+o	ay
+o	e
+o	ea
+o	eau
+o	eaux
+o	eo
+o	eot	# [2023.07.08]
+o	eu	# cheung/チョン, yeung/ヨン[2023.07.27]
+o	ez
+o	hau
+O	ho	# [2023.07.08]
+o	ho
+o	i
+o	io
+o	o
+o	oah
+o	oc
+o	oe
+o	oh
+o	oj
+o	ol
+o	oo
+o	or
+o	ora
+o	os
+o	ost
+o	ot
+o	ou
+o	our
+o	oux
+o	ov
+o	ow
+o	owl
+o	oy
+o	oz
+o	u
+o	ue
+o	uk
+o	uo
+o	uu
+o	w
+o	wa
+o	wo
+o	y	
+o	yu
+o+	a
+o+	aa
+o+	aae
+o+	aar
+o+	aard
+o+	ah
+o+	ai	*	# グローニャ/GRAINNE	
+o+	al
+o+	ar
+o+	arr
+o+	au
+o+	aud
+o+	aul
+o+	ault
+o+	aut
+o+	auw
+o+	aux
+o+	aw
+o+	awe
+o+	e	*	# フョードル/FEDOR	
+o+	ea
+o+	eau	*	# リボー/RIBEAUX
+o+	eaud	# [2023.07.08]
+o+	eaux
+o+	eo
+o+	eoh
+o+	eor
+o+	eou
+o+	hau
+O+	ho	# [2023.07.08]
+o+	hoo
+o+	o
+o+	oa
+o+	oar
+o+	oau
+o+	od
+o+	oe
+o+	oeh
+o+	oer
+o+	oh
+o+	oho
+o+	ohu
+o+	oi
+o+	oj
+o+	ol
+o+	oll
+o+	oo
+o+	oor
+o+	or
+o+	ore	+500
+o+	org
+o+	orr
+o+	orre
+o+	ost
+o+	ou
+o+	oue
+o+	our
+o+	oux
+o+	ow
+o+	owe
+o+	ua
+o+	uau
+o+	ueau	# [2023.07.08]
+o+	uh
+o+	ur
+o0	o	*	# 800	#
+oa	o
+oa	ois
+oa	oix
+oi	au
+oi	eu
+oo	au
+oo	aux
+oo	o
+oo	oh
+ou	au	
+ou	ault
+ou	aux
+ou	e
+ou	eu
+ou	ieh
+ou	o
+ou	oa
+ou	ois
+ou	ol	-100 # [2023.07.09]
+ou	out
+ou	oux
+ow	or
+ow	oy
+owa	oi	*	# フランソワ/FRANCOIS	
+owa	oie
+owa	ois
+owa	oist
+owa	oit
+owa	oix
+owai	oy
+p	b
+p	dp
+p	kp
+p	p
+p	pf
+p	pff
+p	ph
+p	pp
+r	gl
+R	hl	# [2023.07.09]
+r	hr
+r	kr
+r	l
+r	lb
+r	ld
+r	lh	-500
+r	lj
+r	ll	+20
+r	lls
+r	lr	-100
+r	lt
+R	lu	# [2023.07.08]
+R	lw	-500 # [2023.07.08]
+r	r
+r	rc
+r	rd
+r	rg
+r	rh
+R	rl	# [2023.07.08]
+r	rl	-1000 # [2023.07.08] abberley/アバーリー
+r	rr
+r	rt
+R	rz
+r	wr
+r	y
+Re	llec
+Re	rez
+ri	ll	-500
+rj	l
+rj	lh
+rj	ll
+rj	r
+rj	ru
+ro0	llo	*	# カレン・シャロン/Karen Shallo
+ru	r	# エルラン/yerlan
+s	c
+s	ces
+S	cs	# [2023.07.08]
+s	cz
+s	ds
+s	gs
+S	hs	# hsu/スー [2023.07.27]
+s	js
+s	s
+s	sc
+s	sch
+s	sh
+s	sl	-500 # [2023.07.09]
+s	ss
+s	st
+s	sth
+S	sw	-500 # [2023.07.08]
+s	sz
+s	th
+s	ths
+s	ts
+s	tx
+s	tz
+s	x
+s	z
+t	ch
+t	cht
+t	d
+t	dd
+t	ds
+t	dt
+t	gt
+t	pt
+t	t
+t	th
+t	thh	-500 # [2023.07.09]
+t	thth
+t	tre
+t	ts
+t	tt
+t	yt
+tj	t
+tj	th
+to	te
+to	the
+to	tte
+u	a
+u	ae	# michael/マイクル [2023.07.27]
+u	au
+u	e
+u	ea
+u	eau
+u	ee
+u	el
+u	eo
+u	er
+u	es
+u	eu
+u	eux
+u	ew
+u	gi
+u	gu
+u	h	* 	# 500
+u	hu
+u	i	*	# 100
+u	iu
+u	l	-500	# 998
+u	lu	*
+u	o
+u	oe
+u	oeu
+u	oo
+u	ou
+u	oua
+u	oue
+u	oui
+u	out
+u	oux
+u	oy
+u	r	*	# 100
+u	u
+u	ua
+u	uc
+u	ue
+u	ues	# [2023.07.08] 末尾のsは読まない
+u	ug	# [2021.05.06]
+u	uh
+u	ui
+u	uj
+u	uk
+u	ul
+u	uo
+u	ur
+u	ut
+u	uu
+u	uw
+u	uy
+u	v
+u	vo
+u	vou
+u	w
+u	wa
+u	we
+u	wh
+u	wo
+u	woo
+u	wou
+u	wu
+u	wy
+u	y	*	# 100
+u	yo
+u	yu
+u 	hou
+U!	woo	# [2023.07.08]
+u+	au
+u+	e
+u+	eau
+u+	er
+u+	eu
+u+	eui	# [2023.07.09]
+u+	eur
+u+	eux
+u+	ew
+u+	ewe
+u+	gi
+u+	hu	# [2023.07.09]
+u+	heu
+u+	hoo
+u+	i
+u+	ie	# [2023.07.08]
+u+	ieu	# [2023.07.08]
+u+	iu
+u+	o
+u+	oe
+u+	oeh
+u+	oeur	# [2023.07.08]
+u+	oh
+u+	oo
+u+	or
+u+	ou
+u+	oud
+u+	oue
+u+	oulx
+u+	oup
+u+	our
+u+	ous
+u+	out
+u+	oux
+u+	ow
+u+	oy
+u+	u
+u+	ua
+u+	ue
+u+	ueau
+u+	ueh
+u+	uer
+u+	ueu
+u+	ueur
+u+	ueux
+u+	ug
+u+	uh
+u+	ui
+u+	uo
+u+	ul
+u+	ur
+u+	urr
+u+	uu
+u+	uw
+u+	w	# [2023.07.09]
+u+	wo
+u+	woo
+u+	wu
+u+	wur
+U0	ng	+5	# ウン/ng
+ua	eu
+ua	ur
+ua	ure
+uei	wy
+uei	wya
+ui	ou
+ui	u
+uo	o
+uo	or	*	# ウオチャテリ/orchatteri
+uu	e
+uu	i
+uu	oux
+uu	u
+uu	ue
+uu	ur
+uu	y
+uw	u
+uwa	u
+V	bv	# lefebvre/ルフェーヴル [2023.07.27]
+v	fv
+v	gv
+V	ph
+V	q	-500 # [2023.07.08]
+v	v
+v	vb
+v	vv
+v	w
+vj	v
+W	hu
+W	l	-500 
+w	nw
+w	ou
+w	u
+w	ua
+w	v
+w	w
+w	wv
+W	wh
+W	wl
+Wa	ios
+Wa	o
+wa	oi
+wa+	er
+Wa+	har
+WaIE	yer
+We	fu
+We	uwe
+WeI	wya
+z	cz
+z	d
+z	dds
+z	des
+z	dh
+z	ds
+z	dz
+z	g
+z	j
+z	rz
+z	s
+z	ss
+z	sz
+z	th
+z	ts
+z	tz
+Z	x	# roxanne/ロザンヌ [2023.08.08]
+z	z
+z	zh
+z	zl
+z	zs	# [2023.07.08] zsolt/ゾルト
+z	zz
+# 韓国人・中国人
+I	lee
+cou	zhang
+cou	zhao
+# End

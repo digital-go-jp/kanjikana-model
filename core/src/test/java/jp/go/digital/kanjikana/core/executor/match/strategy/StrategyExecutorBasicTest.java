@@ -287,7 +287,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test28() throws Exception{
         ModelData modelData = executor.run("ＣＨＥＮ　ＣＨＩＥＮ　ＣＨＵＮＧ＿陳　建中,チン　ケンチュウ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test

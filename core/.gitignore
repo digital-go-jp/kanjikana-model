@@ -7,5 +7,6 @@ ng.txt
 log.txt
 
 Dockerfile
-lib
 conf
+*.jar
+output.txt

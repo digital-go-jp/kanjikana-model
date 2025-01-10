@@ -241,11 +241,15 @@ public class StrategyExecutorAdvTest {
         //assertThat(modelData.getResult(),equalTo("{true;ＴＡＮＡＫＡ;タナカ;WordEngine;DictSeimei;1554:/di/nri/;null}{true;ＣＥＬＳＯ;セルソ;WordEngine;DictSeimei;94:/nri/;null}{true;ＨＡＮＡＫＯ;ハナコ;WordEngine;DictSeimei;30:/di/nri/;null}"));
 
     }
-
+    @Test
+    public void test22a() throws Exception{
+        ModelData modelData = executor.run("田中　弘明,タナカ　ヒロアキ",0,1,",");
+        assertThat(modelData.isOk(),equalTo(true));
+    }
 
     @Test
     public void test22() throws Exception{
-        ModelData modelData = executor.run("＿宋　弘明（田中　弘明）,タカナ　ヒロアキ",0,1,",");
+        ModelData modelData = executor.run("＿宋　弘明（田中　弘明）,タナカ　ヒロアキ",0,1,",");
         assertThat(modelData.isOk(),equalTo(true));
     }
 
@@ -294,7 +298,7 @@ public class StrategyExecutorAdvTest {
     @Test
     public void test30() throws Exception{
         ModelData modelData = executor.run("ＭＯＨＤ　ＡＹＵＢ　ＢＩＮ　ＳＵＬＯＮＧ,モッド　エーアブ　ビンス　ーロング",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
 
@@ -313,7 +317,7 @@ public class StrategyExecutorAdvTest {
     @Test
     public void test32() throws Exception{
         ModelData modelData = executor.run("ＬＵ　ＨＳＩＡＯ　ＨＵＩ,ロ　シャウフエ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
 

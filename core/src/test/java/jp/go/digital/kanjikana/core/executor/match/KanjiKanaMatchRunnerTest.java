@@ -34,7 +34,7 @@ public class KanjiKanaMatchRunnerTest {
     public void test() throws Exception{
         List<String> lines = Arrays.asList("北野　晴香,キタノ　ゴロウ");
         Params params = new Params(false,0,1,Params.Separator.CSV,lines );
-        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null, null, null, KanjiKanaMatchRunner.Strategy.ENSEMBLE);
+        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null,  KanjiKanaMatchRunner.Strategy.ENSEMBLE);
         ch.run();
     }
 
@@ -42,7 +42,7 @@ public class KanjiKanaMatchRunnerTest {
     public void test1() throws Exception{
         List<String> lines = Arrays.asList("ＨＥ　ＪＵＮ＿何　俊,カ　シユン");
         Params params = new Params(false,0,1,Params.Separator.CSV,lines );
-        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null, null, null, KanjiKanaMatchRunner.Strategy.ENSEMBLE);
+        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null, KanjiKanaMatchRunner.Strategy.ENSEMBLE);
         ch.run();
     }
 
@@ -50,7 +50,7 @@ public class KanjiKanaMatchRunnerTest {
     public void test1a() throws Exception{
         List<String> lines = Arrays.asList("ＨＥ　ＪＵＮ＿何　俊,カ　シユン");
         Params params = new Params(false,0,1,Params.Separator.CSV,lines );
-        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null, null, null, KanjiKanaMatchRunner.Strategy.BASIC);
+        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null, KanjiKanaMatchRunner.Strategy.BASIC);
         ch.run();
     }
 }

@@ -56,4 +56,12 @@ public class DictOssNormalizedTest {
 
 
     }
+
+    @Test
+    public void test2() throws Exception{
+        List<String> lst = dic.getValue("田中");
+        logger.debug(lst);
+        assertThat(dic.containsValueKey("田中","タナカ"),equalTo(true));
+        assertThat(dic.containsValueKey("田中","タナヵ"),equalTo(true));
+    }
 }

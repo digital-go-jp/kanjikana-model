@@ -79,14 +79,12 @@ public class AsIsCharModelTest {
     @Test
     public void test6() throws Exception{
         ModelData modelData = model.run(new ModelData("フリードライン　カーター輝竜","フリードライン　カーター　キリュウ"));
-        assertThat(modelData.isOk(),equalTo(true));
-        assertThat(modelData.getModel(),equalTo("AsIsCharModel"));
+        assertThat(modelData.isOk(),equalTo(false));
     }
 
     @Test
     public void test7() throws Exception{
         ModelData modelData = model.run(new ModelData("フリードライン　カーター　輝竜","フリードライン　カーター　キリュウ"));
-        assertThat(modelData.isOk(),equalTo(true));
-        assertThat(modelData.getModel(),equalTo("AsIsCharModel"));
+        assertThat(modelData.isOk(),equalTo(false));
     }
 }

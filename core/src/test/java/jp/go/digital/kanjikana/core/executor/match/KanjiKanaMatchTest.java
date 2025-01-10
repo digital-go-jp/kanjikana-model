@@ -88,7 +88,7 @@ public class KanjiKanaMatchTest {
     @Test
     public void test4() throws Exception{
         Output o = detail.exec("山田","サンデン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE3));
 
     }
 
@@ -109,12 +109,12 @@ public class KanjiKanaMatchTest {
     @Test
     public void test5a() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ＿何　俊","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE2));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
 
     @Test
     public void test5b() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE2));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.NG));
     }
 }

@@ -125,4 +125,10 @@ public class CharEngineTest {
         assertThat(result.isOk(),equalTo(true));
         //assertThat(result.getNextResult().isOk(),equalTo(true));
     }
+
+    @Test
+    public void test14() throws Exception{
+        ResultEngineParts result = engine.check("花梨","ハナナシ");
+        assertThat(result.isOk(),equalTo(true));
+    }
 }

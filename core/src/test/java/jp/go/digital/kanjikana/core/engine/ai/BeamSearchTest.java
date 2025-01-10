@@ -56,7 +56,7 @@ public class BeamSearchTest {
     @Test
     public void test2(){
         List<SearchResult> res = search_r.run("タカノ");
-        assertThat(res.get(0).getPredict(),equalTo("貴乃"));
+        assertThat(res.get(0).getPredict(),equalTo("高野"));
     }
 
     @Test

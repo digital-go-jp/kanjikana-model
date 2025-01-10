@@ -52,7 +52,13 @@ public class DictOssTest {
         logger.debug(lst);
         assertThat(dic.containsValueKey("俊","シュン"),equalTo(true));
         assertThat(dic.containsValueKey("俊","シユン"),equalTo(false));
+    }
 
-
+    @Test
+    public void test2() throws Exception{
+        List<String> lst = dic.getValue("田中");
+        logger.debug(lst);
+        assertThat(dic.containsValueKey("田中","タナカ"),equalTo(true));
+        assertThat(dic.containsValueKey("田中","タナヵ"),equalTo(false));
     }
 }
