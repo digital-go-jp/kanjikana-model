@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>氏名漢字カナ突合システム &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56c4699f" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c033477b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=4755f45a"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="概要" href="about/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="about/index.html">概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample/index.html">サンプルプログラム</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model/index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">氏名漢字カナ突合システム</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>氏名漢字カナ突合システム<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about/index.html">概要</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about/index.html#id2">機能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/index.html#api">氏名漢字カナ突合API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/index.html#id4">氏名漢字カナ突合モデル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">氏名漢字カナ突合API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id1">利用者登録</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id2">機能一覧</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id6">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id8">入力データ仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id9">入力仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#id10">出力仕様</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sample/index.html">サンプルプログラム</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sample/index.html#java"><span class="xref std std-doc">java</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample/index.html#python3"><span class="xref std std-doc">python3</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample/index.html#nodejs"><span class="xref std std-doc">nodejs</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample/index.html#excel"><span class="xref std std-doc">excel</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample/index.html#vue3"><span class="xref std std-doc">vue3</span></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model/index.html">氏名漢字カナ突合モデル</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html#id2">機能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html#id3">ソースコード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html#id4">アーキテクチャ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html#id5">データソース</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html#id6">プログラム</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="about/index.html" class="btn btn-neutral float-right" title="概要" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

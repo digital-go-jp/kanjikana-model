@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.executor.generate;
 
+import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.utils.FileReader;
 import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
 import jp.go.digital.kanjikana.core.utils.FileWriter;
@@ -67,27 +68,45 @@ public class Kana2KanjiMain {
                 .defaultHelp(true)
                 .description("カナから漢字を推測");
 
-        parser.addArgument("--infile");
+        parser.addArgument("--infile").setDefault("input.txt").help("入力するファイル名");
         parser.addArgument("--n_best").setDefault(5).help("出力数");
-        parser.addArgument("--outfile");
+        parser.addArgument("--kana_idx").setDefault(2).help("カタカナ表記のフィールド番号");
+        parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
+        parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
+        parser.addArgument("--outfile").setDefault("output.txt").help("出力ファイル名");
 
         Namespace ns = parser.parseArgs(args);
 
         String input = ns.getString("infile");
         String outfile = ns.getString("outfile");
         int n_best= Integer.parseInt(ns.getString("n_best"));
+        int kana_idx= Integer.parseInt(ns.getString("kana_idx"));
+        String sep = ns.getString("sep");
+        Params.Separator separator = Params.Separator.TSV;
+        if(sep.equals("csv")){
+            separator = Params.Separator.CSV;
+        }
+        boolean has_header = ns.getBoolean("has_header");
 
-        FileReader reader = new FileReader(true);
+        FileReader reader = new FileReader(has_header);
         List<String> lines = reader.getFileText(input);
+        String header=null;
+        if(has_header){
+            header = reader.getHeader(input);
+        }
+        Params params = new Params(header,-1,kana_idx,separator,lines );
+
 
         List<String> output = new ArrayList<>();
         Kana2Kanji kk = new Kana2Kanji();
         for(String line:lines) {
             logger.info(line);
-            List<SearchResult> res = kk.run(line, n_best);
+            String kana = params.getKana(line);
+
+            int idx=0;
+            List<SearchResult> res = kk.run(kana, n_best);
             for (SearchResult r : res) {
-                //logger.info(r.toString());
-                output.add(r.toString());
+                output.add(line+",kana;"+kana+";best"+(++idx)+";"+r.toString());
             }
         }
 

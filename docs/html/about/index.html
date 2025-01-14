@@ -1,0 +1,155 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>概要 &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c033477b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=4755f45a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="クイックスタート" href="../quickstart/index.html" />
+    <link rel="prev" title="氏名漢字カナ突合システム" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">概要</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">機能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">氏名漢字カナ突合API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">氏名漢字カナ突合モデル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample/index.html">サンプルプログラム</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">概要</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/about/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>概要<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>本氏名漢字カナ突合システムとは，漢字姓名（外国人の場合にはアルファベット姓名）とその読み仮名であるカタカナ姓名が一致しているかどうかを判定するモデルである。
+一般的に，漢字姓名の読み方は一意に定まらない場合があり，例えば， <code class="docutils literal notranslate"><span class="pre">幸子</span></code> と書いて <code class="docutils literal notranslate"><span class="pre">ユキコ</span></code> と読む場合や， <code class="docutils literal notranslate"><span class="pre">サチコ</span></code> と読む場合など，本人にその読み方を確認しないと，正しい読み方とならない場合がある。</p>
+<p>また同様に，アルファベット姓名においても， <code class="docutils literal notranslate"><span class="pre">adam</span></code> と書いて <code class="docutils literal notranslate"><span class="pre">アダーム</span></code> や <code class="docutils literal notranslate"><span class="pre">アダム</span></code> など，その時々の聞こえ方によって，カタカナ表記が異なる場合も多い。</p>
+<p>銀行口座の名義人などでは，姓名がカタカナ表記やローマ字表記でなされる時には，戸籍や住民票で記載される漢字姓名が，そのカタカナ表記，ローマ字表記と一致してるかどうかの判定が難しい。</p>
+<p>本システムでは，漢字姓名（アルファベット姓名）と，その読み仮名であるカタカナ姓名を入力とし，漢字姓名の読みがカタカナ姓名と一致しているかどうかを判定するAPIとして提供する。
+また，漢字カナ突合システムのコアとなる <a class="reference internal" href="../model/index.html"><span class="doc">氏名漢字カナ突合モデル</span></a> も提供する。</p>
+<section id="id2">
+<h2>機能<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>漢字姓名（外国人の場合にはアルファベット姓名）とその読み仮名であるカタカナ姓名の一致を判定するAPIであるが，本APIは大きく分けて，次の３つの機能がある。</p>
+<ul class="simple">
+<li><p>氏名漢字カナ突合機能</p></li>
+</ul>
+<blockquote>
+<div><p>漢字姓名（アルファベット姓名）とカナ姓名を入力し，一致しているかどうかの判定結果を返す。（<a class="reference internal" href="../api/kanji_kana.html"><span class="doc">詳細</span></a> ）</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>氏名カタカナ推計機能</p></li>
+</ul>
+<blockquote>
+<div><p>漢字姓名（アルファベット姓名）を入力し，カナ姓名の候補一覧を返す。(<a class="reference internal" href="../api/kana.html"><span class="doc">詳細</span></a>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>氏名漢字推計機能</p></li>
+</ul>
+<blockquote>
+<div><p>カナ姓名を入力し，漢字姓名（アルファベット姓名）の候補一覧を返す。（<a class="reference internal" href="../api/kanji.html"><span class="doc">詳細</span></a>）</p>
+</div></blockquote>
+</section>
+<section id="api">
+<h2>氏名漢字カナ突合API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<p>氏名漢字カナ突合APIは， <a class="reference external" href="https://kktg.digital.go.jp">利用者登録</a> を行い，キーを発行し，APIにキーを付与してアクセスすることで利用できる。詳細な利用方法や，仕様については <a class="reference internal" href="../api/index.html"><span class="doc">氏名漢字カナ突合API</span></a> を参照のこと。</p>
+</section>
+<section id="id4">
+<h2>氏名漢字カナ突合モデル<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>Javaのモジュールとして <a class="reference external" href="https://github.com/digital-go-jp/kanjikanaa-model/">Github</a>  にて提供する。仕様等については，<a class="reference internal" href="../model/index.html"><span class="doc">氏名漢字カナ突合モデル</span></a> を参照のこと。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="氏名漢字カナ突合システム" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../quickstart/index.html" class="btn btn-neutral float-right" title="クイックスタート" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -29,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,7 @@ public class FileWriter {
     private final String fileName;
     public FileWriter(String fileName){
         this.fileName = fileName;
+        this.delete();
     }
     public void write(List<String> lines) throws Exception{
         if(this.fileName == null || this.fileName.isEmpty()){
@@ -61,5 +64,12 @@ public class FileWriter {
         bw.close();
     }
 
+    public void delete(){
+        try {
+            Files.delete(Path.of(this.fileName));
+        }catch(Exception e){
+            // do nothing
+        }
+    }
 
 }

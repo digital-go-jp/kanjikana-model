@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>出力仕様 &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c033477b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=4755f45a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample/index.html">サンプルプログラム</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">出力仕様</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/output.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>出力仕様<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>出力フォーマット<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>出力はJSON形式で返却する。文字コードはUTF-8で，漢字姓名，カナ姓名に関しては全角文字で返却する。</p>
+<p>出力は，HTTPステータス200で返すこととし，内部エラーや引数エラーの際には，ステータスコードを返却する。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="mi">99</span><span class="p">,</span>
+<span class="w">           </span><span class="c1">// この部分は機能によって入るものが異なる</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;1.6o&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="id3">
+<h2>出力項目<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>出力の各項目は次のとおり</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>項目</p></th>
+<th class="head"><p>型</p></th>
+<th class="head"><p>最大サイズ</p></th>
+<th class="head"><p>必須※</p></th>
+<th class="head"><p>内容</p></th>
+<th class="head"><p>機能</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>response</p></td>
+<td><p>string</p></td>
+<td><p>4</p></td>
+<td><p>○</p></td>
+<td><p>APIの出力の</p>
+<p>ステータスを返す。</p>
+<p>APエラーはHTTP200</p>
+<p>で返すが，この項目</p>
+<p>の返却値で判断する</p>
+<p>・OK：正常</p>
+<p>・E001：エラー（k</p>
+<p>anjiが設定されてい</p>
+<p>ない，又は長さ０）</p>
+<p>・E002：エラー</p>
+<p>kanaが設定されてい</p>
+<p>ない，又は長さ０）</p>
+<p>・E010：エラー（maxに</p>
+<p>1から10以外の値が</p>
+<p>設定されている。）</p>
+</td>
+<td><p>全て</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>result</p></td>
+<td></td>
+<td></td>
+<td><p>○</p></td>
+<td><p>結果を辞書型で返す</p></td>
+<td><p>全て</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>△</p></td>
+<td><p>モデルの判</p>
+<p>定結果などを返す。</p>
+<p>0〜99の数値</p>
+<p>で判定結果を返す。</p>
+<p>50以上がOKとする。</p>
+<p>50未満がNGとする。</p>
+</td>
+<td><p>氏名漢字カナ突合機能</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>string</p></td>
+<td><p>2</p></td>
+<td><p>△</p></td>
+<td><p>モデルでの結果を返す</p>
+<p>OK；結果が取得できた</p>
+<p>NG；結果が取得できなかった</p>
+</td>
+<td><p>氏名漢字推計機能</p>
+<p>氏名カタカナ推計機能</p>
+</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>kanji</p></td>
+<td><p>string[]</p></td>
+<td></td>
+<td><p>△</p></td>
+<td><p>漢字姓名一覧</p>
+<p>（全角）</p>
+</td>
+<td><p>氏名カタカナ推計機能</p></td>
+<td><p>最大max個返</p>
+<p>却する</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>kana</p></td>
+<td><p>string[]</p></td>
+<td></td>
+<td><p>△</p></td>
+<td><p>カナ姓名一覧</p>
+<p>（全角）</p>
+</td>
+<td><p>氏名カタカナ推計機能</p></td>
+<td><p>最大max個返</p>
+<p>却する</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>porbability</p></td>
+<td><p>string</p></td>
+<td><p>5</p></td>
+<td><p>○</p></td>
+<td><p>バージョン番号</p>
+<p>ex. 1.1o</p>
+<blockquote>
+<div><p>(OSSバージ</p>
+<p>ョンの場合oが付く)</p>
+</div></blockquote>
+</td>
+<td><p>全て</p></td>
+<td><p>メジャーバージョン.</p>
+<blockquote>
+<div><p>マイナーバージョン</p>
+<p>の形式</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

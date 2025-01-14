@@ -30,6 +30,7 @@ import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,35 +38,50 @@ import java.util.List;
  */
 public abstract class AbstStrategy implements StrategyIF{
     private static final Logger logger = LogManager.getLogger(AbstStrategy.class);
-    protected final List<ModelIF> models;
+    protected final List<ModelIF> models = new ArrayList<>(); ;
 
-    protected AbstStrategy(List<ModelIF> models){
-        this.models = models;
+    private static final double EnsembleOkUnderLimit=0.5; // アンサンブルでOKを出したモデルの割合の最小値
+    private final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
+
+    //protected AbstStrategy(List<ModelIF> models){
+    //    this.models = models;
+    //}
+
+    protected void setUnReliableModels(List<ModelIF> models){
+        List<ModelIF> validModels=new ArrayList<>();
+        for(ModelIF model:models){
+            if(model.isValidModel()){
+                validModels.add(model);
+            }
+        }
+        if(!validModels.isEmpty()){
+            this.UnReliableModels.add(validModels);
+        }
+    }
+
+    protected void setReliableModels(List<ModelIF> models){
+        for(ModelIF model:models){
+            if(model.isValidModel()){
+                this.models.add(model);
+            }
+        }
+    }
+
+
+    /**
+     * あまり信頼度が高くないモデルのリスト
+     * @return
+     */
+    protected List<List<ModelIF>> getUnReliableModels(){
+        return this.UnReliableModels;
     }
 
     /**
-     * モデルを順次用いてチェックする
-     * @param modelData 前のモデルで判定した結果を入力する
-     * @param kanji　漢字姓名　「山田　太郎」
-     * @param kana　カタカナ姓名　「ヤマダ　タロウ」
-     * @return チェックで漢字とカナが一致したかどうか
-     * @throws Exception 一般的なエラー
+     * アンサンブルでOKを出したモデルの割合の最小値
+     * @return
      */
-    public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
-        modelData.setTopResult(new ResultEngineParts("","")); // reset
-        for (ModelIF model : models) {
-            modelData = model.run(kanji,kana, modelData);
-
-            logger.debug(model.getClass()+",kanji="+kanji+",isOK="+modelData.isOk());
-
-            if (modelData.isOk()) {
-                modelData.setModel(model.getClass());
-                return true;
-            }
-        }
-        if (modelData.isOk()) {
-            return true;
-        }
-        return false;
+    protected double getEnsembleOkUnderLimit(){
+        return EnsembleOkUnderLimit;
     }
+
 }

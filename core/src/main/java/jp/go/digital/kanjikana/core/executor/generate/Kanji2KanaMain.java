@@ -24,9 +24,11 @@
 
 package jp.go.digital.kanjikana.core.executor.generate;
 
+import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.utils.FileReader;
 import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
 import jp.go.digital.kanjikana.core.utils.FileWriter;
+import jp.go.digital.kanjikana.core.utils.KanjiKanaUtil;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.Namespace;
@@ -66,27 +68,49 @@ public class Kanji2KanaMain {
                 .defaultHelp(true)
                 .description("漢字からカナを推測");
 
-        parser.addArgument("--infile");
+        parser.addArgument("--infile").setDefault("input.txt").help("入力するファイル名");
         parser.addArgument("--n_best").setDefault(5).help("出力数");
-        parser.addArgument("--outfile");
+        parser.addArgument("--kanji_idx").setDefault(1).help("漢字，アルファベット表記のフィールド番号 (先頭を0としたときの)");
+        parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
+        parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
+        parser.addArgument("--outfile").setDefault("output.txt").help("出力ファイル名");
 
         Namespace ns = parser.parseArgs(args);
 
         String input = ns.getString("infile");
         String outfile = ns.getString("outfile");
         int n_best= Integer.parseInt(ns.getString("n_best"));
+        int kanji_idx= Integer.parseInt(ns.getString("kanji_idx"));
+        String sep = ns.getString("sep");
+        Params.Separator separator = Params.Separator.TSV;
+        if(sep.equals("csv")){
+            separator = Params.Separator.CSV;
+        }
+        boolean has_header = ns.getBoolean("has_header");
 
-        FileReader reader = new FileReader(true);
+        FileReader reader = new FileReader(has_header);
         List<String> lines = reader.getFileText(input);
+        String header=null;
+        if(has_header){
+            header = reader.getHeader(input);
+        }
+        Params params = new Params(header,kanji_idx,-1,separator,lines );
 
         List<String> output = new ArrayList<>();
         Kanji2Kana kk = new Kanji2Kana();
         for(String line:lines) {
             logger.info(line);
-            List<SearchResult> res = kk.run(line, n_best);
-            for (SearchResult r : res) {
-                //logger.info(r.toString());
-                output.add(r.toString());
+            String kanjis = params.getKanji(line);
+            List<String> kanji_items = KanjiKanaUtil.kanji_split(kanjis); // 複数名前があるときはそれぞれ入っている。旧姓名と現姓名などが２つ入るイメージ　['日本　花子','東京　花子']
+
+            int jdx=0;
+            for(String kanji:kanji_items) {
+                jdx++;
+                List<SearchResult> res = kk.run(kanji, n_best);
+                int idx = 0;
+                for (SearchResult r : res) {
+                    output.add(line+",kanji;" + kanjis + ";kanji"+jdx+";"+kanji+";best" + (++idx) + ";" + r.toString());
+                }
             }
         }
 

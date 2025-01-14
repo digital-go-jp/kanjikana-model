@@ -4,10 +4,10 @@
 
 
     <groupId>jp.go.digital.kanjikana</groupId>
-    <artifactId>kanjikana_core_oss</artifactId>
-    <version>1.6o</version>
+    <artifactId>shimei_kanjikana_core_oss</artifactId>
+    <version>1.0</version>
 
-    <description>Kanji Kana Core OSS</description>
+    <description>Shimei Kanji Kana Core OSS</description>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

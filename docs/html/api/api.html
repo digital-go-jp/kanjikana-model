@@ -1,0 +1,929 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>外部IF仕様書 &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c033477b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=4755f45a"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">外部IF仕様書</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="if">
+<h1>外部IF仕様書<a class="headerlink" href="#if" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>概要</p></li>
+</ol>
+<p>　　本文書は，漢字カナ突合モデルの外部IF仕様を記述する。</p>
+<ol class="arabic simple" start="2">
+<li><p>対象部分</p></li>
+</ol>
+<p>　　本外部IF仕様が対象となる部分を，図１に示す。</p>
+<p><a class="reference internal" href="api/media/image1.png"><img alt="ダイアグラム 中程度の精度で自動的に生成された説明" src="api/media/image1.png" style="width: 5.90556in; height: 3.32361in;" /></a></p>
+<p>対象となる部分</p>
+<p>図１　外部IF仕様の対象部分</p>
+<ol class="arabic simple" start="3">
+<li><p>モデルについて</p></li>
+</ol>
+<p>　　モデルは，AWSのECR上に，Dockerイメージで構築し，ECRにデプロイした形で提供する。このイメージは，ポート8080でアクセス可能な，REST形式のAPIであり，必要に応じて，ECSなどにデプロイし利用すること。</p>
+<ol class="arabic simple" start="4">
+<li><p>機能について</p></li>
+</ol>
+<p>モデルでの機能一覧を示す</p>
+<p>表１　機能一覧</p>
+<ol class="arabic">
+<li><p>入力仕様</p>
+<p>　　HTTPアクセスとし，以下の例では，localhost:8080に対するURLで記述する。実際には，AWSのECRでイメージとして提供するので，受託者にて，適宜ポートを変換するなどを行うこと。</p>
+<p>また，モデル側ではURLでバージョンの区別を行うことはしない。モデルのDockerイメージ単位でバージョンを変更することとする。そのため，バージョンが変更となる際には，本漢字カナ突合モデルの入力URLや出力項目は変更となる可能性があることに留意すること。</p>
+<p>表２ 入力パラメタ一覧</p>
+</li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>内容</p></th>
+<th class="head"><p>パ
+ラ
+メ
+タ
+名</p></th>
+<th class="head"><p>型</p></th>
+<th class="head"><p>最
+大サ
+イズ</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>漢
+字姓名</p></td>
+<td><p>ka
+nji</p></td>
+<td><p>string</p></td>
+<td><p>100</p></td>
+<td></td>
+<td><p>全角
+漢字，カナ，アルファベット</p></td>
+</tr>
+<tr class="row-odd"><td><p>カ
+ナ姓名</p></td>
+<td><p>k
+ana</p></td>
+<td><p>string</p></td>
+<td><p>100</p></td>
+<td></td>
+<td><p>全角
+漢字，カナ，アルファベット</p></td>
+</tr>
+<tr class="row-even"><td><p>最大
+返却数</p></td>
+<td><p>max</p></td>
+<td><p>int</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td></td>
+<td><p>最大
+返却数，１以上，10以下の数
+字を入力する。デフォルト５</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="7">
+<li><p>出力仕様</p></li>
+</ol>
+<table class="docutils align-default">
+<tbody>
+</tbody>
+</table>
+<p>図２　出力の例</p>
+<p>出力の項目は今後変更の可能性があるが，現地点での想定は次の通りである。</p>
+<p>※△はエラー以外の時には機能IDに合わせて必須となる。</p>
+<ol class="arabic" start="8">
+<li><p>外部IF一覧</p>
+<p>　本モデルで利用する，外部IFを表１に示す。機能IDについては，「別紙　要件定義書（機能）」を確認すること。</p>
+<p>表４　漢字カナ突合モデルが利用する外部IF一覧</p>
+</li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>モデル
+外部IF
+ID</p></th>
+<th class="head"><p>機
+能ID</p></th>
+<th class="head"><p>Dockerイメー
+ジでのURLパス</p></th>
+<th class="head"><p>概要</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M101</p></td>
+<td><p>A101</p></td>
+<td><p>/simple</p></td>
+<td><p>漢字
+姓名とカナ姓
+名，APIキーを
+入力し一致か
+どうか判定（
+簡易モデル）</p></td>
+<td><p>簡易チ
+ェックを行うIF，
+時間がかからない</p></td>
+</tr>
+<tr class="row-odd"><td><p>M102</p></td>
+<td><p>A101</p></td>
+<td><p>/detail</p></td>
+<td><p>漢字姓
+名とカナ姓名
+，APIキーを入
+力し一致かど
+うかを判定（
+詳細モデル）</p></td>
+<td><p>AIなどを使用
+し，詳細チェック
+を行うIF，時間が
+かかる可能性あり</p></td>
+</tr>
+<tr class="row-even"><td><p>M201</p></td>
+<td><p>A102</p></td>
+<td><p>/kana</p></td>
+<td><p>漢
+字姓名と最大
+返却個数，AP
+Iキーを入力し
+，カナ姓名の
+一覧を返却（
+簡易モデル）</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>M301</p></td>
+<td><p>A103</p></td>
+<td><p>/kanji</p></td>
+<td><p>カ
+ナ姓名と最大
+返却個数，AP
+Iキーを入力し
+，漢字姓名の
+一覧を返却（
+簡易モデル）</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>M901</p></td>
+<td><p>A201</p></td>
+<td><p>/health</p></td>
+<td><p>ヘルス
+チェック用URL</p></td>
+<td><p>HTTP２００
+のとき　OKを返す</p></td>
+</tr>
+<tr class="row-odd"><td><p>M902</p></td>
+<td><p>A202</p></td>
+<td><p>/version</p></td>
+<td><p>バー
+ジョン確認URL</p></td>
+<td><p>漢字カナ突合
+モデルのバージョ
+ン番号を表示する</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>M101 漢字姓名とカナ姓名突合　簡易モデル</p>
+<p>　　漢字姓名とカナ姓名を入力し結果をJSON形式で取得。簡易モデルのため，計算時間は短くレスポンスを優先するが，突合結果の精度が落ちる可能性がある。</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/simple">http://localhost:8080/simple</a>?kanji=山田　太郎&amp;kana=ヤマダ　タロウ&amp;max=10</p>
+</li>
+</ol>
+<ul class="simple">
+<li><p>入力パラメタ</p></li>
+</ul>
+<ol class="arabic">
+<li><p>kanji：漢字姓名を入力。3.入力データ仕様を参照のこと</p></li>
+<li><p>kana：全角カタカナで姓名を入力。姓と名の間は全角空白</p>
+<p>　　　　　姓名ではなく，姓のみ，名のみでも突合は可能。その際には，全角空白を使用せず，姓のみもしくは名のみをそれぞれ，kanjiとkanaの入力とすること。</p>
+<p>　　姓のみ</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/simple">http://localhost:8080/simple</a>?kanji=山田&amp;kana=ヤマダ</p>
+<p>　　名のみ</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/simple">http://localhost:8080/simple</a>?kanji=太郎&amp;kana=タロウ</p>
+</li>
+</ol>
+<ul class="simple">
+<li><p>　出力（仮）</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;, // ８　参照</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;:90</p>
+<p>},</p>
+<p>&quot;version&quot;:&quot;1.2&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: 50以上，漢字姓名とカナ姓名が一致</p>
+<p>　　　　　　　　50未満，漢字姓名とカナ姓名が一致していない</p>
+</li>
+<li><p>version: バージョン番号</p>
+<ol class="arabic">
+<li><p>M102 漢字姓名とカナ姓名突合 詳細モデル</p>
+<p>　　漢字姓名とカナ姓名を入力し結果をJSON形式で取得。詳細モデルであり，計算時間が簡易モデルよりもかかる可能性がある。</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/detail">http://localhost:8080/detail</a>?kanji=山田　太郎&amp;kana=ヤマダ　タロウ</p>
+</li>
+</ol>
+</li>
+</ol>
+<ul class="simple">
+<li><p>入力パラメタ</p></li>
+</ul>
+<ol class="arabic">
+<li><p>kanji：漢字姓名を入力。3.入力データ仕様を参照のこと</p></li>
+<li><p>kana：全角カタカナで姓名を入力。姓と名の間は全角空白</p>
+<p>　　　　　　姓名ではなく，姓のみ，名のみでも突合は可能。その際には，全角空白を使用せず，姓のみもしくは名のみをそれぞれ，kanjiとkanaの入力とすること。</p>
+<p>　　姓のみ</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/detail">http://localhost:8080/detail</a>?kanji=山田&amp;kana=ヤマダ</p>
+<p>　　名のみ</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/detail">http://localhost:8080/detail</a>?kanji=太郎&amp;kana=タロウ</p>
+</li>
+</ol>
+<ul class="simple">
+<li><p>出力（仮）</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;:90</p>
+<p>}</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: 50以上，漢字姓名とカナ姓名が一致</p>
+<p>　　　　　　　　50未満，漢字姓名とカナ姓名が一致していない</p>
+</li>
+<li><p>version: バージョン番号</p>
+<ol class="arabic">
+<li><p>M201 漢字姓名からカナ姓名取得</p>
+<p>　　漢字姓名と最大カナ姓名返却個数を入力し，カナ姓名の一覧の結果をJSONで取得。最大返却個数は省略可能であり，システムデフォルト値の最大個数５で返す。</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/kana">http://localhost:8080/kana</a>?kanji=山田　太郎&amp;max=10</p>
+</li>
+</ol>
+</li>
+</ol>
+<ul class="simple">
+<li><p>入力パラメタ</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>kanji：漢字姓名を入力。3.入力データ仕様を参照のこと。姓もしくは名のみでも可</p></li>
+<li><p>max：最大カナ姓名返却個数。1から10の整数を指定する。</p></li>
+</ol>
+<ul class="simple">
+<li><p>出力（仮）</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot; response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;:&quot;OK&quot;,</p>
+<p>&quot;probability&quot;: [</p>
+<p>0.9996961763137937,</p>
+<p>4.018219707722746e-10,</p>
+<p>3.023663572864595e-12,</p>
+<p>7.999743825705485e-13,</p>
+<p>1.6605549313823867e-13</p>
+<p>],</p>
+<p>&quot;kana&quot;: [</p>
+<p>&quot;ヤマダタロウ&quot;,</p>
+<p>&quot;ヤマタタロウ&quot;,</p>
+<p>&quot;ヤマダイタロウ&quot;,</p>
+<p>&quot;ヤマダタロ&quot;,</p>
+<p>&quot;ヤマダダロウ&quot;</p>
+<p>],</p>
+<p>},</p>
+<p>&quot;version&quot;:1.2</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: OK，漢字姓名からカナ姓名が得られた。</p>
+<p>　　　　　　　　NG，漢字姓名からカナ姓名が得られなかった。　kanaは0の配列となる</p>
+</li>
+<li><p>kana:
+モデルから取得したカナ姓名一覧。最大max個，ない時（statusがNGの時）は０の配列</p></li>
+<li><p>probability:
+モデルから取得したカナ姓名の確率。kanaの配列の順序と整合している。最大max個，ない時（statusがNGの時）は０の配列</p></li>
+<li><p>version: バージョン番号</p>
+<ol class="arabic">
+<li><p>M301 カナ姓名から漢字姓名を取得</p>
+<p>　　カナ姓名と最大漢字姓名返却個数を入力し，漢字姓名の一覧の結果をJSONで取得。最大返却個数は省略可能であり，システムデフォルト値の最大個数５で返す。</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/kanji">http://localhost:8080/kanji</a>?kana=ヤマダ　タロウ&amp;max=10</p>
+</li>
+</ol>
+</li>
+</ol>
+<ul class="simple">
+<li><p>入力パラメタ</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>kana：全角カタカナで姓名を入力。姓と名の間は全角空白。姓もしくは名のみでも可</p></li>
+<li><p>max：最大漢字姓名返却個数。1から10の整数を指定する。</p></li>
+</ol>
+<ul class="simple">
+<li><p>出力（仮）</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;:&quot;OK&quot;，</p>
+<p>&quot;kanji&quot;: [</p>
+<p>&quot;山田太郎&quot;,</p>
+<p>&quot;山田多郎&quot;,</p>
+<p>&quot;山田太朗&quot;,</p>
+<p>&quot;山田大郎&quot;,</p>
+<p>&quot;山田多朗&quot;</p>
+<p>],</p>
+<p>&quot;probability&quot;: [</p>
+<p>0.8000104567944917,</p>
+<p>0.0009880204100894683,</p>
+<p>0.00040353500352225465,</p>
+<p>0.0000031542272610820113,</p>
+<p>0.0000010259760547497366</p>
+<p>]</p>
+<p>}</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: OK，カナ姓名から漢字姓名が得られた。</p>
+<p>　　　　　　　　NG，カナ姓名から漢字姓名が得られなかった。　kanjiは0の配列となる</p>
+</li>
+<li><p>kanji:
+モデルから取得した漢字姓名一覧。最大max個，ない時（statusがNGの時）は０の配列</p></li>
+<li><p>probability:
+モデルから取得したカナ姓名の確率。kanjiの配列の順序と整合している。最大max個，ない時（statusがNGの時）は０の配列</p></li>
+<li><p>version: バージョン番号</p>
+<ol class="arabic">
+<li><p>M901 ヘルスチェック用URL</p>
+<p>　　アクセスすると，日付を返却する。</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/health">http://localhost:8080/health</a></p>
+</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><p>入力パラメタ</p>
+<p>　なし</p>
+</li>
+<li><p>出力（仮）</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;: &quot;OK&quot;,</p>
+<p>&quot;date&quot;: &quot;2024-03-01 10:00:00.000 UTC&quot;</p>
+<p>},</p>
+<p>&quot;version&quot;:&quot;1.2&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: OK，常にOK</p></li>
+<li><p>date: システムで得られた日付, yyyy-MM-dd HH:MM:SSS z　UTC時間が返る</p></li>
+<li><p>version: 漢字カナ突合モデルのバージョン番号</p>
+<ol class="arabic">
+<li><p>M902 バージョン確認URL</p>
+<p>　　アクセスすると，本漢字カナ突合モデルのバージョン番号を返す</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/version">http://localhost:8080/version</a></p>
+</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><p>入力パラメタ</p>
+<p>　なし</p>
+</li>
+<li><p>出力</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;:{</p>
+<p>&quot;status&quot;: &quot;OK&quot;</p>
+<p>},</p>
+<p>&quot;version&quot;: &quot;1.2&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>status: OK，常にOK</p></li>
+<li><p>version: モデルのバージョン番号</p></li>
+</ol>
+<ol class="arabic" start="9">
+<li><p>レスポンス仕様</p>
+<p>　内部エラーに関しては，全て，漢字カナ突合モデル側でキャッチして，HTTPステータスは200で返すこととする。</p>
+<p>出力の&quot;response&quot;項目にコードを返却する</p>
+</li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>レス
+ポンスコード</p></th>
+<th class="head"><p>処理</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>OK</p></td>
+<td><p>正常</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>E001</p></td>
+<td><p>エラー</p></td>
+<td><p>kanjiが設定されていない，又は長さ０</p></td>
+</tr>
+<tr class="row-even"><td><p>E002</p></td>
+<td><p>エラー</p></td>
+<td><p>kanaが設定されていない，又は長さ０</p></td>
+</tr>
+<tr class="row-odd"><td><p>E010</p></td>
+<td><p>エラー</p></td>
+<td><p>maxに1から10以外の値が設定されている。</p></td>
+</tr>
+<tr class="row-even"><td><p>E100</p></td>
+<td><p>エラー</p></td>
+<td><p>内部エラー</p></td>
+</tr>
+<tr class="row-odd"><td><p>E404</p></td>
+<td><p>エラー</p></td>
+<td><p>HTTP 404エラー</p></td>
+</tr>
+<tr class="row-even"><td><p>E500</p></td>
+<td><p>エラー</p></td>
+<td><p>HTTP 500エラー</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p>E100エラー</p>
+<p>一般的な内部エラー。下記URLはデバッグ用に作成</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/error">http://localhost:8080/error</a></p>
+</li>
+</ol>
+<ul>
+<li><p>入力パラメタ</p>
+<p>　なし</p>
+</li>
+<li><p>出力</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;E100&quot;,</p>
+<p>&quot;result&quot;: {},</p>
+<p>&quot;version&quot;: &quot;0.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>version: モデルのバージョン番号</p></li>
+</ol>
+<ol class="arabic" start="2">
+<li><p>E404エラー</p>
+<p>存在しないURLにアクセスした場合</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/aaa">http://localhost:8080/aaa</a></p>
+</li>
+</ol>
+<ul>
+<li><p>入力パラメタ</p>
+<p>　なし</p>
+</li>
+<li><p>出力</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;E404&quot;,</p>
+<p>&quot;result&quot;: {},</p>
+<p>&quot;version&quot;: &quot;0.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>version: モデルのバージョン番号</p></li>
+</ol>
+<ol class="arabic" start="3">
+<li><p>E５00エラー</p>
+<p>内部でExceptionが発生する場合。下記URLはデバッグ用に内部的にExceptionを発生させている</p>
+<p>　　例　<a class="reference external" href="http://localhost:8080/debug">http://localhost:8080/debug</a></p>
+</li>
+</ol>
+<ul>
+<li><p>入力パラメタ</p>
+<p>　なし</p>
+</li>
+<li><p>出力</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;E500&quot;,</p>
+<p>&quot;result&quot;: {},</p>
+<p>&quot;version&quot;: &quot;0.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>response：レスポンス仕様参照</p></li>
+<li><p>version: モデルのバージョン番号</p></li>
+</ul>
+<ol class="arabic simple" start="10">
+<li><p>非機能要件</p></li>
+</ol>
+<ol class="arabic">
+<li><p>動作環境について</p>
+<p>　漢字カナ突合モデルは，下記条件下での動作を検証している。なお，Docker内で動くJavaモジュールには，４GBのメモリを割り当てている。</p>
+</li>
+</ol>
+<ul class="simple">
+<li><p>ハードウエア</p>
+<ul>
+<li><p>CPU数　16個</p></li>
+<li><p>メモリ　　64GB</p></li>
+<li></li>
+</ul>
+</li>
+<li><p>ソフトウエア</p>
+<ul>
+<li><p>RedHat EL8</p></li>
+<li></li>
+<li><p>podman 4.9.4-rhel　（Dockerモジュール)</p></li>
+</ul>
+</li>
+<li><ul>
+<li></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic" start="2">
+<li><p>同時実行について</p>
+<p>　Docker内で動作するWebアプリケーションのミドルウエアとして，SpringBoot3.2.2を使用しており，また，SpringBootで組み込まれているTomcat上で動作している。デフォルト設定では，最大２００スレッド，同時接続数は10000である。</p>
+<p>以上</p>
+</li>
+</ol>
+<ol class="arabic simple" start="11">
+<li><p>付録　開発者向け情報</p></li>
+</ol>
+<p>　M101 漢字姓名とカナ姓名突合　簡易モデル及び，M102
+漢字姓名とカナ姓名突合　簡易モデルにおいては，デバッグモードが使えるようにしている。</p>
+<p>URLパラメタにdebug=1
+（値はなんでも良い）を付与することで，モデルの判定結果をデバッグで表示可能となる。</p>
+<p>　出力結果に　notesというキーにデバッグ結果が出力される。</p>
+<ul>
+<li><p>notesのフォーマット</p>
+<p>{簡易モデルでの結果} [&lt;辞書モデルでの結果&gt; &lt;統計モデルでの結果&gt;
+&lt;AIモデルでの結果&gt;]</p>
+</li>
+</ul>
+<ol class="arabic simple">
+<li><p>簡易モデル</p></li>
+</ol>
+<p>　オープンソース辞書及びWebクロール辞書を用いて，漢字姓名とカナ姓名をそれぞれ，姓と名ごとにそれぞれが辞書に入っているかどうかでチェックする。このとき，漢字で異体字がある場合には，異体字辞書で置き換えてチェックする。</p>
+<p>　また，外国人名は外国人モデル [1]_を利用して，単語単位でチェックする。</p>
+<ol class="arabic simple" start="2">
+<li><p>詳細モデル</p></li>
+</ol>
+<p>　詳細モデルは，簡易モデルを実行したのちに，一致しなかった際には，下記３つのモデルを実行し，漢字とカナが一致しているかどうかをモデルの出力結果の多数決で決定する。</p>
+<ul>
+<li><p>辞書モデル</p>
+<p>　オープンソース辞書，Webクロール辞書及び公金受取口座から作成した辞書を用いて，漢字姓名とカナ姓名をそれぞれ，一文字づつ，それぞれが辞書に入っているか確認する。このとき，漢字で異体字がある場合には，異体字辞書で置き換えてチェックする。（例　漢字姓名；山田　花子，カナ姓名；ヤマダナナコ，カナが姓名に分かれていなくてもチェックでOKとなる）</p>
+<p>　外国人モデルにおいても外国人モデルを用いて，文字単位でチェックする。</p>
+</li>
+<li><p>統計モデル</p>
+<p>　公金受取口座に登録されている，単語単位での漢字とカナのペアの辞書を用いて，漢字姓名とカナ姓名をそれぞれ，姓と名ごとにそれぞれが辞書に入っているかどうかでチェックする。</p>
+</li>
+<li><p>AIモデル</p>
+<p>　オープンソース辞書及びWebクロール辞書を用いて，transformer＋Seq2Seqモデルで作成したAIモデルを用いて，漢字姓名の読みをAIモデルで推計した最大５個の結果に，カナ姓名が入っているかどうかをチェックする。</p>
+</li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>出力例</p></li>
+</ol>
+<ul>
+<li><p>簡易モデルで正しい値を入れた場合</p>
+<p>例　<a class="reference external" href="http://localhost:8080/simple">http://localhost:8080/simple</a>?kanji=山田　花子&amp;kana=ヤマダ　ハナコ&amp;debug=1</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;: {</p>
+<p>&quot;notes&quot;:
+&quot;{true;山田;ヤマダ;WordEngine;DictCrawl;0:/yurai/;null}{true;花
+子;ハナコ;WordEngine;DictCrawl;0:/hapiname/kirakira/namem3q/;null}&quot;,</p>
+<p>&quot;status&quot;: 90</p>
+<p>},</p>
+<p>&quot;version&quot;: &quot;1.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>{true;山田;ヤマダ;WordEngine;DictCrawl;0:/yurai/;null}</p>
+<p>true： 判定結果</p>
+<p>山田: 入力した漢字姓</p>
+<p>ヤマダ: 入力したカナ姓</p>
+<p>WordEngine: 使用したモデルのクラス名</p>
+<p>DictCrawl: 使用した辞書のクラス名</p>
+<p>0: 必ず0</p>
+<p>/yurai/: 一致と判定した辞書の種類</p>
+<p>null: 必ずnull</p>
+<ul>
+<li><p>簡易モデルで間違った値を入れた場合（カナがスペースで区切られていない）</p>
+<p>例　<a class="reference external" href="http://localhost:8080/detail">http://localhost:8080/detail</a>?kanji=山田　花子&amp;kana=ヤマダハナコ&amp;debug=1</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;: {</p>
+<p>&quot;notes&quot;: &quot;{false;山田　花子;ヤマダハナコ;WordEngine;;0:/;}&quot;,</p>
+<p>&quot;status&quot;: 0</p>
+<p>},</p>
+<p>&quot;version&quot;: &quot;1.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>{false;山田　花子;ヤマダハナコ;WordEngine;;0:/;}</p>
+<p>false： 判定結果</p>
+<p>山田　花子: 入力した漢字姓</p>
+<p>ヤマダハナコ: 入力したカナ姓</p>
+<p>WordEngine: 使用したモデルのクラス名</p>
+<ul>
+<li><p>詳細モデルで正しい値を入れた場合（簡易モデルでNGの場合）</p>
+<p>例　<a class="reference external" href="http://localhost:8080/detail">http://localhost:8080/detail</a>?kanji=山田　花子&amp;kana=ヤマダハナコ&amp;debug=1</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{</p>
+<p>&quot;response&quot;: &quot;OK&quot;,</p>
+<p>&quot;result&quot;: {</p>
+<p>&quot;notes&quot;:
+&quot;{false;山田　花子;ヤマダハナコ;Wo
+rdEngine;;0:/;}[&lt;|DictCharModel|{true;山田;ヤマダ;CharEngine;DictSei
+mei;0:/digitalD/digitalN/;null}{true;花子;ハナコ;CharEngine;DictSeime
+i;0:/digitalD/digitalN/;null}&gt;&lt;|IDictStatisticsModel|{false;山田　花
+子;ヤマダハナコ;WordEngine;;0:/;}&gt;&lt;|AiCharModel|{true;山田花子;ヤマ
+ダハナコ;AiCharEngine;;0:/;rank:0;Probability:0.9989085951811518}&gt;]&quot;,</p>
+<p>&quot;status&quot;: 70</p>
+<p>},</p>
+<p>&quot;version&quot;: &quot;1.1&quot;</p>
+<p>}</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<p>{false;山田　花子;ヤマダハナコ;WordEngine;;0:/;}　　　簡易モデルの結果</p>
+<p>false： 判定結果</p>
+<p>山田　花子: 入力した漢字姓</p>
+<p>ヤマダハナコ: 入力したカナ姓</p>
+<p>WordEngine: 使用したモデルのクラス名</p>
+<p>&lt;|DictCharModel|{true;山田;ヤマダ;CharEngine;DictSeimei;0:/digitalD/digitalN/;null}{true;花子;ハナコ;CharEngine;DictSeimei;0:/digitalD/digitalN/;null}&gt;　辞書モデル</p>
+<p>{true;山田;ヤマダ;CharEngine;DictSeimei;0:/digitalD/digitalN/;null}</p>
+<p>true: 判定結果</p>
+<p>山田: 入力した漢字姓</p>
+<p>ヤマダ: 入力したカナ姓</p>
+<p>CharEngine: 使用したモデルのクラス名</p>
+<p>DictSeimei: 使用した辞書のクラス名</p>
+<p>0: 必ず0</p>
+<p>/digitalD/digitalN/: 一致と判定した辞書の種類</p>
+<p>null: 必ずnull</p>
+<p>{true;花子;ハナコ;CharEngine;DictSeimei;0:/digitalD/digitalN/;null}</p>
+<p>true: 判定結果</p>
+<p>花子: 入力した漢字姓</p>
+<p>ハナコ: 入力したカナ姓</p>
+<p>CharEngine: 使用したモデルのクラス名</p>
+<p>DictSeimei: 使用した辞書のクラス名</p>
+<p>0: 必ず0</p>
+<p>/digitalD/digitalN/: 一致と判定した辞書の種類</p>
+<p>null: 必ずnull</p>
+<p>&lt;|IDictStatisticsModel|{false;山田　花子;ヤマダハナコ;WordEngine;;0:/;}&gt;　統計モデル</p>
+<p>false： 判定結果</p>
+<p>山田　花子: 入力した漢字姓</p>
+<p>ヤマダハナコ: 入力したカナ姓</p>
+<p>WordEngine: 使用したモデルのクラス名</p>
+<p>&lt;|AiCharModel|{true;山田花子;ヤマダハナコ;AiCharEngine;;0:/;rank:0;Probability:0.9989085951811518}&gt;</p>
+<p>true: 判定結果</p>
+<p>山田花子: 入力した漢字姓</p>
+<p>ヤマダハナコ: 入力したカナ姓</p>
+<p>AiCharEngine: 使用したモデルのクラス名</p>
+<p>0: 必ず0</p>
+<p>rank:0
+AIモデルが推測で出力した順位０−４，０が最も確率が高く推測されたもの</p>
+<p>Probability: 0.998
+AIモデルが推測で出力した際の確率　０から１の値をとり１が最も良い</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja">佐藤 理史. 2020 東京オリンピック参加者名簿の翻訳. 自然言語処理,
+Vol.30, No.2, pp748-772,
+2023.</a></p>
+</aside>
+</aside>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

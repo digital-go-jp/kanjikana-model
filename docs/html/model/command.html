@@ -1,0 +1,899 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>目次 &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c033477b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=4755f45a"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample/index.html">サンプルプログラム</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">目次</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/model/command.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p><strong>コマンドラインIF仕様書</strong></p>
+<p><strong>漢字カナ突合モデル</strong></p>
+<p><strong>作成日2024年10月30日</strong></p>
+<p>デジタル庁</p>
+<section id="id1">
+<h1>目次<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="#_Toc179469965">１ 概要</a> <a class="reference external" href="#_Toc179469965">4</a></p>
+<p><a class="reference external" href="#_Toc179469966">２ 仕様</a> <a class="reference external" href="#_Toc179469966">4</a></p>
+<p><a class="reference external" href="#_Toc172730094">３ 機能一覧</a> <a class="reference external" href="#_Toc172730094">4</a></p>
+<p><a class="reference external" href="#_Toc172731076">４ 入力ファイル仕様</a> <a class="reference external" href="#_Toc172731076">5</a></p>
+<p><a class="reference external" href="#_Toc179539297">(1) A101漢字姓名とカナ姓名突合用</a>
+<a class="reference external" href="#_Toc179539297">5</a></p>
+<p><a class="reference external" href="#_Toc179539298">(2) A102漢字姓名からカナ姓名推計用</a>
+<a class="reference external" href="#_Toc179539298">5</a></p>
+<p><a class="reference external" href="#_Toc179539299">(3) A103カナ姓名から漢字姓名推用</a>
+<a class="reference external" href="#_Toc179539299">5</a></p>
+<p><a class="reference external" href="#_Toc179539300">５ 実行環境</a> <a class="reference external" href="#_Toc179539300">6</a></p>
+<p><a class="reference external" href="#_Toc179539301">６ コマンドライン仕様</a> <a class="reference external" href="#_Toc179539301">7</a></p>
+<p><a class="reference external" href="#_Toc179539302">(1) A101漢字姓名とカナ姓名突合</a>
+<a class="reference external" href="#_Toc179539302">7</a></p>
+<p><a class="reference external" href="#_Toc179539303">(2) A102漢字姓名からカナ姓名推計</a>
+<a class="reference external" href="#_Toc179539303">14</a></p>
+<p><a class="reference external" href="#_Toc179539304">(3) A103カナ姓名から漢字姓名推計</a>
+<a class="reference external" href="#_Toc179539304">15</a></p>
+<ol class="arabic simple">
+<li><p>概要</p></li>
+</ol>
+<p>　　本文書は，漢字カナ突合モデルのコマンドラインIF仕様を記述する。提供するコマンドラインインターフェースは，Docker上で実行されるため，Dockerが動く環境で実行する必要がある。図１に処理のイメージを記す。</p>
+<p><a class="reference internal" href="model/media/image1.png"><img alt="時計, 記号 が含まれている画像 自動的に生成された説明" src="model/media/image1.png" style="width: 3.45155in; height: 1.89753in;" /></a></p>
+<p>図１　処理のイメージ</p>
+<ol class="arabic simple" start="2">
+<li><p>仕様</p></li>
+</ol>
+<p>　　本コマンドラインIFは，一度に大量の漢字姓名とカナ姓名の一致判定や，漢字からカナの推計，カナから漢字の推計を処理可能とするために，バッチ処理のインターフェースを提供する。入力は，CSVもしくはTSV形式のファイルとし，出力結果をファイルに出力する。</p>
+<p>また，大量の処理を行うことを考慮し，CPU数に合わせてスレッド処理による並列処理を行うことで，計算時間の短縮化を図っている。</p>
+<ol class="arabic simple" start="3">
+<li><p>機能一覧</p></li>
+</ol>
+<p>本コマンドラインでの機能一覧を示す</p>
+<p>表１　機能一覧</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>機能ID</p></th>
+<th class="head"><p>機能名</p></th>
+<th class="head"><p>概要</p></th>
+<th class="head"><p>入力データ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A101</p></td>
+<td><p>漢字姓名
+とカナ姓名突合</p></td>
+<td><p>漢字姓名
+とカナ姓名を入力し，漢
+字姓名とカナ姓名が一致
+するかどうかを返却する</p></td>
+<td><p>漢字姓名</p>
+<p>カナ姓名</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>A102</p></td>
+<td><p>漢字姓名か
+らカナ姓名推計</p></td>
+<td><p>漢字姓名と最大返却
+個数を入力し，漢字姓名
+と一致するカナ姓名を，
+システムが算出する適合
+度が高い順に最大返却個
+数を上限として返却する</p></td>
+<td><p>漢字姓名</p>
+<p>最大返却個数</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>A103</p></td>
+<td><p>カナ姓名か
+ら漢字姓名推計</p></td>
+<td><p>カナ姓名と最大返却
+個数を入力し，カナ姓名
+と一致する漢字姓名を，
+システムが算出する適合
+度が高い順に最大返却個
+数を上限として返却する</p></td>
+<td><p>カナ姓名</p>
+<p>最大返却個数</p>
+</td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li><p>入力ファイル仕様</p></li>
+</ol>
+<p>　コマンドラインで使用する，入力ファイルは，CSVもしくはTSV形式とし，UTF-8形式（BOMなし）とする。１行ごとに入力データを記載する。また，ファイルに入力する漢字姓名，カナ姓名は全角文字とし，姓と名の間は全角スペースで区切られているものとする。入力ファイルの最大行数は特に規定しない。</p>
+<ol class="arabic simple">
+<li><p>A101漢字姓名とカナ姓名突合用</p></li>
+</ol>
+<p>漢字姓名とカナ姓名を含むCSVもしくはTSV形式とする。漢字姓名とカナ姓名はCSV
+/TSVファイルのどの列に配置されていても良い。また，漢字姓名，可な声明以外の項目の列が存在していても良い。</p>
+<p>漢字カナ突合モデルに入力する，漢字姓名のデータフォーマットについては，「別紙　漢字カナ突合モデル　外部IF定義書」の「漢字姓名カナ姓名データ仕様」を参照のこと。</p>
+<p>例　CSV形式で，１列目と３列目に漢字姓名，カナ姓名がある場合</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>山田　太郎,2001/12/1,ヤマダ　タロウ,男</p>
+<p>田中［東京］　花子,1999/1/2,トウキョウ　ハナ,女</p>
+<p>ＢＩＬＬＹ　ＪＯＥＬ,1992/3/1,ビリー　ジョエル,男</p>
+<p>田中　昌明,2020/1/2,タナカ　ヨシアキ,男</p>
+<p>・・</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>A102漢字姓名からカナ姓名推計用</p></li>
+</ol>
+<p>　カナ姓名を各行に入力する。</p>
+<p>例</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>ヤマダ　タロウ</p>
+<p>トウキョウ　ハナコ</p>
+<p>・・</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="3">
+<li><p>A103カナ姓名から漢字姓名推用</p></li>
+</ol>
+<p>　漢字姓名を各行に入力する。</p>
+<p>例</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>山田　太郎</p>
+<p>東京　花子</p>
+<p>・・</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="5">
+<li><p>実行環境</p></li>
+</ol>
+<p>Javaプログラムの実行環境は，amazonlinux:2023のDocker環境を想定している。また，環境によっては，そのままJavaコマンドで実行可能である。実行時にはJavaVMに上限４G以上のメモリを与えておく必要がある。</p>
+<p>Dockerファイルの例</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>FROM amazonlinux:2023</p>
+<p>RUN dnf -y install glibc-langpack-ja</p>
+<p>RUN dnf -y install java-17-amazon-corretto-devel</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="6">
+<li><p>コマンドライン仕様</p></li>
+</ol>
+<p>実行は，Java17が動く環境とする。また，出力のファイルは，UTF-8形式（BOMなし）である。各機能ごとのコマンドラインでの実行方法を記載する。</p>
+<ol class="arabic simple">
+<li><p>A101漢字姓名とカナ姓名突合</p></li>
+</ol>
+<ul class="simple">
+<li><p>コマンド実行例</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml
+-classpath path/to/kanjikana_core-1.1-jar-with-dependencies.jar
+jp.go.digital.kanjikana.core.executor.match.KanjiKanaMatchMain
+--infile path/to/inputfile --okfile path/to/okfile --ngfile
+path/to/ngfile --logfile path/to/logfile --kanji_idx 0 --kana_idx 2
+--sep csv --thread_num 1 --has_header true --strategy ensemble</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>VMオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-Xmx</p></td>
+<td><p>4096M</p></td>
+<td><p>○</p></td>
+<td><p>実行時に与えられるJavaVMへ
+のメモリ上限。デフォルト値では
+小さすぎるので必ず設定すること</p></td>
+</tr>
+<tr class="row-odd"><td><p>-Dlo
+g4j.con
+figurat
+ionFile</p></td>
+<td><p>log4j2.xml</p></td>
+<td></td>
+<td><p>log4j2の設定ファイル</p></td>
+</tr>
+<tr class="row-even"><td><p>-cl
+asspath</p></td>
+<td><p>kanjikana_core
+-1.1-jar-with-d
+ependencies.jar</p></td>
+<td><p>○</p></td>
+<td><p>Jarファ
+イルまでのパスを記述。環境変数
+CLASSPATHにJarファイルまでのパ
+スを記載した場合には本項目不要</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>jp
+.go.digital.kan
+jikana.core.exe
+cutor.match.Kan
+jiKanaMatchMain</p></td>
+<td><p>○</p></td>
+<td><p>実行クラス名</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>プログラムオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-infile</p>
+</td>
+<td><p>infile</p></td>
+<td><p>○</p></td>
+<td><p>４入力ファイ
+ル使用(1)A101漢字姓名とカナ姓名
+突合用を参考に作成しておくこと</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-okfile</p>
+</td>
+<td><p>okfile</p></td>
+<td><p>○</p></td>
+<td><p>マッチング判定で漢
+字とカナが一致と判定されたinfil
+eの行＋判定結果が１行ごとに入る</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-ngfile</p>
+</td>
+<td><p>ngfile</p></td>
+<td><p>○</p></td>
+<td><p>マッチング判定で漢字
+とカナが不一致と判定されたinfil
+eの行＋判定結果が１行ごとに入る</p></td>
+</tr>
+<tr class="row-odd"><td><p>--
+logfile</p></td>
+<td><p>logfile</p></td>
+<td><p>○</p></td>
+<td><p>現在マッチング判
+定中のinfileの１行が格納される</p></td>
+</tr>
+<tr class="row-even"><td><p>--ka
+nji_idx</p></td>
+<td><p>0</p></td>
+<td><p>○</p></td>
+<td><p>infile内
+で漢字姓名の列番号，１列目が０</p></td>
+</tr>
+<tr class="row-odd"><td><p>--k
+ana_idx</p></td>
+<td><p>2</p></td>
+<td><p>○</p></td>
+<td><p>infile内
+でカナ姓名の列番号，１列目が０</p></td>
+</tr>
+<tr class="row-even"><td><p>--sep</p></td>
+<td><p>[csv|tsv]</p></td>
+<td></td>
+<td><p>infileのフ
+ァイル形式に合わせて，csvもしく
+はtsvを指定する。デフォルトcsv</p></td>
+</tr>
+<tr class="row-odd"><td><p>--thr
+ead_num</p></td>
+<td><p>1</p></td>
+<td></td>
+<td><p>スレッ
+ドに分けて並列で計算する場合に
+はCPU数を考慮しこの値を変更する
+。1の場合にはシングルスレッド(
+デフォルト値)。並列計算した場合
+には，出力ファイル(okfile,ngfi
+le,logfile)の拡張子にスレッド番
+号が付いたファイルが作成される</p></td>
+</tr>
+<tr class="row-even"><td><p>--has
+_header</p></td>
+<td><p>false</p></td>
+<td></td>
+<td><p>infileに
+ヘッダ行がある場合にはtrue。tr
+ueにするとokfile,ngfileにヘッダ
+行が付与される。デフォルトfalse</p></td>
+</tr>
+<tr class="row-odd"><td><p>--s
+trategy</p></td>
+<td><p>[basi
+c|ensemble|ai]</p></td>
+<td></td>
+<td><p>漢字とカナ
+のマッチングモデルを指定する。</p>
+<p>basic:簡易モデル</p>
+<p>ensemble:詳細モデル　デフォルト</p>
+<p>ai:AIモデル</p>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>出力例１　okfile</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>山田　太郎,2001/12/1,ヤマダ　タロウ,男,tru
+e,90,{true;山田;ヤマダ;WordEngine;DictCrawl;0:/yurai/;null}{true;太郎
+;タロウ;WordEngine;DictCrawl;0:/hapiname/kirakira/namem3q/;null},Thu
+Oct 10 09:16:20 UTC 2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>出力例１の解説（簡易モデルでOKの場合）</p></li>
+<li><p>山田　太郎,2001/12/1,ヤマダ　タロウ,男</p>
+<p>　　　　入力ファイルと同じ</p>
+</li>
+<li><p>true</p>
+<p>　　　　漢字とカナが一致したかどうか　true/false　次項が50以上かどうかで判定</p>
+</li>
+<li><p>90</p>
+<p>　　　　漢字とカナの判定結果　0-99の数値を取る。50以上が一致と判定，数値が大きいほど一致度が高い</p>
+</li>
+<li><p>{true;山田;ヤマダ;WordEngine;DictCrawl;0:/yurai/;null}{true;太郎;タロウ;WordEngine;DictCrawl;0:/hapiname/kirakira/namem3q/;null},</p>
+<p>　　　　漢字とカナの一致判定の理由が記載される。基本的に判定は，スペース区切りで単語単位に分けて行われる。</p>
+</li>
+<li><p>フォーマット</p>
+<p>　　　単語単位で簡易モデルの結果が羅列される</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{簡易モデルでの結果}{簡易モデルでの結果}..</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>{true;山田;ヤマダ;WordEngine;DictCrawl;0:/yurai/;null}</p></li>
+<li><p>true，判定結果</p></li>
+<li><p>山田，判定した漢字</p></li>
+<li><p>ヤマダ，判定したカナ</p></li>
+<li><p>WordEngine，判定に利用したJavaのクラス</p></li>
+<li><p>DictCrawl，判定に利用した辞書</p></li>
+<li><p>0，常に０</p></li>
+<li><p>/yurai/，判定に利用した辞書の由来</p></li>
+<li><p>null，常にnull</p></li>
+<li><p>Thu Oct 10 09:16:20 UTC 2024</p>
+<p>　　　計算が終了した時刻</p>
+</li>
+<li><p>出力例２　okfile</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>田
+中　昌明,2020/1/2,タナカ　ヨシアキ,男,true,70,{true;田中;タナカ;Word
+Engine;DictCrawl;0:/yurai/;null}{false;昌明;ヨシアキ;WordEngine;;0:/;
+}[&lt;|DictWordModel|{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;n
+ull}{true;昌明;ヨシアキ;WordEngine;DictSeimei;0:/digitalN/;null}&gt;&lt;|D
+ictStatisticsModel|{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;n
+ull}{true;昌明;ヨシアキ;WordEngine;DictStatistics;27:/statistics/;nul
+l}&gt;&lt;|AiCharModel|{true;田中;タナカ;AiWordEngine;;0:/;rank:0;Probabil
+ity:0.9887265520725971}{false;昌明;ヨシアキ;AiCharEngine;;0:/;}&gt;],Fri
+Oct 11 00:27:26 UTC 2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>出力例２の解説（詳細モデルでOKの場合）</p></li>
+<li><p>田中　昌明,2020/1/2,タナカ　ヨシアキ,男</p>
+<p>　　　　入力ファイルと同じ</p>
+</li>
+<li><p>true</p>
+<p>　　　　漢字とカナが一致したかどうか　true/false　次項が50以上かどうかで判定</p>
+</li>
+<li><p>70</p>
+<p>　　　　漢字とカナの判定結果　0-99の数値を取る。50以上が一致と判定，数値が大きいほど一致度が高い</p>
+</li>
+<li><p>{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;null}{false;昌明;ヨシアキ;WordEngine;;0:/;}....</p>
+<p>　　　　漢字とカナの一致判定の理由が記載される。基本的に判定は，スペース区切りで単語単位に分けて行われる。</p>
+</li>
+<li><p>フォーマット</p>
+<p>　　　単語単位で簡易モデルの結果，簡易モデルが全てtrueにならないときには，詳細モデルとして，「辞書モデル」「統計モデル」「AIモデル」を実施し，多数決で判定する。</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{簡易モデルでの結果} [&lt;辞書モデルでの結果&gt; &lt;統計モデルでの結果&gt;
+&lt;AIモデルでの結果&gt;]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;null}{false;昌明;ヨシアキ;WordEngine;;0:/;}</p>
+<p>　　　簡易モデルにおいて，「田中」ー「タナカ」は一致と判定しているが，「昌明」ー「ヨシアキ」は不一致と判定</p>
+</li>
+<li><p>&lt;|DictWordModel|{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;null}{true;昌明;ヨシアキ;WordEngine;DictSeimei;0:/digitalN/;null}&gt;</p>
+<p>　　　辞書モデルで一致と判定</p>
+</li>
+<li><p>|DictWordModel|，辞書モデル</p></li>
+<li><p>昌明，判定した漢字</p></li>
+<li><p>ヨシアキ，判定したカナ</p></li>
+<li><p>WordEngine，判定に利用したJavaのクラス</p></li>
+<li><p>DictSeimei，判定に利用した辞書</p></li>
+<li><p>0，常に０</p></li>
+<li><p>/digitalN/，判定に利用した辞書の由来</p></li>
+<li><p>null，常にnull</p></li>
+<li><p>&lt;|DictStatisticsModel|{true;田中;タナカ;WordEngine;DictCrawl;0:/yurai/;null}{true;昌明;ヨシアキ;WordEngine;DictStatistics;27:/statistics/;null}&gt;</p>
+<p>　　　統計モデルで一致と判定</p>
+</li>
+<li><p>| DictStatisticsModel |，統計モデル</p></li>
+<li><p>昌明，判定した漢字</p></li>
+<li><p>ヨシアキ，判定したカナ</p></li>
+<li><p>WordEngine，判定に利用したJavaのクラス</p></li>
+<li><p>DictStatistics，判定に利用した辞書</p></li>
+<li><p>27，統計辞書内に「昌明」ー「ヨシアキ」のペアが何個あったか</p></li>
+<li><p>/statistics/，判定に利用した辞書の由来</p></li>
+<li><p>null，常にnull</p></li>
+<li><p>&lt;|AiCharModel|{true;田中;タナカ;AiWordEngine;;0:/;rank:0;Probability:0.9887265520725971}{false;昌明;ヨシアキ;AiCharEngine;;0:/;}&gt;</p>
+<p>　　　AIモデルで不一致と判定。「昌明」ー「ヨシアキ」がAIで確率０</p>
+</li>
+<li><p>| AiCharModel |，AIモデル</p></li>
+<li><p>田中，判定した漢字</p></li>
+<li><p>タナカ，判定したカナ</p></li>
+<li><p>AiWordEngine，判定に利用したJavaのクラス</p></li>
+<li><p>;rank:0，AIが漢字から推測したカナのうち，「タナカ」が確率の高い方から何番目か（０から４）</p></li>
+<li><p>Probability:0.9887265520725971，AIが漢字から推測した「タナカ」の確率</p></li>
+<li><p>Fri Oct 11 00:27:26 UTC 2024</p>
+<p>　　　計算が終了した時刻</p>
+<ul class="simple">
+<li><p>出力例３ ngfile</p></li>
+</ul>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>田
+中［東京］　花子,1999/1/2,トウキョウ　ハナ,女,false,30,{true;東京;ト
+ウキョウ;WordEngine;DictOSS;0:/ipadic/mozc/;null}{false;花子;ハナ;Wo
+rdEngine;;0:/;}[&lt;|DictWordModel|{true;東京;トウキョウ;WordEngine;Dic
+tOSS;0:/ipadic/mozc/;null}{true;花子;ハナ;WordEngine;DictSeimei;0:/di
+gitalN/;null}&gt;&lt;|IDictStatisticsModel|{true;東京;トウキョウ;WordEngin
+e;DictStatistics;6:/statistics/;null}{false;花子;ハナ;WordEngine;;0:/
+;}&gt;&lt;|AiCharModel|{true;東京;トウキョウ;AiWordEngine;;0:/;rank:0;Prob
+ability:0.9858473333247045}{false;花子;ハナ;AiCharEngine;;0:/;}&gt;],Thu
+Oct 10 09:16:38 UTC 2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>出力例３の解説（詳細モデルでNGの場合）</p></li>
+<li><p>田中［東京］　花子,1999/1/2,トウキョウ　ハナ,女</p>
+<p>　　　　入力ファイルと同じ</p>
+</li>
+<li><p>false</p>
+<p>　　　　漢字とカナが一致したかどうか　true/false　次項が50以上かどうかで判定</p>
+</li>
+<li><p>30</p>
+<p>　　　　漢字とカナの判定結果　0-99の数値を取る。50以上が一致と判定，数値が大きいほど一致度が高い</p>
+</li>
+<li><p>{true;東京;トウキョウ;WordEngine;DictOSS;0:/ipadic/mozc/;null}{false;花子;ハナ;WordEngine;;0:/;}....</p>
+<p>　　　　漢字とカナの一致判定の理由が記載される。基本的に判定は，スペース区切りで単語単位に分けて行われる。</p>
+</li>
+<li><p>フォーマット</p>
+<p>　　　単語単位で簡易モデルの結果，簡易モデルが全てtrueにならないときには，詳細モデルとして，「辞書モデル」「統計モデル」「AIモデル」を実施し，多数決で判定する。</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>{簡易モデルでの結果} [&lt;辞書モデルでの結果&gt; &lt;統計モデルでの結果&gt;
+&lt;AIモデルでの結果&gt;]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>{true;東京;トウキョウ;WordEngine;DictOSS;0:/ipadic/mozc/;null}{false;花子;ハナ;WordEngine;;0:/;}</p>
+<p>　　　簡易モデルにおいて，「東京」ー「トウキョウ」は一致と判定しているが，「昌花子」ー「ハナ」は不一致と判定</p>
+</li>
+<li><p>&lt;|DictWordModel|{true;東京;トウキョウ;WordEngine;DictOSS;0:/ipadic/mozc/;null}{true;花子;ハナ;WordEngine;DictSeimei;0:/digitalN/;null}&gt;</p>
+<p>　　　辞書モデルで一致と判定</p>
+</li>
+<li><p>&lt;|IDictStatisticsModel|{true;東京;トウキョウ;WordEngine;DictStatistics;6:/statistics/;null}{false;花子;ハナ;WordEngine;;0:/;}&gt;</p>
+<p>　　　統計モデルで不一致と判定</p>
+</li>
+<li><p>&lt;|AiCharModel|{true;東京;トウキョウ;AiWordEngine;;0:/;rank:0;Probability:0.9858473333247045}{false;花子;ハナ;AiCharEngine;;0:/;}&gt;</p>
+<p>　　　AIモデルで不一致と判定。「花子」ー「ハナ」がAIで確率０</p>
+</li>
+<li><p>Thu Oct 10 09:16:38 UTC 2024</p>
+<p>　　　計算が終了した時刻</p>
+</li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>A102漢字姓名からカナ姓名推計</p></li>
+</ol>
+<ul class="simple">
+<li><p>コマンド実行例</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml
+-classpath path/to/kanjikana_core-1.1-jar-with-dependencies.jar
+jp.go.digital.kanjikana.core.executor.generate.Kanji2KanaMain
+--infile path/to/inputfile --n_best 5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>VMオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-Xmx</p></td>
+<td><p>4096M</p></td>
+<td><p>○</p></td>
+<td><p>実行時に与えられるJavaVMへ
+のメモリ上限。デフォルト値では
+小さすぎるので必ず設定すること</p></td>
+</tr>
+<tr class="row-odd"><td><p>-Dlo
+g4j.con
+figurat
+ionFile</p></td>
+<td><p>log4j2.xml</p></td>
+<td></td>
+<td><p>log4j2の設定ファイル</p></td>
+</tr>
+<tr class="row-even"><td><p>-cl
+asspath</p></td>
+<td><p>kanjikana_core
+-1.1-jar-with-d
+ependencies.jar</p></td>
+<td><p>○</p></td>
+<td><p>Jarファ
+イルまでのパスを記述。環境変数
+CLASSPATHにJarファイルまでのパ
+スを記載した場合には本項目不要</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>j
+p.go.digital.ka
+njikana.core.ex
+ecutor.generate
+.Kanji2KanaMain</p></td>
+<td><p>○</p></td>
+<td><p>実行クラス名</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>プログラムオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-infile</p>
+</td>
+<td><p>infile</p></td>
+<td><p>○</p></td>
+<td><p>４入力ファイル使用(2)
+漢字姓名からカナ姓名
+推計用を参考に作成しておくこと</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-n_best</p>
+</td>
+<td><p>5</p></td>
+<td></td>
+<td><p>漢字から推測され
+たカナを幾つ出力するか。確率の
+高い方からこの数だけ出力される</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="5">
+<li><p>A103カナ姓名から漢字姓名推計</p></li>
+</ol>
+<ul class="simple">
+<li><p>コマンド実行例</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml
+-classpath path/to/kanjikana_core-1.1-jar-with-dependencies.jar
+jp.go.digital.kanjikana.core.executor.generate.Kana2KanjiMain
+--infile path/to/inputfile --n_best 5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>VMオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-Xmx</p></td>
+<td><p>4096M</p></td>
+<td><p>○</p></td>
+<td><p>実行時に与えられるJavaVMへ
+のメモリ上限。デフォルト値では
+小さすぎるので必ず設定すること</p></td>
+</tr>
+<tr class="row-odd"><td><p>-Dlo
+g4j.con
+figurat
+ionFile</p></td>
+<td><p>log4j2.xml</p></td>
+<td></td>
+<td><p>log4j2の設定ファイル</p></td>
+</tr>
+<tr class="row-even"><td><p>-cl
+asspath</p></td>
+<td><p>kanjikana_core
+-1.1-jar-with-d
+ependencies.jar</p></td>
+<td><p>○</p></td>
+<td><p>Jarファ
+イルまでのパスを記述。環境変数
+CLASSPATHにJarファイルまでのパ
+スを記載した場合には本項目不要</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>j
+p.go.digital.ka
+njikana.core.ex
+ecutor.generate
+.Kana2KanjiMain</p></td>
+<td><p>○</p></td>
+<td><p>実行クラス名</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>プログラムオプション</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>オプ
+ション</p></th>
+<th class="head"><p>値</p></th>
+<th class="head"><p>必須</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-infile</p>
+</td>
+<td><p>infile</p></td>
+<td><p>○</p></td>
+<td><p>４入力ファイル使用(3)
+カナ姓名から漢字姓名
+推計用を参考に作成しておくこと</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li></li>
+</ul>
+<p>-n_best</p>
+</td>
+<td><p>5</p></td>
+<td></td>
+<td><p>漢字から推測され
+た漢字を幾つ出力するか。確率の
+高い方からこの数だけ出力される</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -24,15 +24,14 @@
 
 package jp.go.digital.kanjikana.core.executor.match;
 
+import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyAi;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyDict;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyStatistics;
-import jp.go.digital.kanjikana.core.utils.FileReader;
 import jp.go.digital.kanjikana.core.executor.Output;
 import jp.go.digital.kanjikana.core.executor.OutputMaker;
 import jp.go.digital.kanjikana.core.executor.Response;
 import jp.go.digital.kanjikana.core.executor.StatusMatch;
-import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyAi;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyBasic;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyEnsemble;
@@ -40,7 +39,6 @@ import jp.go.digital.kanjikana.core.utils.FileWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.BufferedWriter;
@@ -98,8 +96,6 @@ public final class KanjiKanaMatchRunner implements Runnable {
     private final FileWriter outfile;
 
     private final Params params; // from input
-
-    private final String header;
     private final List<String> lines;
     private final KanjiKanaMatch match;
 
@@ -108,23 +104,18 @@ public final class KanjiKanaMatchRunner implements Runnable {
      *
      * @param params   入力パラメタクラス
      * @param lines    ヘッダなしのCSVデータ getFileTextで取得したもの
-     * @param header   　出力用のヘッダ getHeaderで取得したもの
      * @param outfile   出力ファイル
      * @param strategy basic or advanced 簡易モデルか詳細モデルか
      * @throws Exception 一般的な例外
      */
-    public KanjiKanaMatchRunner(Params params, List<String> lines, String header, String outfile,  Strategy strategy) throws Exception {
-        FileReader fr = new FileReader(params.isHasHeader());
+    public KanjiKanaMatchRunner(Params params, List<String> lines, String outfile,  Strategy strategy) throws Exception {
         this.params = params;
         this.outfile = new FileWriter(outfile);
 
-        this.header = header;
         this.lines = lines;
         StrategyIF strategyif;
         if (strategy == Strategy.BASIC) {
             strategyif = StrategyBasic.newInstance();
-        } else if (strategy == Strategy.AI) {
-            strategyif = StrategyAi.newInstance();
         } else if (strategy == Strategy.ENSEMBLE) {
             strategyif = StrategyEnsemble.newInstance();
         } else if (strategy == Strategy.ONLY_AI) {
@@ -145,7 +136,7 @@ public final class KanjiKanaMatchRunner implements Runnable {
             logger.debug(line);
             return;
         }
-        //FileWriter fw = new FileWriter(file, is_append);
+
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, is_append), StandardCharsets.UTF_8));
 
         if (!is_append && line == null) {
@@ -161,29 +152,15 @@ public final class KanjiKanaMatchRunner implements Runnable {
         bw.close();
     }
 
-    private String[] conv(String s) throws Exception {
-        String[] items = s.split(params.getSep());
-        String[] ret = new String[2];
-        if (params.getSource_idx() >= items.length) {
-            throw new Exception("kanji_index is not valid value,kanji_idx;" + params.getSource_idx() + ",items.len;" + items.length + ",items;" + items[0]);
-        }
-        ret[0] = items[params.getSource_idx()]; // check_params.getKanji_idx()とあわせる
-        if (params.getTarget_idx() >= items.length) {
-            throw new Exception("kana_index is not valid value,kana_idx;" + params.getTarget_idx() + ",items.len;" + items.length + ",items;" + items[0]);
-        }
-        ret[1] = items[params.getTarget_idx()]; // check_params.getKana_idx()とあわせる
-        return ret;
-    }
-
     @Override
     public void run() {
         long thread_id = Thread.currentThread().getId();
-        String line = null;
+        String line = params.getHeader();
         try {
 
-            outfile.write(line+",start_date,end_date",false);
-            //write(okfile, header, new Date(),false);
-            //write(ngfile, header, new Date(),false);
+            if(line !=null) {
+                outfile.write(line + ",start_date,end_date", false);
+            }
 
             for (int i = 0; i < this.lines.size(); i++) {
                 Date stdate = new Date();
@@ -192,11 +169,10 @@ public final class KanjiKanaMatchRunner implements Runnable {
                 }
 
                 line = this.lines.get(i);
-                //logfile.write(line+","+df.format(stdate)+","+df.format(new Date()),false);
-                //write(logfile, line, stdate, false);
+
                 Output o = null;
                 try {
-                    String[] items = conv(line);
+                    String[] items = params.getKanjiKana(line);
                     o = match.exec(items[0], items[1]);
                 } catch (Exception e) {
                     e.fillInStackTrace();
@@ -204,7 +180,6 @@ public final class KanjiKanaMatchRunner implements Runnable {
                     logger.error(line);
                     continue;
                 }
-                //logger.debug("i="+i+",isOk="+o.isOk());
                 StatusMatch sm = null;
                 if (o.result.getAdditionalProperties().containsKey(OutputMaker.ADDITIONAL_KEY_STATUS)){
                     sm = (StatusMatch)o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS);
@@ -214,26 +189,22 @@ public final class KanjiKanaMatchRunner implements Runnable {
                     String outline=line+params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
                     outline+=","+df.format(stdate)+","+df.format(new Date());
                     outfile.write(outline,true);
-                    //write(okfile, line + params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES), stdate,true);
                 } else {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
                     if(sm!=null) {
                         String outline=line + params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
                         outline+=","+df.format(stdate)+","+df.format(new Date());
                         outfile.write(outline,true);
-                        //write(ngfile, line + params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES), stdate,true);
                     }else{
                         String outline=line + params.getSep() + false + params.getSep() + StatusMatch.NG + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
                         outline+=","+df.format(stdate)+","+df.format(new Date());
                         outfile.write(outline,true);
-                        //write(ngfile, line + params.getSep() + false + params.getSep() + StatusMatch.NG + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES), stdate,true);
                     }
                 }
             }
         } catch (Exception e) {
             e.fillInStackTrace();
             logger.fatal(e);
-            //logger.error(e);
             logger.fatal(line);
         }
     }

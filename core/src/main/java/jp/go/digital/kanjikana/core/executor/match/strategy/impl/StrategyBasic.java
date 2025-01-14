@@ -24,7 +24,10 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
+import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
+import jp.go.digital.kanjikana.core.model.ModelData;
+import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.model.impl.AsIsWordModel;
 import jp.go.digital.kanjikana.core.model.impl.CrawlOSSWordModel;
 import jp.go.digital.kanjikana.core.model.impl.FWordModel;
@@ -40,12 +43,13 @@ import java.util.Arrays;
  * 時間のかからない簡易モデルをシングルトンで定義する。
  * 辞書単語とのマッチング＋異体字チェック，外国人モデルのみ
  */
-public final class StrategyBasic extends AbstStrategy {
+public class StrategyBasic extends AbstStrategy {
     private static StrategyIF sb=null;
     private final Logger logger = LogManager.getLogger(StrategyBasic.class);
 
-    private StrategyBasic() throws Exception{
-        super(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
+    protected StrategyBasic() throws Exception{
+        //super(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
+        setReliableModels(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
     }
 
     /**
@@ -58,5 +62,31 @@ public final class StrategyBasic extends AbstStrategy {
             sb = new StrategyBasic();
         }
         return sb;
+    }
+
+    /**
+     * モデルを順次用いてチェックする
+     * @param modelData 前のモデルで判定した結果を入力する
+     * @param kanji　漢字姓名　「山田　太郎」
+     * @param kana　カタカナ姓名　「ヤマダ　タロウ」
+     * @return チェックで漢字とカナが一致したかどうか
+     * @throws Exception 一般的なエラー
+     */
+    public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
+        modelData.setTopResult(new ResultEngineParts("","")); // reset
+        for (ModelIF model : models) {
+            modelData = model.run(kanji,kana, modelData);
+
+            logger.debug(model.getClass()+",kanji="+kanji+",isOK="+modelData.isOk());
+
+            if (modelData.isOk()) {
+                modelData.setModel(model.getClass());
+                return true;
+            }
+        }
+        if (modelData.isOk()) {
+            return true;
+        }
+        return false;
     }
 }

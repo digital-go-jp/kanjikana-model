@@ -24,13 +24,8 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy;
 
-import jp.go.digital.kanjikana.core.engine.FWordEngine;
-import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawl;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSS;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyEnsemble;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyAdvanced;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

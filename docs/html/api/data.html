@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>データ仕様 &mdash; kanjikana-model  ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c033477b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=4755f45a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            kanjikana-model
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">概要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">クイックスタート</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">氏名漢字カナ突合API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample/index.html">サンプルプログラム</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">氏名漢字カナ突合モデル</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kanjikana-model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">データ仕様</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>データ仕様<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>漢字カナ突合モデルに入力する，データフォーマットについて記載する。入力データは，漢字姓名（外国人の場合にはアルファベット姓名）と，その読み仮名としてのカタカナ姓名を想定している。</p>
+<p>漢字姓名はアルファベット表記や旧姓，通称などが含まれる場合がある。カナ姓名には全角カタカナを入力するがアルファベットでも許容する。また文字については，UTF-8とし，アルファベットも含めて全角文字である。</p>
+<p>姓と名の間は，漢字姓名及びカナ姓名ともに，全角スペースで区切られる必要がある。</p>
+<p>次に入力の漢字姓名のパターンと，同時に入力するカナ姓名との一致と判定する仕様を記述する。</p>
+</div></blockquote>
+<section id="id2">
+<h2>パターン１<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>漢字姓名とカタカナ姓名がそれぞれ姓と名の間がスペースで区切られている。例では一致と判定</p>
+<blockquote>
+<div><dl class="simple">
+<dt>例</dt><dd><ul class="simple">
+<li><p>漢字姓名：日本　花子</p></li>
+<li><p>カナ姓名：ニホン　ハナコ</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="id3">
+<h2>パターン２<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>旧姓が[　]書きで併記されいる。入力するカナ姓が旧姓の場合も，一致と判定する。例では一致と判定</p>
+<dl class="simple">
+<dt>例</dt><dd><ul class="simple">
+<li><p>漢字姓名：日本[東京] 花子</p></li>
+<li><p>カナ姓名：トウキョウ　ハナコ</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id4">
+<h2>パターン３<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>漢字姓名部分に，アルファベット表記で入力されている。なお，アルファベット表記部分が，名，ミドルネーム，姓となっているものも許容する。例１，２と一致と判定。</p>
+<blockquote>
+<div><dl class="simple">
+<dt>例１</dt><dd><ul class="simple">
+<li><p>漢字姓名：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡＫＯ</p></li>
+<li><p>カナ姓名：ニホン　ミドル　ハナコ</p></li>
+</ul>
+</dd>
+<dt>例２</dt><dd><ul class="simple">
+<li><p>漢字姓名：ＨＡＮＡＫＯ　ＭＩＤＤＬＥ　ＮＩＨＯＮ</p></li>
+<li><p>カナ姓名２：ニホン　ミドル　ハナコ</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2>パターン４<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>漢字姓名部分にアルファベット（ミドルネームがある場合や４ワード以上の場合もある）と漢字がアンダーバーで連結されているものが入っている。漢字もしくはアルファベットがカタカナ姓名と一致する場合には，一致と判定する。例１，２，ともに一致と判定</p>
+<blockquote>
+<div><dl class="simple">
+<dt>例１</dt><dd><ul class="simple">
+<li><p>漢字姓名：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡＫＯ＿日本　花子</p></li>
+<li><p>カナ姓名：ニホン　ハナコ</p></li>
+</ul>
+</dd>
+<dt>例２</dt><dd><ul class="simple">
+<li><p>漢字姓名：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡＫＯ＿日本　花子</p></li>
+<li><p>カナ姓名２：ニホン　ミドル　ハナコ</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="id6">
+<h2>パターン５<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>漢字姓名に括弧書きで通称が入っている。漢字もしくはアルファベット及び，通称がカタカナ姓名と一致する場合には，一致と判定する。例１，２，３ともに一致と判定</p>
+<blockquote>
+<div><dl class="simple">
+<dt>例１</dt><dd><ul class="simple">
+<li><p>漢字姓名１：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡ＿日本　花（東京　花子）</p></li>
+<li><p>カナ姓名１：ニホン　ハナ</p></li>
+</ul>
+</dd>
+<dt>例２</dt><dd><ul class="simple">
+<li><p>漢字姓名１：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡ＿日本　花（東京　花子）</p></li>
+<li><p>カナ姓名１：ニホン　ミドル　ハナ</p></li>
+</ul>
+</dd>
+<dt>例３</dt><dd><ul class="simple">
+<li><p>漢字姓名１：ＮＩＨＯＮ　ＭＩＤＤＬＥ　ＨＡＮＡ＿日本　花（東京　花子）</p></li>
+<li><p>カナ姓名１：トウキョウ　ハナコ</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Digital Agency.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

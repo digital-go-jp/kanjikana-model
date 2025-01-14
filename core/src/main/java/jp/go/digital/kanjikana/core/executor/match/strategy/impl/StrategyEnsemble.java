@@ -24,9 +24,6 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
-import jp.go.digital.kanjikana.core.executor.Output;
-import jp.go.digital.kanjikana.core.executor.OutputMaker;
-import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
@@ -34,24 +31,18 @@ import jp.go.digital.kanjikana.core.model.ModelStatus;
 import jp.go.digital.kanjikana.core.model.impl.AiCharModel;
 import jp.go.digital.kanjikana.core.model.impl.AiWordModel;
 import jp.go.digital.kanjikana.core.model.impl.AsIsCharModel;
-import jp.go.digital.kanjikana.core.model.impl.AsIsWordModel;
-import jp.go.digital.kanjikana.core.model.impl.CrawlOSSWordModel;
 import jp.go.digital.kanjikana.core.model.impl.DictCharModel;
 import jp.go.digital.kanjikana.core.model.impl.DictStatisticsModel;
 import jp.go.digital.kanjikana.core.model.impl.DictWordModel;
 import jp.go.digital.kanjikana.core.model.impl.FCharModel;
-import jp.go.digital.kanjikana.core.model.impl.FWordModel;
-import jp.go.digital.kanjikana.core.model.impl.ICrawlOSSWordModel;
 import jp.go.digital.kanjikana.core.model.impl.IDictCharModel;
 import jp.go.digital.kanjikana.core.model.impl.IDictStatisticsModel;
 import jp.go.digital.kanjikana.core.model.impl.IDictWordModel;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -61,19 +52,13 @@ import java.util.List;
  * Ensembleモデルをシングルトンで定義する。
  * このEnsembleでは，あまり信頼度の高くないモデルを組み合わせて実行し，その結果を多数決で判定する
  */
-public final class StrategyEnsemble extends AbstStrategy {
+public final class StrategyEnsemble extends StrategyBasic {
     private static StrategyIF sb=null;
-    private static final double EnsembleOkUnderLimit=0.5; // アンサンブルでOKを出したモデルの割合の最小値
 
-    private final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
     private final Logger logger = LogManager.getLogger(StrategyEnsemble.class);
 
     private StrategyEnsemble() throws Exception{
-        super(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
-        //UnReliableModels.add(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel())); // 辞書モデル
-        //UnReliableModels.add(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel())); // 統計モデル
-        //UnReliableModels.add(Arrays.asList(new AiWordModel(),new AiCharModel()));  // AIモデル
-
+        super();
         // 辞書モデル
         setUnReliableModels(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel()));
         // 統計モデル
@@ -82,17 +67,6 @@ public final class StrategyEnsemble extends AbstStrategy {
         setUnReliableModels(Arrays.asList(new AiWordModel(),new AiCharModel()));
     }
 
-    private void setUnReliableModels(List<ModelIF> models){
-        List<ModelIF> validModels=new ArrayList<>();
-        for(ModelIF model:models){
-            if(model.isValidModel()){
-                validModels.add(model);
-            }
-        }
-        if(!validModels.isEmpty()){
-            this.UnReliableModels.add(validModels);
-        }
-    }
 
     /**
      * Ensembleモデルを返す
@@ -113,7 +87,7 @@ public final class StrategyEnsemble extends AbstStrategy {
         }
         int idx=0;
         int okcnt=0; // モデルがOKを出した数
-        for(List<ModelIF> unreliable: UnReliableModels){
+        for(List<ModelIF> unreliable: getUnReliableModels()){
             Date stdate=new Date();
             logger.debug(idx+",start,"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(stdate));
             ModelData md = SerializationUtils.clone(modelData); // reliableなモデルで計算したものを保存しておく
@@ -147,7 +121,7 @@ public final class StrategyEnsemble extends AbstStrategy {
         }
 
         // 複数のモデルでOKが出たモデルの数を数えておき，閾値以上の正解数ならばOKを返す
-        if(okcnt/(double)UnReliableModels.size()>=EnsembleOkUnderLimit){
+        if(okcnt/(double)getUnReliableModels().size()>=getEnsembleOkUnderLimit()){
             modelData.setStatus(ModelStatus.OK);
             return true;
         }
