@@ -34,7 +34,9 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,15 +100,22 @@ public class Kana2KanjiMain {
 
 
         List<String> output = new ArrayList<>();
+        if(has_header){
+            output.add(params.getHeader()+params.getSep()+"result"+params.getSep()+"start_date"+params.getSep()+"end_date");
+        }
         Kana2Kanji kk = new Kana2Kanji();
         for(String line:lines) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
+            Date stDate=new Date();
             logger.info(line);
             String kana = params.getKana(line);
 
+
             int idx=0;
             List<SearchResult> res = kk.run(kana, n_best);
+            Date edDate=new Date();
             for (SearchResult r : res) {
-                output.add(line+",kana;"+kana+";best"+(++idx)+";"+r.toString());
+                output.add(line+params.getSep()+"kana;"+kana+";best"+(++idx)+";"+r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
             }
         }
 

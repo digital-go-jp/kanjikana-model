@@ -10,3 +10,4 @@ Dockerfile
 conf
 *.jar
 output.txt
+input2.txt

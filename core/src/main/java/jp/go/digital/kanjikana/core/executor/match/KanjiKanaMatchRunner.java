@@ -131,6 +131,7 @@ public final class KanjiKanaMatchRunner implements Runnable {
         this.match = new KanjiKanaMatch(strategyif);
     }
 
+    /*
     private void write(File file, String line, Date stdate, boolean is_append) throws Exception {
         if (file == null) {
             logger.debug(line);
@@ -152,6 +153,8 @@ public final class KanjiKanaMatchRunner implements Runnable {
         bw.close();
     }
 
+     */
+
     @Override
     public void run() {
         long thread_id = Thread.currentThread().getId();
@@ -159,7 +162,7 @@ public final class KanjiKanaMatchRunner implements Runnable {
         try {
 
             if(line !=null) {
-                outfile.write(line + ",start_date,end_date", false);
+                outfile.write(line + params.getSep()+"result_flg"+params.getSep()+"result_per"+params.getSep()+"result"+params.getSep()+"start_date"+params.getSep()+"end_date", false);
             }
 
             for (int i = 0; i < this.lines.size(); i++) {
@@ -187,17 +190,18 @@ public final class KanjiKanaMatchRunner implements Runnable {
                 if (o.response == Response.OK && sm!=null && StatusMatch.isOk(sm) ){
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
                     String outline=line+params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
-                    outline+=","+df.format(stdate)+","+df.format(new Date());
+
+                    outline+=params.getSep()+df.format(stdate)+params.getSep()+df.format(new Date());
                     outfile.write(outline,true);
                 } else {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
                     if(sm!=null) {
                         String outline=line + params.getSep() + StatusMatch.isOk(sm) + params.getSep() + sm.toValue() + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
-                        outline+=","+df.format(stdate)+","+df.format(new Date());
+                        outline+=params.getSep()+df.format(stdate)+params.getSep()+df.format(new Date());
                         outfile.write(outline,true);
                     }else{
                         String outline=line + params.getSep() + false + params.getSep() + StatusMatch.NG + params.getSep() + o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_NOTES);
-                        outline+=","+df.format(stdate)+","+df.format(new Date());
+                        outline+=params.getSep()+df.format(stdate)+params.getSep()+df.format(new Date());
                         outfile.write(outline,true);
                     }
                 }

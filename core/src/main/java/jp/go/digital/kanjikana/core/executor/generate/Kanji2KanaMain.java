@@ -35,7 +35,9 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -97,19 +99,27 @@ public class Kanji2KanaMain {
         Params params = new Params(header,kanji_idx,-1,separator,lines );
 
         List<String> output = new ArrayList<>();
+        if(has_header){
+            output.add(params.getHeader()+params.getSep()+"result"+params.getSep()+"start_date"+params.getSep()+"end_date");
+        }
+
         Kanji2Kana kk = new Kanji2Kana();
         for(String line:lines) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
+
             logger.info(line);
             String kanjis = params.getKanji(line);
             List<String> kanji_items = KanjiKanaUtil.kanji_split(kanjis); // 複数名前があるときはそれぞれ入っている。旧姓名と現姓名などが２つ入るイメージ　['日本　花子','東京　花子']
 
             int jdx=0;
             for(String kanji:kanji_items) {
+                Date stDate=new Date();
                 jdx++;
                 List<SearchResult> res = kk.run(kanji, n_best);
+                Date edDate=new Date();
                 int idx = 0;
                 for (SearchResult r : res) {
-                    output.add(line+",kanji;" + kanjis + ";kanji"+jdx+";"+kanji+";best" + (++idx) + ";" + r.toString());
+                    output.add(line+params.getSep()+"kanji;" + kanjis + ";kanji"+jdx+";"+kanji+";best" + (++idx) + ";" + r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
                 }
             }
         }
