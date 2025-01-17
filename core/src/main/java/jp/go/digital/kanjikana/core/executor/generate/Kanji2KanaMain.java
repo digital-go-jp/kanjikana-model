@@ -119,7 +119,7 @@ public class Kanji2KanaMain {
                 Date edDate=new Date();
                 int idx = 0;
                 for (SearchResult r : res) {
-                    output.add(line+params.getSep()+"kanji;" + kanjis + ";kanji"+jdx+";"+kanji+";best" + (++idx) + ";" + r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
+                    output.add(line+params.getSep()+"kanji:" + kanjis + ";kanji"+jdx+":"+kanji+";best:" + (++idx) + ";" + r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
                 }
             }
         }

@@ -85,7 +85,7 @@ public class KanjiKanaMatchMain {
         parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
         parser.addArgument("--thread_num").type(Integer.class).setDefault(1).help("スレッド数");
         parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
-        parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(),KanjiKanaMatchRunner.Strategy.AI.getVal(),
+        parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(),
                 KanjiKanaMatchRunner.Strategy.ENSEMBLE.getVal())).setDefault(KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal()).help("モデル");
 
         Namespace ns = parser.parseArgs(args);

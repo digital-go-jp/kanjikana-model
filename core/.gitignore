@@ -9,5 +9,5 @@ log.txt
 Dockerfile
 conf
 *.jar
-output.txt
-input2.txt
+output*.txt
+input*.txt

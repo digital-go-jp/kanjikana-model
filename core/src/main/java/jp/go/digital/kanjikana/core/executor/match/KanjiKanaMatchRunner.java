@@ -41,11 +41,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -62,8 +57,7 @@ public final class KanjiKanaMatchRunner implements Runnable {
         ONLY_AI("ONLY_AI"),
         ONLY_DICT("ONLY_DICT"),
         ONLY_STAT("ONLY_STAT"),
-        ENSEMBLE("ENSEMBLE"),
-        AI("AI");
+        ENSEMBLE("ENSEMBLE");
 
         private final String val;
 
@@ -130,30 +124,6 @@ public final class KanjiKanaMatchRunner implements Runnable {
 
         this.match = new KanjiKanaMatch(strategyif);
     }
-
-    /*
-    private void write(File file, String line, Date stdate, boolean is_append) throws Exception {
-        if (file == null) {
-            logger.debug(line);
-            return;
-        }
-
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, is_append), StandardCharsets.UTF_8));
-
-        if (!is_append && line == null) {
-            bw.write("");
-        } else {
-            if (is_append){
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
-                bw.write(line+","+df.format(stdate)+","+df.format(new Date()) + "\n");
-            }else{
-                bw.write(line+",start_date,end_date" + "\n");
-            }
-        }
-        bw.close();
-    }
-
-     */
 
     @Override
     public void run() {

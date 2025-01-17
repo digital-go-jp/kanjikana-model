@@ -62,6 +62,6 @@ public final class SearchResult {
      * @return 文字列
      */
     public String toString(){
-        return "predict;"+this.predict+":probability;"+probability;
+        return "predict:"+this.predict+";probability:"+probability;
     }
 }

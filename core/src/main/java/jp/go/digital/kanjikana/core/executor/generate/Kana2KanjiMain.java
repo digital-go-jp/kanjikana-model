@@ -115,7 +115,7 @@ public class Kana2KanjiMain {
             List<SearchResult> res = kk.run(kana, n_best);
             Date edDate=new Date();
             for (SearchResult r : res) {
-                output.add(line+params.getSep()+"kana;"+kana+";best"+(++idx)+";"+r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
+                output.add(line+params.getSep()+"kana:"+kana+";best:"+(++idx)+";"+r.toString()+params.getSep()+df.format(stDate)+params.getSep()+df.format(edDate));
             }
         }
 
