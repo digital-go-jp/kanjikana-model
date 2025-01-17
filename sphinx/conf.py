@@ -29,11 +29,13 @@ language = 'ja'
 
 #html_theme = 'alabaster'
 html_theme = 'sphinx_rtd_theme'
+#html_theme ='pydata_sphinx_theme'
 html_static_path = ['_static']
 
 html_css_files = [
     'custom.css',
 ]
+
 extensions += ['sphinx.ext.imgmath']
 imgmath_image_format = 'svg'
 imgmath_font_size = 14
