@@ -8,7 +8,7 @@
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
    ./about/index
 
@@ -20,4 +20,5 @@
    
    ./model/index
    
+   ./resources/index
 
