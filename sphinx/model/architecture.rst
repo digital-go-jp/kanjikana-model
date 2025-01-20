@@ -58,7 +58,7 @@
      なお，氏名漢字カナ突合モデルでは，ソースコードには存在するが，こちらの統計モデルはデータを空にしているため，実際には使用していない。
 
   * AIモデル
-     Seq2Seq+Transformerのモデルを用いて，入力に漢字・アルファベット姓名，出力にカタカナ姓名を与えて学習させる。入力，及び出力は，文字単位で分割し，その並びを学習させる。Transformerのハイパーパラメタなどは `こちら <https://github.com/digital-go-jp/kanjikana-model/tree/main/train>`_ を参照のこと。
+     Transformerのモデルを用いて，入力に漢字・アルファベット姓名，出力にカタカナ姓名を与えて学習させる。入力，及び出力は，文字単位で分割し，その並びを学習させる。Transformerのハイパーパラメタなどは `こちら <https://github.com/digital-go-jp/kanjikana-model/tree/main/train>`_ を参照のこと。
    
 
 

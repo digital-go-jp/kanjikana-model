@@ -409,15 +409,19 @@ class KanjiKanaTransformer:
         best_loss=None
         num_epochs = self.args.num_epochs
         now_epoch =0
+        last_checkpoint = None
+        best_checkpoint = None
         if os.path.exists(self.args.output_dir):
             files = list(sorted(glob.glob(self.args.output_dir + "/checkpoint_*.pt"), reverse=True))
             if len(files) >=2:
                 # best
                 best_checkpoint = torch.load(files[0],torch.device('cpu'))
                 last_checkpoint = torch.load(files[1],torch.device('cpu'))
-            else:
+            elif len(files)==1:
                 last_checkpoint = torch.load(files[0],torch.device('cpu'))
                 best_checkpoint = last_checkpoint
+
+        if last_checkpoint is not None:
 
             src_vocab=Vocab(split_tokenizer,[])
             src_vocab.set(last_checkpoint['src_vocab'])
