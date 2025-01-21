@@ -1,5 +1,5 @@
 コマンドライン
-#############
+######################
 
 :doc:`program` をコマンドラインから実行するための詳細を示す。コマンドラインプログラムへの入力はTSVもしくはCSV形式のファイルで入力し，行ごとのデータをまとめてバッチ処理し，ファイルに出力される。
 
@@ -10,25 +10,28 @@
 本コマンドラインでの機能一覧を示す。
 
 * 氏名漢字カナ突合機能
+
  漢字姓名（アルファベット姓名）とカナ姓名を入力し，一致しているかどうかの判定結果を返す。（:doc:`詳細<../api/kanji_kana>` ）
 
 * 氏名漢字推計機能
+
  カナ姓名を入力し，漢字姓名（アルファベット姓名）の候補一覧を返す。（:doc:`詳細<../api/kanji>`）
 
 * 氏名カタカナ推計機能
+
  漢字姓名（アルファベット姓名）を入力し，カナ姓名の候補一覧を返す。(:doc:`詳細<../api/kana>`)
 
 
 
 入力ファイル形式 
-==============
+=============================
 
 入力ファイルは，CSVもしくはTSV形式とし，UTF-8形式（BOMなし）とする。１行ごとに入力データを記載する。また，ファイルに入力する漢字姓名，カナ姓名は全角文字とし，姓と名の間は全角スペースで区切られているものとする。入力ファイルの最大行数は特に規定しない。
 
 また，漢字・アルファベットと，カタカナ以外のデータも入力ファイルに含めて良い。入力データ以外のデータも出力ファイルに出力される
 
 入力フォーマット
---------------
+--------------------------
 
 入力ファイルのフォーマットのサンプルを， `input.txt <https://github.com/digital-go-jp/kanjikana-model/core/input.txt>`_ に記載している。 
 
@@ -36,7 +39,7 @@
 
  - サンプルファイル(input.txt)
    
-   .. code-block:: csv
+   .. code-block:: 
       
       no,kanji,kana,okng
       1,山田　太郎,ヤマダ　ハナコ,ng
@@ -48,10 +51,10 @@
 
 
 氏名漢字カナ突合機能
-=================
+===============================
 
 実行方法
--------
+------------------
 
   .. code-block:: bash
   
@@ -120,16 +123,16 @@
 
 
 実行例
-------
+--------------
 
   .. code-block:: bash
 
      java -Xmx4096M  -classpath target/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.match.KanjiKanaMatchMain --infile input.txt --outfile output.txt --kanji_idx 1 --kana_idx 2 --sep csv --thread_num 1 --has_header true --strategy ENSEMBLE  
 
 出力例1（簡易モデルでOKの場合）
------
+-----------------------------------------------
 
-  .. code-block:: csv
+  .. code-block:: 
 
      no,kanji,kana,okng,start_date,end_date
      8,東京［日本］　花子,トウキョウ　ハナコ,ok,true,90,{true;東京;トウキョウ;WordEngine;DictOSS;0:/canna/freewnn/kakasi/;null}{true;花子;ハナコ;WordEngine;DictOSS;0:/canna/freewnn/kakasi/skk/;null},2025-01-15 09:39:43.148 +0900,2025-01-15 09:39:43.148 +0900
@@ -154,14 +157,14 @@
 
     - フォーマット
 
-      .. code-block:: csv
+      .. code-block:: 
 
         {簡易モデルでの結果}{簡易モデルでの結果}..      
 
 
       結果は単語単位で{}内に作成される
 
-      .. code-block:: csv 
+      .. code-block:: 
 
          {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]  
 
@@ -170,7 +173,7 @@
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
     
-      .. code-block:: csv
+      .. code-block:: 
 
          {true;東京;トウキョウ;WordEngine;DictOSS;0:/canna/freewnn/kakasi/;null}
     
@@ -221,11 +224,11 @@
 
 
 出力例2（簡易モデル，外国人モデルでOKの場合）
--------------------------------------------
+-------------------------------------------------------------------
 
   この入力では，ALLEN JACKSONとアーレン　ジャクソンのペアで一致と判定されている。
 
-  .. code-block:: csv
+  .. code-block:: 
 
       14,ALLEN JACKSON＿鈴木　一郎（高橋　二郎）,アーレン　ジャクソン,ok,true,90,{true;ＡＬＬＥＮ;アーレン;FWordEngine;;0:/;0000000}{true;ＪＡＣＫＳＯＮ;ジャクソン;FWordEngine;;0:/;0000000},2025-01-15 09:39:49.807 +0900,2025-01-15 09:39:49.816 +0900
 
@@ -249,14 +252,14 @@
 
     - フォーマット
 
-      .. code-block:: csv
+      .. code-block:: 
 
         {簡易モデルでの結果}{簡易モデルでの結果}..      
 
 
       結果は単語単位で{}内に作成される
 
-      .. code-block:: csv 
+      .. code-block:: 
 
          {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]  
 
@@ -265,7 +268,7 @@
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
     
-      .. code-block:: csv
+      .. code-block:: 
 
          {true;ＡＬＬＥＮ;アーレン;FWordEngine;;0:/;0000000}
     
@@ -328,11 +331,11 @@
 
 
 出力例３（詳細モデル）
--------------------
+-----------------------------------------
 
   この例では，簡易モデルでFalseとなったが，詳細モデルの辞書モデルでTrue，AIモデルでFalseとなった例である。    
 
-  .. code-block:: csv
+  .. code-block:: 
 
      no,kanji,kana,okng,start_date,end_date
      3,山田　太郎,サンダ　フトロウ,ok,false,30,{false;山田;サンダ;WordEngine;;0:/;}{false;太郎;フトロウ;WordEngine;;0:/;}[<|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}><|AiCharModel|{true;山田;サン>ダ;AiWordEngine;;0:/;rank:1;Probability:0.13658617050112723}{false;太郎;フトロウ;AiCharEngine;;0:/;}>],2025-01-15 09:39:41.463 +0900,2025-01-15 09:39:41.470 +0900
@@ -351,13 +354,13 @@
 
       漢字とカナの判定結果が記載される。0-99の数値を取る。50以上が一致と判定され，数値が大きいほど一致度が高いことを意味する。
 
-  - {false;山田;サンダ;WordEngine;;0:/;}{false;太郎;フトロウ;WordEngine;;0:/;}[<|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}><|AiCharModel|{true;山田;サンダ;AiWordEngine;;0:/;rank:1;Probability:0.13658617050112723}{false;太郎;フトロウ;AiCharEngine;;0:/;}>]
+  - ``{false;山田;サンダ;WordEngine;;0:/;}{false;太郎;フトロウ;WordEngine;;0:/;}[<|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}><|AiCharModel|{true;山田;サンダ;AiWordEngine;;0:/;rank:1;Probability:0.13658617050112723}{false;太郎;フトロウ;AiCharEngine;;0:/;}>]``
 
       漢字とカナの一致判定の理由が記載される。
 
     - フォーマット
 
-      .. code-block:: csv
+      .. code-block:: 
 
         {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]    
 
@@ -369,7 +372,7 @@
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
     
-      .. code-block:: csv
+      .. code-block:: 
 
          {false;山田;サンダ;WordEngine;;0:/;}
     
@@ -409,7 +412,7 @@
 
       結果のフォーマットは [<辞書モデルでの結果><AIモデルでの結果>]となっている
 
-      .. code-block:: csv
+      .. code-block:: 
 
         [<|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}><|AiCharModel|{true;山田;サン>ダ;AiWordEngine;;0:/;rank:1;Probability:0.13658617050112723}{false;太郎;フトロウ;AiCharEngine;;0:/;}>]
 
@@ -417,12 +420,12 @@
 
         単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
     
-        .. code-block:: csv
+        .. code-block:: 
 
            <|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}>
     
 
-        - |DictCharModel|
+        - ``|DictCharModel|``
 
           辞書モデルを示している。
           以下，{}で単語単位，文字単位での漢字・アルファベットとカタカナの突合結果が格納される。
@@ -463,11 +466,11 @@
 
         単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
 
-        .. code-block:: csv
+        .. code-block:: 
 
            <|AiCharModel|{true;山田;サンダ;AiWordEngine;;0:/;rank:1;Probability:0.13658617050112723}{false;太郎;フトロウ;AiCharEngine;;0:/;}>
 
-        - |AiCharModel|
+        - ``|AiCharModel|``
 
           AIモデルを示している。
           以下，{}で単語単位，文字単位での漢字・アルファベットとカタカナの突合結果が格納される。
@@ -517,10 +520,10 @@
 
 
 氏名漢字推計機能
-==============
+================================
 
 実行方法
--------
+--------------------
 
   .. code-block:: bash
   
@@ -571,16 +574,16 @@
 
 
 実行例
-------
+-----------
 
   .. code-block:: bash
 
      java -Xmx4096M  -classpath target/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.match.Kana2KanjiMain --infile input.txt --outfile output.txt --kana_idx 2 --sep csv --has_header true --n_best 5  
 
 出力例
------
+-------------
 
-  .. code-block:: csv
+  .. code-block:: 
 
       no,kanji,kana,okng,result,start_date,end_date
       7,東京［日本］　花子,ニッポン　ハナコ,ok,kana:ニッポン　ハナコ;best:2;predict:日本華子;probability:-1.1956451967940704,2025-01-17 14:41:31.519 +0900,2025-01-17 14:41:32.085 +0900
@@ -633,11 +636,11 @@
 
 
 氏名カナ推計機能
-=================
+=======================
 
 
 実行方法
--------
+---------------
 
   .. code-block:: bash
   
@@ -688,16 +691,16 @@
 
 
 実行例
-------
+-------------
 
   .. code-block:: bash
 
      java -Xmx4096M  -classpath target/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.match.Kanji2KanaMain --infile input.txt --outfile output.txt --kanji_idx 1 --sep csv --has_header true --n_best 5
 
 出力例
------
+-------------
 
-  .. code-block:: csv
+  .. code-block:: 
 
           no,kanji,kana,okng,result,start_date,end_date
           7,東京［日本］　花子,ニッポン　ハナコ,ok,kanji:東京［日本］　花子;kanji1:東京　花子;best:1;predict:トウキョウハナコ;probability:-0.0029718216878316236,2025-01-17 14:55:20.437 +0900,2025-01-17 14:55:21.256 +0900
