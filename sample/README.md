@@ -25,3 +25,10 @@ Pythonでdatasetで取得したデータを学習するためのプログラム�
 trainingで学習したモデルを用いて，推論を行うプログラム。PythonとDjlを用いて作成したJavaプログラムを格納。
 
 
+### 推論用プログラム
+
+[training](../training/training.ipynb)で作成したモデルを用いて，推論するプログラムのサンプル。
+
+### サンプル
+- [java](./inference_java/README.md)
+- [python](./inference_py/inference.ipynb)
