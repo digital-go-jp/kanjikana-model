@@ -138,40 +138,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <target>
-                        <property name="model" value="../training/model" />
-
-                        <copy file="${model}/decoder.pt" tofile="${ai}/decoder.pt" />
-                        <copy file="${model}/encoder.pt" tofile="${ai}/encoder.pt" />
-                        <copy file="${model}/generator.pt" tofile="${ai}/generator.pt" />
-                        <copy file="${model}/params.json" tofile="${ai}/params.json" />
-                        <copy file="${model}/positional_encoding.pt" tofile="${ai}/positional_encoding.pt" />
-                        <copy file="${model}/script.pt" tofile="${ai}/script.pt" />
-                        <copy file="${model}/src_tok_emb.pt" tofile="${ai}/src_tok_emb.pt" />
-                        <copy file="${model}/tgt_tok_emb.pt" tofile="${ai}/tgt_tok_emb.pt" />
-                        <copy file="${model}/vocab_src.txt" tofile="${ai}/vocab_src.txt" />
-                        <copy file="${model}/vocab_tgt.txt" tofile="${ai}/vocab_tgt.txt" />
-
-                        <copy file="${model_r}/decoder.pt" tofile="${ai_r}/decoder.pt" />
-                        <copy file="${model_r}/encoder.pt" tofile="${ai_r}/encoder.pt" />
-                        <copy file="${model_r}/generator.pt" tofile="${ai_r}/generator.pt" />
-                        <copy file="${model_r}/params.json" tofile="${ai_r}/params.json" />
-                        <copy file="${model_r}/positional_encoding.pt" tofile="${ai_r}/positional_encoding.pt" />
-                        <copy file="${model_r}/script.pt" tofile="${ai_r}/script.pt" />
-                        <copy file="${model_r}/src_tok_emb.pt" tofile="${ai_r}/src_tok_emb.pt" />
-                        <copy file="${model_r}/tgt_tok_emb.pt" tofile="${ai_r}/tgt_tok_emb.pt" />
-                        <copy file="${model_r}/vocab_src.txt" tofile="${ai_r}/vocab_src.txt" />
-                        <copy file="${model_r}/vocab_tgt.txt" tofile="${ai_r}/vocab_tgt.txt" />
-                    </target>
-                </configuration>
-            </plugin>
-
-
 
             <!--
             https://yoh1496.hatenablog.com/entry/2021/07/13/235608

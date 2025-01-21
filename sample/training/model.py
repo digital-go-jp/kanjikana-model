@@ -33,7 +33,8 @@ SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
 def split_tokenizer(x):  # noqa: F821
     # type: (str) -> List[str]
-    return x.split()
+    # return x.split()
+    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
 
 class Vocab:
     def __init__(self, tokenizer,tokens, special_tokens, unk_token='<unk>'):
