@@ -5,7 +5,7 @@
 
     <groupId>jp.go.digital.kanjikana</groupId>
     <artifactId>shimei_kanjikana_core_oss</artifactId>
-    <version>1.0</version>
+    <version>1.6o</version>
 
     <description>Shimei Kanji Kana Core OSS</description>
     <properties>
