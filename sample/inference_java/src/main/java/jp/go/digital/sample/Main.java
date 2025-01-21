@@ -104,19 +104,19 @@ public class Main {
     public static void main(String[] args) throws Exception{
         ArgumentParser parser = ArgumentParsers.newFor("sample").build().defaultHelp(true).description("sample");
 
-        parser.addArgument("--test_file").setDefault("../../dataset/test.jsonl");
+        parser.addArgument("--test_file").setDefault("../dataset/test.jsonl");
 
 
-        parser.addArgument("--model_script").setDefault("../../training/model/script.pt").type(String.class);
-        parser.addArgument("--model_encoder").setDefault("../../training/model/encoder.pt").type(String.class);
-        parser.addArgument("--model_decoder").setDefault("../../training/model/decoder.pt").type(String.class);
-        parser.addArgument("--model_positional_encoding").setDefault("../../training/model/positional_encoding.pt").type(String.class);
-        parser.addArgument("--model_generator").setDefault("../../training/model/generator.pt").type(String.class);
-        parser.addArgument("--model_src_tok_emb").setDefault("../../training/model/src_tok_emb.pt").type(String.class);
-        parser.addArgument("--model_tgt_tok_emb").setDefault("../../training/model/tgt_tok_emb.pt").type(String.class);
-        parser.addArgument("--model_vocab_src").setDefault("../../training/model/vocab_src.txt").type(String.class);
-        parser.addArgument("--model_vocab_tgt").setDefault("../../training/model/vocab_tgt.txt").type(String.class);
-        parser.addArgument("--model_params").setDefault("../../training/model/params.json").type(String.class);
+        parser.addArgument("--model_script").setDefault("../training/model/script.pt").type(String.class);
+        parser.addArgument("--model_encoder").setDefault("../training/model/encoder.pt").type(String.class);
+        parser.addArgument("--model_decoder").setDefault("../training/model/decoder.pt").type(String.class);
+        parser.addArgument("--model_positional_encoding").setDefault("../training/model/positional_encoding.pt").type(String.class);
+        parser.addArgument("--model_generator").setDefault("../training/model/generator.pt").type(String.class);
+        parser.addArgument("--model_src_tok_emb").setDefault("../training/model/src_tok_emb.pt").type(String.class);
+        parser.addArgument("--model_tgt_tok_emb").setDefault("../training/model/tgt_tok_emb.pt").type(String.class);
+        parser.addArgument("--model_vocab_src").setDefault("../training/model/vocab_src.txt").type(String.class);
+        parser.addArgument("--model_vocab_tgt").setDefault("../training/model/vocab_tgt.txt").type(String.class);
+        parser.addArgument("--model_params").setDefault("../training/model/params.json").type(String.class);
 
         parser.addArgument("--out_file").setDefault("output.txt");
         parser.addArgument("--n_best").setDefault(5).type(Integer.class);

@@ -169,12 +169,12 @@ def main():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--test_file', default='../dataset/test.jsonl', type=str)
     parser.add_argument('--model_file', default='../training/model/checkpoint_best.pt', type=str)
-    parser.add_argument('--outfile', default="out.txt", type=str)
+    parser.add_argument('--outfile', default="outfile.txt", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='beam', type=str)
+    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 

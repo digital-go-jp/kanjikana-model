@@ -11,3 +11,4 @@ conf
 *.jar
 output*.txt
 input*.txt
+outfile.txt
