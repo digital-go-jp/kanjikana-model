@@ -1,9 +1,11 @@
 #!/bin/env python
 # coding:utf-8
 
+import sys
+sys.path.append("../")
 import argparse
 import torch
-from ...training.transformer_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
 
 # https://qiita.com/Shoelife2022/items/7f2b5e916ebd68ca2c23
 # https://github.com/budzianowski/PyTorch-Beam-Search-Decoding/blob/master/decode_beam.py
@@ -165,7 +167,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
 def main():
     # 引数の処理
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--test_file', default='../../dataset/test.jsonl', type=str)
+    parser.add_argument('--test_file', default='../dataset/test.jsonl', type=str)
     parser.add_argument('--model_file', default='../training/model/checkpoint_best.pt', type=str)
     parser.add_argument('--outfile', default="out.txt", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))

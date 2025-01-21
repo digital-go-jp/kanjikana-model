@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'kanjikana-model'
-copyright = '2024, Digital Agency'
+copyright = '2025, Digital Agency'
 author = 'Digital Agency'
 
 # -- General configuration ---------------------------------------------------

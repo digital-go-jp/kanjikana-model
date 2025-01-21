@@ -4,11 +4,11 @@
    contain the root `toctree` directive.
 
 氏名漢字カナ突合システム
-#########################
+#############################
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
    ./about/index
 
@@ -20,4 +20,5 @@
    
    ./model/index
    
+   ./resources/index
 
