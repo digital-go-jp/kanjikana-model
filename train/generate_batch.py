@@ -127,6 +127,20 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             tokens.append(torch.Tensor(token))
         return tokens, probs
 
+    # スペーススペーススペースはスペースにするため別メソッドとした   replace(" ","")では全部消えてしまう
+    def remove_space(self,s):
+        lst=[]
+        i=0
+        while i < len(s):
+            if s[i]==" ":
+                if i+1<len(s):
+                    lst.append(s[i+1])
+                    i+=1
+            else:
+                lst.append(s[i])
+            i+=1
+        return "".join(lst)
+
     def generate(self):
         last_checkpoint = torch.load(self.args.model_file, map_location=torch.device(self.args.device))
 
@@ -149,9 +163,9 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             if self.args.search=='greedy' or self.args.search=='both':
 
                 tgt_token,tgt_prob = self.greedy_decode( transformer,  src, src_mask, max_len=self.args.max_len, start_symbol=BOS_IDX)
-                predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "").replace(" ","")
-                target_sentence = tgt_sentence.replace(" ","")
-                src_sentence = src_sentence.replace(" ","")
+                predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                target_sentence = self.remove_space(tgt_sentence)
+                src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
                     f.write(f'greeedy,{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
 
@@ -159,9 +173,9 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
 
                 tgt_tokens ,tgt_probs= self.beam_decode(transformer,src,src_mask, self.args.max_len,self.args.beam_width,self.args.nbest,start_symbol=BOS_IDX )
                 for i, (tgt_token, tgt_prob) in enumerate(zip(tgt_tokens,tgt_probs)):
-                    predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "").replace(" ","")
-                    target_sentence = tgt_sentence.replace(" ","")
-                    src_sentence = src_sentence.replace(" ","")
+                    predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                    target_sentence = self.remove_space(tgt_sentence)
+                    src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
                         f.write(f'beam{i},{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
 
