@@ -4,6 +4,10 @@
 #import torchtext
 #torchtext.disable_torchtext_deprecation_warning()
 
+
+import warnings
+warnings.simplefilter('ignore')
+
 from typing import Iterable, List
 
 from collections import OrderedDict
