@@ -188,7 +188,7 @@ def main():
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='beam', choices=["greedy",'beam'])
+    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 
