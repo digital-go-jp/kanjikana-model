@@ -24,7 +24,10 @@ def run(args):
         for v in vv.keys():
             if len(k)==0 or len(v)==0:
                 continue
-            lst.append([k,v])
+            if args.reverse:
+                lst.append([v,k])
+            else:
+                lst.append([k,v])
             k_max_len=k_max_len if k_max_len>len(k) else len(k)
             v_max_len=v_max_len if v_max_len>len(v) else len(v)
 
@@ -62,6 +65,7 @@ def main():
     parser.add_argument("--json", default="tmp.json", type=str)
     parser.add_argument("--outdir", default="dataset", type=str)
     parser.add_argument("--ratio", default=0.01, type=float)
+    parser.add_argument("--reverse", action="store_true",help="trueのとき、カタカナから漢字を学習するデータセットを作成する")
 
 
     args = parser.parse_args()
