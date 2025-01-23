@@ -127,7 +127,7 @@ public class Main {
         parser.addArgument("--n_best").setDefault(5).type(Integer.class);
         parser.addArgument("--beam_width").setDefault(5).type(Integer.class);
         parser.addArgument("--max_len").setDefault(100).type(Integer.class);
-        parser.addArgument("--search_type").choices("beam","greedy").setDefault("beam");
+        parser.addArgument("--search_type").choices("beam","greedy").setDefault("greedy");
 
 
         Namespace ns = parser.parseArgs(args);
