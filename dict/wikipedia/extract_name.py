@@ -27,28 +27,28 @@ def run(args):
 
     def conv(s):
         t = str(s)
-        t = re.sub('|links=no}}','}}',t)
-        t = re.sub('{{.*\|', '', t)
-        t = re.sub('}}','',t)
-        t = t.replace("}}","")
-        t = t.replace(']] ','')
-        t = re.sub(']]','',t)
-        t = t.replace('"',"")
-        t = t.replace("&quot;","").replace("&amp;","&")
-        t = t.replace("'&lt;ref&gt;","").replace("}&lt;/ref&gt;","")
-        t = t.replace("'","")
-        t = t.replace(",","")
-        t = t.replace("、","")
-        t = t.replace("本名：","")
-        t = re.sub('^.*\|', "", t).replace("}}", "")
-        t = re.sub('、.+$', '', t)
-        t = re.sub(',.+$', '', t)
-        t = re.sub('［.+］','',t)
-        t = re.sub('\[.+\]', '', t)
-        t = re.sub('\(.+\)', '', t)
-        t = re.sub('\[\[.+：$','',t)
-        t = re.sub('\[.*$','',t)
-        t = re.sub(' -$','',t)
+        t = re.sub(r'|links=no}}','}}',t)
+        t = re.sub(r'{{.*\|', '', t)
+        t = re.sub(r'}}','',t)
+        t = t.replace(r"}}","")
+        t = t.replace(r']] ','')
+        t = re.sub(r']]','',t)
+        t = t.replace(r'"',"")
+        t = t.replace(r"&quot;","").replace("&amp;","&")
+        t = t.replace(r"'&lt;ref&gt;","").replace("}&lt;/ref&gt;","")
+        t = t.replace(r"'","")
+        t = t.replace(r",","")
+        t = t.replace(r"、","")
+        t = t.replace(r"本名：","")
+        t = re.sub(r'^.*\|', "", t).replace("}}", "")
+        t = re.sub(r'、.+$', '', t)
+        t = re.sub(r',.+$', '', t)
+        t = re.sub(r'［.+］','',t)
+        t = re.sub(r'\[.+\]', '', t)
+        t = re.sub(r'\(.+\)', '', t)
+        t = re.sub(r'\[\[.+：$','',t)
+        t = re.sub(r'\[.*$','',t)
+        t = re.sub(r' -$','',t)
         t = t.strip()
         return t
 
@@ -61,14 +61,14 @@ def run(args):
     def kakkonai(l):
 
         # カッコの中
-        tmp = re.sub('^.*?（','',l)
-        s = re.sub('）.*$','',tmp)
+        tmp = re.sub(r'^.*?（','',l)
+        s = re.sub(r'）.*$','',tmp)
         s =re.sub(r'&lt;ref&gt;.*&lt;/ref&gt;','',s)
 
         #s = re.sub('&lt;.*$','',s)
         #s = re.sub('&#.*$','',s)
-        s = re.sub('\[\[\d+.*$','',s)   # [[yyyy年 以降 を削除
-        s = re.sub('\[.*\]','',s)
+        s = re.sub(r'\[\[\d+.*$','',s)   # [[yyyy年 以降 を削除
+        s = re.sub(r'\[.*\]','',s)
         #lst = []
         # カッコ内に{{R| .. }}を削除
         s=re.sub(r'\{\{R\|.+\}\}','',s)
@@ -77,7 +77,7 @@ def run(args):
         s=re.sub(r'\{\{IPA\|.+\}\}','',s)
 
         # カッコないに {{ }} で囲まれた名前 {{Lang|en|Outrange}}
-        items = re.findall("\{\{[Ll]ang.+?\}\}", s)
+        items = re.findall(r"\{\{[Ll]ang.+?\}\}", s)
         for item in items:
             if "en" in item:
                 tmp = conv(item)
