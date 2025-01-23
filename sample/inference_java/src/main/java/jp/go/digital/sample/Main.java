@@ -36,7 +36,12 @@ public class Main {
      */
     public void run(String test_file, String out_file,String search_type) throws Exception {
         List<EngFra> lines = fileReader(new File(test_file));
-        boolean first=true;
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, false), StandardCharsets.UTF_8));
+        bw.write("no\tsearch\tsrc\ttgt\tpred\tprob\n");
+        bw.close();
+
+        int no=0;
         for(EngFra ef : lines){
             List<SearchResult> lst = run_line(ef.eng, ef.fra,search_type);
             int i=0;
@@ -45,19 +50,19 @@ public class Main {
                 String prob = String.valueOf(r.getProbability());
                 String src = ef.eng;
                 String tgt = ef.fra;
-                String no = "beam"+String.valueOf(i);
+                String search = "beam"+String.valueOf(i);
                 if(search_type.equals("greedy")){
-                    no = "greedy";
+                    search = "greedy";
                 }
-                String l = no+","+src+","+tgt+","+pred+","+prob;
+                String l = no+"\t"+search+"\t"+src+"\t"+tgt+"\t"+pred+"\t"+prob;
 
-
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, !first), StandardCharsets.UTF_8));
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, true), StandardCharsets.UTF_8));
                 bw.write(l+"\n");
                 bw.close();
-                first=false;
+
                 i+=1;
             }
+            no++;
         }
 
     }
@@ -122,7 +127,7 @@ public class Main {
         parser.addArgument("--n_best").setDefault(5).type(Integer.class);
         parser.addArgument("--beam_width").setDefault(5).type(Integer.class);
         parser.addArgument("--max_len").setDefault(100).type(Integer.class);
-        parser.addArgument("--search_type").choices("beam","greedy").setDefault("beam");
+        parser.addArgument("--search_type").choices("beam","greedy").setDefault("greedy");
 
 
         Namespace ns = parser.parseArgs(args);

@@ -148,11 +148,11 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
         num_epochs = last_checkpoint['epoch']
 
         with open(self.args.outfile,'w',encoding='utf-8') as f:
-            f.write(f"idx,src,tgt,pred,prob\n")
+            f.write(f"no\tsearch\tsrc\ttgt\tpred\tprob\n")
         transformer.eval()
         test_iter = KanjiKanaDataSet(self.args, self.args.test_file)
 
-        for src_sentence,tgt_sentence in test_iter:
+        for no,(src_sentence,tgt_sentence) in enumerate(test_iter):
             src = self.text_transform[self.args.source_lang](src_sentence).view(-1, 1)
             num_tokens = src.shape[0]
             src_mask = (torch.zeros(num_tokens, num_tokens)).type(torch.bool)
@@ -164,7 +164,11 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                 target_sentence = self.remove_space(tgt_sentence)
                 src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
+<<<<<<< HEAD
                     f.write(f'greeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+=======
+                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+>>>>>>> 868a52b75c9196ccf85d0aa4e3b4a9db48d7df9a
 
             if self.args.search=='beam':
 
@@ -174,7 +178,11 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                     target_sentence = self.remove_space(tgt_sentence)
                     src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
+<<<<<<< HEAD
                         f.write(f'beam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+=======
+                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+>>>>>>> 868a52b75c9196ccf85d0aa4e3b4a9db48d7df9a
 
 
 
@@ -188,7 +196,7 @@ def main():
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='beam', choices=["greedy",'beam'])
+    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 
