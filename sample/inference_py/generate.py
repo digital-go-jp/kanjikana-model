@@ -148,11 +148,11 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
         num_epochs = last_checkpoint['epoch']
 
         with open(self.args.outfile,'w',encoding='utf-8') as f:
-            f.write(f"idx,src,tgt,pred,prob\n")
+            f.write(f"no\tsearch\tsrc\ttgt\tpred\tprob\n")
         transformer.eval()
         test_iter = KanjiKanaDataSet(self.args, self.args.test_file)
 
-        for src_sentence,tgt_sentence in test_iter:
+        for no,(src_sentence,tgt_sentence) in enumerate(test_iter):
             src = self.text_transform[self.args.source_lang](src_sentence).view(-1, 1)
             num_tokens = src.shape[0]
             src_mask = (torch.zeros(num_tokens, num_tokens)).type(torch.bool)
@@ -164,7 +164,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                 target_sentence = self.remove_space(tgt_sentence)
                 src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
-                    f.write(f'greeedy,{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
+                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
             if self.args.search=='beam':
 
@@ -174,7 +174,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                     target_sentence = self.remove_space(tgt_sentence)
                     src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
-                        f.write(f'beam{i},{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
+                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
 
 
