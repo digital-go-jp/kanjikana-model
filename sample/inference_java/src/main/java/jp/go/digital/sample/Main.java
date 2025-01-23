@@ -56,7 +56,7 @@ public class Main {
                 }
                 String l = no+"\t"+search+"\t"+src+"\t"+tgt+"\t"+pred+"\t"+prob;
 
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, true), StandardCharsets.UTF_8));
+                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, true), StandardCharsets.UTF_8));
                 bw.write(l+"\n");
                 bw.close();
 
