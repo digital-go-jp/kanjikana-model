@@ -164,11 +164,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                 target_sentence = self.remove_space(tgt_sentence)
                 src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
-<<<<<<< HEAD
-                    f.write(f'greeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
-=======
                     f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
->>>>>>> 868a52b75c9196ccf85d0aa4e3b4a9db48d7df9a
 
             if self.args.search=='beam':
 
@@ -178,11 +174,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                     target_sentence = self.remove_space(tgt_sentence)
                     src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
-<<<<<<< HEAD
-                        f.write(f'beam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
-=======
                         f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
->>>>>>> 868a52b75c9196ccf85d0aa4e3b4a9db48d7df9a
 
 
 
