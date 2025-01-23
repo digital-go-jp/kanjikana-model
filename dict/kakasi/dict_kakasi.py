@@ -1,23 +1,23 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+
+
+"""
+kakasiの漢字かな変換辞書から，，漢字・アルファベットとカタカナのペアを作成する。氏名以外のものも含まれる。
+"""
+
 import argparse
-import json
 import jaconv
 import re
 
 def run(args):
   hiragana = re.compile('[ぁ-ゟ]+')
-  dic={}
-
-  def set_dic(key,val):
-    if key not in dic:
-      dic[key] = {}
-    if val not in dic[key]:
-      dic[key][val] = {"dics": [args.dicname]}
-    else:
-      dic[key][val]["dics"].append(args.dicname)
-      dic[key][val]["dics"]=list(set(dic[key][val]["dics"]))
 
   lst=[]
   with open(args.infile,'r',encoding='euc-jp') as f:
@@ -37,17 +37,10 @@ def run(args):
     for l in lst:
        f.write(l+'\n')
 
-#      set_dic(kanji,kana)
-
-#  with open(args.jsonfile,'w',encoding='utf-8') as f:
-#    json.dump(dic,f,indent=2,ensure_ascii=False)
-
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument("--infile",default="kakasi-2.3.6/kakasidict",type=str)
-#  parser.add_argument("--jsonfile",default="kakasi.json",type=str)
   parser.add_argument("--outfile",default="kakasi.txt",type=str)
-#  parser.add_argument("--dicname",default="kakasi",type=str)
   args = parser.parse_args()
   run(args)
 

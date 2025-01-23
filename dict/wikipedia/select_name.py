@@ -1,6 +1,19 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+extract_name.pyによってWikipediaのダンプファイルから，概要部分が抜き出されたものに対して，漢字・アルファベットとカタカナのペアのうち，正しいと推測されるものを選択する。
+
+漢字・アルファベット部分に，漢字もしくはアルファベットだけのもののみ残す。
+漢字・アルファベットのスペースで区切られた単語数と，カタカナ部分のスペースで区切られた単語数が同じものを残す
+"""
+
+
 # 正しい組み合わせだけを抜き出す
 import argparse
 import json
@@ -40,9 +53,7 @@ def run(args):
         return re.match(r'^[a-zA-Zａ-ｚＡ-Ｚ 　・＝]+$',s) is not None
 
     def is_midashi(s):
-        #if is_alpha(s):
         if is_alpha(s) or JPN.fullmatch(s):
-        #if HIRAKATA.fullmatch(s) is None:
             return True
         return False
 
@@ -67,11 +78,6 @@ def run(args):
             if len(val1.split("　")) != len(val2.split("　")):
                 writeng(l)
                 continue
-
-            #print(is_yomigana(item1))
-            #print(is_midashi(item2))
-            #print(is_yomigana(item2))
-            #print(is_midashi(item1))
 
             if is_yomigana(item1) and is_yomigana(item2):
                 lstng.append(l)

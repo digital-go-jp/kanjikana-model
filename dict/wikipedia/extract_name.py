@@ -1,6 +1,18 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+Wikipediaの概要部分から，名前のペアらしきものを抜き出す。
+概要の先頭の漢字，アルファベットを名前と認識し，その直後のカッコ内のカタカナを読みとして抽出する。
+ただし，この抽出基準に則っていないものもあるため，漢字・アルファベットとカタカナのペアに間違いが含まれる可能性がある。
+"""
+
+
 import argparse
 import json
 import os
