@@ -1,14 +1,14 @@
 #!/bin/env python
-# Copyright (c) 2024 デジタル庁
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-# coding:utf-8
 
 import math
 import argparse
-import json
 
 def run(args):
     hsh={}
@@ -41,20 +41,14 @@ def run(args):
                 ok_rank.append(i+1)
                 okflg=True
                 break
-        #if not okflg:
-            #print(f'kanji={kanji}')
 
     print(f'{args.infile},acc={len(ok_prob)/len(hsh)}')
-
-
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--infile',default='gen/out_r.txt')
     args = parser.parse_args()
-    #print(json.dumps(args.__dict__, indent=2))
     run(args)
-
 
 if __name__ == '__main__':
     main()

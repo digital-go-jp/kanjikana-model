@@ -1,6 +1,16 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+学習済みのモデルを用いて，漢字からカナ，カナから漢字の推論を行う。推論の際には，GreedyサーチとBeamサーチを選択して実行する
+"""
+
+
 import sys
 sys.path.append("../")
 import argparse
