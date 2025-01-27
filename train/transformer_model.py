@@ -40,7 +40,7 @@ SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
 def split_tokenizer(x):  # noqa: F821
     # type: (str) -> List[str]
-    return x.split()
+    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
 
 
 class Vocab:
@@ -322,25 +322,14 @@ class KanjiKanaTransformer:
 
         self.token_transform[self.args.source_lang] = split_tokenizer
         self.token_transform[self.args.target_lang] = split_tokenizer
-        #src=OrderedDict()
-        #for s in src_vocab:
-        #    src[s]=1
-
-
 
         svocab = Vocab()
         svocab.set_by_vocab(src_vocab)
         self.vocab_transform[params["source_lang"]] = svocab
 
-        #tgt=OrderedDict()
-        #for s in tgt_vocab:
-        #    tgt[s]=1
-
         tvocab = Vocab()
         tvocab.set_by_vocab(tgt_vocab)
         self.vocab_transform[params["target_lang"]] = tvocab
-
-        #self.vocab_transform[params["target_lang"]] = Vocab(engfra_tokenizer(params['target_lang']), list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
