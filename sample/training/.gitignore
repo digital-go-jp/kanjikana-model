@@ -1,4 +1,4 @@
 model
 logs
 __pycache__
-*.old
+*.old*
