@@ -31,9 +31,9 @@ UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
 # Make sure the tokens are in order of their indices to properly insert them in vocab
 SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
-#def split_tokenizer(x):  # noqa: F821
-#    # type: (str) -> List[str]
-#    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
+def split_tokenizer(x):  # noqa: F821
+    # type: (str) -> List[str]
+    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
 
 
 import nltk
@@ -174,6 +174,9 @@ class Seq2SeqTransformer(nn.Module):
 #    return lst
 
 class KanjiKanaDataSet(Dataset):
+    """
+    SRCとTGTの文章を受け取って、transforms_xxxで指定された方法によって文章を分割する。__get_item__で出力されるものはスペース区切りになっているので以降はスペースで句切ればよい
+    """
     def __init__(self,args, root, transforms_src, transforms_tgt) -> None:
         super().__init__()
         self.transforms_src = transforms_src
@@ -196,10 +199,11 @@ class KanjiKanaDataSet(Dataset):
         index: int
     ) -> Tuple[str, str]:
 
-        # データの変形 (transforms)
+        # データの変形 (transforms)  ファイルから読み込んだものを単語単位に区切る
         src_batch = self.transforms_src(self.data[index][0])
         tgt_batch= self.transforms_tgt(self.data[index][1])
 
+        # 以降はtransformersはコストが高いのでスペース区切りにしておく
         return " ".join(src_batch), " ".join(tgt_batch)
 
     # この method がないと DataLoader を呼び出す際にエラーを吐かれる
@@ -324,27 +328,17 @@ class KanjiKanaTransformer:
         self.args.source_lang=params['source_lang']
         self.args.target_lang=params['target_lang']
 
-        self.token_transform[self.args.source_lang] = engfra_tokenizer(self.args.source_lang)
-        self.token_transform[self.args.target_lang] = engfra_tokenizer(self.args.target_lang)
-        #src=OrderedDict()
-        #for s in src_vocab:
-        #    src[s]=1
-
-
+        self.token_transform[self.args.source_lang] = split_tokenizer # KanjiKanaDataSet でスペース区切りにされているため
+        self.token_transform[self.args.target_lang] = split_tokenizer # KanjiKanaDataSet でスペース区切りにされているため
 
         svocab = Vocab()
         svocab.set_by_vocab(src_vocab)
         self.vocab_transform[params["source_lang"]] = svocab
 
-        #tgt=OrderedDict()
-        #for s in tgt_vocab:
-        #    tgt[s]=1
-
         tvocab = Vocab()
         tvocab.set_by_vocab(tgt_vocab)
         self.vocab_transform[params["target_lang"]] = tvocab
 
-        #self.vocab_transform[params["target_lang"]] = Vocab(engfra_tokenizer(params['target_lang']), list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
@@ -377,8 +371,8 @@ class KanjiKanaTransformer:
             for data_sample in data_iter:
                 yield data_sample[language_index[language]]
 
-        self.token_transform[self.args.source_lang] = engfra_tokenizer(self.args.source_lang)
-        self.token_transform[self.args.target_lang] = engfra_tokenizer(self.args.target_lang)
+        self.token_transform[self.args.source_lang] = split_tokenizer # KanjiKanaDataSet でスペース区切りにされているため
+        self.token_transform[self.args.target_lang] = split_tokenizer # KanjiKanaDataSet でスペース区切りにされているため
 
         src=[t for t in yield_tokens(train_iter, self.args.source_lang)]
         tgt=[t for t in yield_tokens(train_iter, self.args.target_lang)]
@@ -386,12 +380,10 @@ class KanjiKanaTransformer:
         svocab = Vocab()
         svocab.set_by_token(engfra_tokenizer(self.args.source_lang), src)
         self.vocab_transform[self.args.source_lang] = svocab
-        #self.vocab_transform[self.args.source_lang] = Vocab(engfra_tokenizer(self.args.source_lang), src, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
         tvocab = Vocab()
         tvocab.set_by_token(engfra_tokenizer(self.args.target_lang), tgt)
         self.vocab_transform[self.args.target_lang] = tvocab
-        #self.vocab_transform[self.args.target_lang] = Vocab(engfra_tokenizer(self.args.target_lang), tgt, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
