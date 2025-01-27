@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2025 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package jp.go.digital.sample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +60,12 @@ public class Main {
      */
     public void run(String test_file, String out_file,String search_type) throws Exception {
         List<EngFra> lines = fileReader(new File(test_file));
-        boolean first=true;
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, false), StandardCharsets.UTF_8));
+        bw.write("no\tsearch\tsrc\ttgt\tpred\tprob\n");
+        bw.close();
+
+        int no=0;
         for(EngFra ef : lines){
             List<SearchResult> lst = run_line(ef.eng, ef.fra,search_type);
             int i=0;
@@ -45,19 +74,19 @@ public class Main {
                 String prob = String.valueOf(r.getProbability());
                 String src = ef.eng;
                 String tgt = ef.fra;
-                String no = "beam"+String.valueOf(i);
+                String search = "beam"+String.valueOf(i);
                 if(search_type.equals("greedy")){
-                    no = "greedy";
+                    search = "greedy";
                 }
-                String l = no+","+src+","+tgt+","+pred+","+prob;
+                String l = no+"\t"+search+"\t"+src+"\t"+tgt+"\t"+pred+"\t"+prob;
 
-
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, !first), StandardCharsets.UTF_8));
+                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out_file, true), StandardCharsets.UTF_8));
                 bw.write(l+"\n");
                 bw.close();
-                first=false;
+
                 i+=1;
             }
+            no++;
         }
 
     }
@@ -122,7 +151,7 @@ public class Main {
         parser.addArgument("--n_best").setDefault(5).type(Integer.class);
         parser.addArgument("--beam_width").setDefault(5).type(Integer.class);
         parser.addArgument("--max_len").setDefault(100).type(Integer.class);
-        parser.addArgument("--search_type").choices("beam","greedy").setDefault("beam");
+        parser.addArgument("--search_type").choices("beam","greedy").setDefault("greedy");
 
 
         Namespace ns = parser.parseArgs(args);

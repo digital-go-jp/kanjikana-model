@@ -1,6 +1,14 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+ipadicから，漢字・アルファベットとその読みを抜き出し，漢字・アルファベットとカタカナのペアを作成する。指名以外のものも含まれる。
+"""
 
 
 import argparse

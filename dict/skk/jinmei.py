@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+skkの姓名辞書の漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
+"""
+
 import json
 import argparse
 import re
@@ -13,13 +22,14 @@ def conv(s):
     for k,o in zip(KOMOJI,OMOJI):
         s=s.replace(k,o)
     return s
+
 class Namae:
     def __init__(self, args):
         self.args = args
 
     def run(self):
         hsh={}
-        with open(self.args.infile,"r",encoding="utf-8") as f:
+        with open(self.args.infile,"r",encoding="euc-jp") as f:
             for l in f:
                 l=l.rstrip()
                 if l.find(";;")==0:
@@ -48,9 +58,6 @@ class Namae:
                         hsh[kanji]=[]
                     kyomi=jaconv.hira2kata(yomi)
                     hsh[kanji].append(kyomi)
-                    #cyomi=conv(kyomi)
-                    #if kyomi != cyomi:
-                    #    hsh[kanji].append(cyomi)
 
         with open(self.args.outfile,"w",encoding="utf-8") as f:
             for k,vv in hsh.items():
