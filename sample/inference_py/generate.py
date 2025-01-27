@@ -15,7 +15,7 @@ import sys
 sys.path.append("../")
 import argparse
 import torch
-from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, engfra_tokenizer
 
 # https://qiita.com/Shoelife2022/items/7f2b5e916ebd68ca2c23
 # https://github.com/budzianowski/PyTorch-Beam-Search-Decoding/blob/master/decode_beam.py
@@ -157,10 +157,11 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
         optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
         num_epochs = last_checkpoint['epoch']
 
+        params = last_checkpoint["params"]
         with open(self.args.outfile,'w',encoding='utf-8') as f:
             f.write(f"no\tsearch\tsrc\ttgt\tpred\tprob\n")
         transformer.eval()
-        test_iter = KanjiKanaDataSet(self.args, self.args.test_file)
+        test_iter = KanjiKanaDataSet(self.args, self.args.test_file, engfra_tokenizer(params["source_lang"]),engfra_tokenizer(params["target_lang"]))
 
         for no,(src_sentence,tgt_sentence) in enumerate(test_iter):
             src = self.text_transform[self.args.source_lang](src_sentence).view(-1, 1)

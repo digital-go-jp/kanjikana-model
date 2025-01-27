@@ -1,16 +1,20 @@
 #!/bin/env python
 # coding:utf-8
 
-#import torchtext
-#torchtext.disable_torchtext_deprecation_warning()
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
+"""
+漢字からカナ，もしくは，カナから漢字のデータを入力として与えて，Transformerモデルを作成する
+"""
 
 import warnings
 warnings.simplefilter('ignore')
 
 from typing import Iterable, List
 
-from collections import OrderedDict
 from torch import Tensor
 import torch
 import torch.nn as nn
@@ -19,12 +23,6 @@ import math
 from torch.nn.utils.rnn import pad_sequence
 from timeit import default_timer as timer
 from torch.utils.data import DataLoader
-
-#from torchtext.data.utils import get_tokenizer
-#from torchtext.vocab import build_vocab_from_iterator
-#from torchtext.vocab import vocab
-#from vocab_factory import vocab, build_vocab_from_iterator
-
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 import json
@@ -44,33 +42,46 @@ def split_tokenizer(x):  # noqa: F821
     # type: (str) -> List[str]
     return x.split()
 
+
 class Vocab:
-    def __init__(self, tokenizer,tokens, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>'):
+
+    def __init__(self):
         self.itos=[]
         self.stoi={}
-        for token in special_tokens+tokens:
-            for t in tokenizer(token):
+
+    def set_by_token(self, tokenizer,tokens ):
+        self.itos=[]
+        self.stoi={}
+
+        def set(words):
+            for t in words:
                 if t not in self.stoi:
                     n = len(self.stoi)
-                    self.stoi[t]=n
+                    self.stoi[t] = n
                     self.itos.append(t)
-        self.unk_token = unk_token
 
-    def set(self, itos):
+        set(SPECIAL_SYMBOLS)
+        for token in tokens:
+            set(tokenizer(token))
+
+    def set_by_vocab(self, itos):
         self.itos = itos
-        self.stoi={}
-        for i,s in enumerate(itos):
-            self.stoi[s]=i
+
+        stoi={}
+        for i,v in enumerate(itos):
+            stoi[v]=i
+        self.stoi=stoi
+
 
     def __len__(self):
         return len(self.stoi)
 
     def __call__(self, token:List[str]):
-        return [self.stoi[t] if t in self.stoi else self.stoi[self.unk_token] for t in token ]
+        unk_token=SPECIAL_SYMBOLS[UNK_IDX]
+        return [self.stoi[t] if t in self.stoi else self.stoi[unk_token] for t in token ]
 
     def lookup_tokens(self, tokens:List[int]):
         return [self.itos[int(i)] for i in tokens]
-
 
 # helper Module that adds positional encoding to the token embedding to introduce a notion of word order.
 class PositionalEncoding(nn.Module):
@@ -152,16 +163,17 @@ class Seq2SeqTransformer(nn.Module):
                           self.tgt_tok_emb(tgt)), memory,
                           tgt_mask)
 
-def transforms(string):
-    lst=[]
-    for i in range(len(string)):
-        lst.append(string[i])
-    return lst
+#def transforms(string):
+#    lst=[]
+#    for i in range(len(string)):
+#        lst.append(string[i])
+#    return lst
 
 class KanjiKanaDataSet(Dataset):
-    def __init__(self,args, root, transforms=transforms) -> None:
+    def __init__(self,args, root, transforms_src, transforms_tgt) -> None:
         super().__init__()
-        self.transforms = transforms
+        self.transforms_src = transforms_src
+        self.transforms_tgt = transforms_tgt
         self.args =  args
         src=[]
         tgt=[]
@@ -181,8 +193,8 @@ class KanjiKanaDataSet(Dataset):
     ) -> Tuple[str, str]:
 
         # データの変形 (transforms)
-        src_batch = self.transforms(self.data[index][0])
-        tgt_batch= self.transforms(self.data[index][1])
+        src_batch = self.transforms_src(self.data[index][0])
+        tgt_batch= self.transforms_tgt(self.data[index][1])
 
         return " ".join(src_batch), " ".join(tgt_batch)
 
@@ -272,7 +284,7 @@ class KanjiKanaTransformer:
         model.eval()
         losses = 0
 
-        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file)
+        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file, split_tokenizer, split_tokenizer)
         val_dataloader = DataLoader(val_iter, batch_size=self.args.batch_size, collate_fn=self.collate_fn, shuffle=True)
 
         for src, tgt in val_dataloader:
@@ -308,24 +320,37 @@ class KanjiKanaTransformer:
         self.args.source_lang=params['source_lang']
         self.args.target_lang=params['target_lang']
 
+        self.token_transform[self.args.source_lang] = split_tokenizer
+        self.token_transform[self.args.target_lang] = split_tokenizer
+        #src=OrderedDict()
+        #for s in src_vocab:
+        #    src[s]=1
 
-        self.token_transform[params['source_lang']] = split_tokenizer
-        self.token_transform[params["target_lang"]] = split_tokenizer
 
-        vc=Vocab(split_tokenizer,[])
-        vc.set(src_vocab)
-        self.vocab_transform[params["source_lang"]] = vc
 
-        vc=Vocab(split_tokenizer,[])
-        vc.set(tgt_vocab)
-        self.vocab_transform[params["target_lang"]] = vc
+        svocab = Vocab()
+        svocab.set_by_vocab(src_vocab)
+        self.vocab_transform[params["source_lang"]] = svocab
+
+        #tgt=OrderedDict()
+        #for s in tgt_vocab:
+        #    tgt[s]=1
+
+        tvocab = Vocab()
+        tvocab.set_by_vocab(tgt_vocab)
+        self.vocab_transform[params["target_lang"]] = tvocab
+
+        #self.vocab_transform[params["target_lang"]] = Vocab(engfra_tokenizer(params['target_lang']), list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
             self.text_transform[ln] = self.sequential_transforms(self.token_transform[ln],  # Tokenization
                                                        self.vocab_transform[ln],  # Numericalization
                                                        self.tensor_transform)  # Add BOS/EOS and create tensor
-
+        # Set ``UNK_IDX`` as the default index. This index is returned when the token is not found.
+        # If not set, it throws ``RuntimeError`` when the queried token is not found in the Vocabulary.
+        #for ln in [params["source_lang"], params["target_lang"]]:
+        #    self.vocab_transform[ln].set_default_index(UNK_IDX)
 
 
         src_vocab_size = len(self.vocab_transform[params["source_lang"]])
@@ -340,7 +365,7 @@ class KanjiKanaTransformer:
         return transformer , optimizer, loss_fn
 
 
-    def load(self, train_iter, src_vocab=None, tgt_vocab=None):
+    def load(self, train_iter):
 
         def yield_tokens(data_iter: Iterable, language: str) -> List[str]:
             language_index = {self.args.source_lang: 0, self.args.target_lang: 1}
@@ -354,22 +379,25 @@ class KanjiKanaTransformer:
         src=[t for t in yield_tokens(train_iter, self.args.source_lang)]
         tgt=[t for t in yield_tokens(train_iter, self.args.target_lang)]
 
-        if src_vocab is None:
-            self.vocab_transform[self.args.source_lang] = Vocab(split_tokenizer, src, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
-        else:
-            self.vocab_transform[self.args.source_lang] = src_vocab
+        svocab = Vocab()
+        svocab.set_by_token(split_tokenizer, src)
+        self.vocab_transform[self.args.source_lang] = svocab
 
-        if tgt_vocab is None:
-            self.vocab_transform[self.args.target_lang] = Vocab(split_tokenizer, tgt, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
-        else:
-            self.vocab_transform[self.args.target_lang] = tgt_vocab
+        tvocab = Vocab()
+        tvocab.set_by_token(split_tokenizer, tgt)
+        self.vocab_transform[self.args.target_lang] = tvocab
 
 
-            # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
+        # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [self.args.source_lang, self.args.target_lang]:
             self.text_transform[ln] = self.sequential_transforms(self.token_transform[ln],  # Tokenization
                                                        self.vocab_transform[ln],  # Numericalization
                                                        self.tensor_transform)  # Add BOS/EOS and create tensor
+        # Set ``UNK_IDX`` as the default index. This index is returned when the token is not found.
+        # If not set, it throws ``RuntimeError`` when the queried token is not found in the Vocabulary.
+        #for ln in [self.args.source_lang, self.args.target_lang]:
+        #    self.vocab_transform[ln].set_default_index(UNK_IDX)
+
 
         src_vocab_size = len(self.vocab_transform[self.args.source_lang])
         tgt_vocab_size = len(self.vocab_transform[self.args.target_lang])
@@ -403,9 +431,8 @@ class KanjiKanaTransformer:
         return torch.optim.Adam(transformer.parameters(), lr=lr, betas=(0.9, 0.98), eps=adam_eps)
 
     def train(self):
-        train_iter = KanjiKanaDataSet(self.args, self.args.train_file)
-
-
+        train_iter = KanjiKanaDataSet(self.args, self.args.train_file, split_tokenizer , split_tokenizer)
+        transformer, optimizer, loss_fn = self.load(train_iter)
         writer=None
         if len(self.args.tensorboard_logdir)>0:
             writer = SummaryWriter(log_dir=self.args.tensorboard_logdir)
@@ -413,34 +440,18 @@ class KanjiKanaTransformer:
         best_loss=None
         num_epochs = self.args.num_epochs
         now_epoch =0
-        last_checkpoint = None
-        best_checkpoint = None
         if os.path.exists(self.args.output_dir):
             files = list(sorted(glob.glob(self.args.output_dir + "/checkpoint_*.pt"), reverse=True))
             if len(files) >=2:
                 # best
-                best_checkpoint = torch.load(files[0],torch.device('cpu'))
-                last_checkpoint = torch.load(files[1],torch.device('cpu'))
-            elif len(files)==1:
-                last_checkpoint = torch.load(files[0],torch.device('cpu'))
-                best_checkpoint = last_checkpoint
-
-        if last_checkpoint is not None:
-
-            src_vocab=Vocab(split_tokenizer,[])
-            src_vocab.set(last_checkpoint['src_vocab'])
-            tgt_vocab=Vocab(split_tokenizer,[])
-            tgt_vocab.set(last_checkpoint['tgt_vocab'])
-            transformer, optimizer, loss_fn = self.load(train_iter, src_vocab, tgt_vocab)
-
-            transformer.load_state_dict(last_checkpoint['model_state_dict'])
-            optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
-            now_epoch = last_checkpoint['epoch']
-            if 'val_loss' in best_checkpoint:
-                best_loss = best_checkpoint['val_loss']
-            print(f"load:{files[1]},now_epoch={now_epoch},best_loss={best_loss}")
-        else:
-            transformer, optimizer, loss_fn = self.load(train_iter)
+                best_checkpoint = torch.load(files[0])
+                last_checkpoint = torch.load(files[1])
+                transformer.load_state_dict(last_checkpoint['model_state_dict'])
+                optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
+                now_epoch = last_checkpoint['epoch']
+                if 'val_loss' in best_checkpoint:
+                    best_loss = best_checkpoint['val_loss']
+                print(f"load:{files[1]},now_epoch={now_epoch},best_loss={best_loss}")
 
         os.makedirs(self.args.output_dir, exist_ok=True)
         print(f'num_epochs:{num_epochs}')
