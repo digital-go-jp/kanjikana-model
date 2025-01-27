@@ -1,11 +1,21 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+学習済みのモデルを用いて，漢字からカナ，カナから漢字の推論を行う。推論の際には，GreedyサーチとBeamサーチを選択して実行する
+"""
+
+
 import sys
 sys.path.append("../")
 import argparse
 import torch
-from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, engfra_tokenizer
 
 # https://qiita.com/Shoelife2022/items/7f2b5e916ebd68ca2c23
 # https://github.com/budzianowski/PyTorch-Beam-Search-Decoding/blob/master/decode_beam.py
@@ -124,6 +134,20 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             tokens.append(torch.Tensor(token))
         return tokens, probs
 
+    # スペーススペーススペースはスペースにするため別メソッドとした   replace(" ","")では全部消えてしまう
+    def remove_space(self,s):
+        lst=[]
+        i=0
+        while i < len(s):
+            if s[i]==" ":
+                if i+1<len(s):
+                    lst.append(s[i+1])
+                    i+=1
+            else:
+                lst.append(s[i])
+            i+=1
+        return "".join(lst)
+
     def generate(self):
         last_checkpoint = torch.load(self.args.model_file, map_location=torch.device(self.args.device))
 
@@ -133,12 +157,13 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
         optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
         num_epochs = last_checkpoint['epoch']
 
+        params = last_checkpoint["params"]
         with open(self.args.outfile,'w',encoding='utf-8') as f:
-            f.write(f"idx,src,tgt,pred,prob\n")
+            f.write(f"no\tsearch\tsrc\ttgt\tpred\tprob\n")
         transformer.eval()
-        test_iter = KanjiKanaDataSet(self.args, self.args.test_file)
+        test_iter = KanjiKanaDataSet(self.args, self.args.test_file, engfra_tokenizer(params["source_lang"]),engfra_tokenizer(params["target_lang"]))
 
-        for src_sentence,tgt_sentence in test_iter:
+        for no,(src_sentence,tgt_sentence) in enumerate(test_iter):
             src = self.text_transform[self.args.source_lang](src_sentence).view(-1, 1)
             num_tokens = src.shape[0]
             src_mask = (torch.zeros(num_tokens, num_tokens)).type(torch.bool)
@@ -146,21 +171,21 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             if self.args.search=='greedy' :
 
                 tgt_token,tgt_prob = self.greedy_decode( transformer,  src, src_mask, max_len=self.args.max_len, start_symbol=BOS_IDX)
-                predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "").replace(" ","")
-                target_sentence = tgt_sentence.replace(" ","")
-                src_sentence = src_sentence.replace(" ","")
+                predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                target_sentence = self.remove_space(tgt_sentence)
+                src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
-                    f.write(f'greeedy,{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
+                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
             if self.args.search=='beam':
 
                 tgt_tokens ,tgt_probs= self.beam_decode(transformer,src,src_mask, self.args.max_len,self.args.beam_width,self.args.nbest,start_symbol=BOS_IDX )
                 for i, (tgt_token, tgt_prob) in enumerate(zip(tgt_tokens,tgt_probs)):
-                    predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "").replace(" ","")
-                    target_sentence = tgt_sentence.replace(" ","")
-                    src_sentence = src_sentence.replace(" ","")
+                    predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                    target_sentence = self.remove_space(tgt_sentence)
+                    src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
-                        f.write(f'beam{i},{src_sentence},{target_sentence},{predict_sentence},{tgt_prob}\n')
+                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
 
 
@@ -169,12 +194,12 @@ def main():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--test_file', default='../dataset/test.jsonl', type=str)
     parser.add_argument('--model_file', default='../training/model/checkpoint_best.pt', type=str)
-    parser.add_argument('--outfile', default="out.txt", type=str)
+    parser.add_argument('--outfile', default="outfile.txt", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='beam', type=str)
+    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 

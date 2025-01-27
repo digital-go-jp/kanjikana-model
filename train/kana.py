@@ -1,8 +1,15 @@
-# Copyright (c) 2024 デジタル庁
+#!/bin/env python
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+
+"""
+ひらがなとカタカナの一文字ずつのペアを作成する
+"""
 
 import jaconv
 import argparse
@@ -25,12 +32,16 @@ def run(args):
     with open(args.outfile,'w',encoding='utf-8') as f:
         for k,vv in hsh.items():
             for v in vv:
-                f.write(f'{k},{v}\n')
+                if args.reverse:
+                    f.write(f'{v},{k}\n')
+                else:
+                    f.write(f'{k},{v}\n')
 
 
 def main():
     parser = argparse.ArgumentParser(description="ひらがなとカタカナのペアを作成する")
     parser.add_argument("--outfile", default="hirakata.txt", type=str)
+    parser.add_argument("--reverse", action="store_true",help="trueのとき、カタカナから漢字を学習するデータセットを作成する")
 
 
     args = parser.parse_args()

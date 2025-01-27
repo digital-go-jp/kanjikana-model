@@ -1,3 +1,15 @@
+#!/bin/env python
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+
+"""
+mj異体字辞書のExcelからxlsx2csvで変換したCSVから，異体字のペアを作成する。
+"""
 
 import jaconv
 import csv

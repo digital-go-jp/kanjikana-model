@@ -1,7 +1,14 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
+"""
+mozcの漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
+"""
 
 import argparse
 import os
@@ -15,8 +22,6 @@ import regex
 def run(args):
     if len(os.path.dirname(args.outfile))>0:
         os.makedirs(os.path.dirname(args.outfile),exist_ok=True)
-#    with open(args.outfile,"w",encoding="utf-8") as f:
-#        f.write("kanji\tkana\n")
 
     hsh={}
     def extract(file):

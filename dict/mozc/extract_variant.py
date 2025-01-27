@@ -1,7 +1,14 @@
 #!/bin/env python
 # coding:utf-8
 
-# itaiji
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+mozcの異体字辞書から，異体字のペアを作成する。
+"""
 
 import argparse
 import os

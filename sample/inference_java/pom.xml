@@ -4,10 +4,10 @@
 
 
     <groupId>jp.go.digital.kanjikana</groupId>
-    <artifactId>java</artifactId>
-    <version>1.1</version>
+    <artifactId>java_sample</artifactId>
+    <version>1.0</version>
 
-    <description>Kanji Kana Core</description>
+    <description>JavaInferenceSample</description>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -78,7 +78,13 @@
         <dependency>
             <groupId>ai.djl</groupId>
             <artifactId>api</artifactId>
-            <version>0.28.0</version>
+            <version>0.27.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ai.djl.pytorch/pytorch-engine -->
+        <dependency>
+            <groupId>ai.djl.pytorch</groupId>
+            <artifactId>pytorch-engine</artifactId>
+            <version>0.27.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
@@ -92,12 +98,7 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.17.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/ai.djl.pytorch/pytorch-engine -->
-        <dependency>
-            <groupId>ai.djl.pytorch</groupId>
-            <artifactId>pytorch-engine</artifactId>
-            <version>0.28.0</version>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -138,6 +139,7 @@
         </resources>
 
         <plugins>
+
             <!--
             https://yoh1496.hatenablog.com/entry/2021/07/13/235608
             -->

@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2025 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package jp.go.digital.sample;
 
 import ai.djl.Device;
@@ -36,16 +60,16 @@ public class AiModels {
      */
     public static final String EOS = "<eos>";
 
-    private WordIndex vocab_src;
-    private  WordIndex vocab_tgt;
-    private  Map<String, String> params; // ai model output parameter
+    private final WordIndex vocab_src;
+    private final WordIndex vocab_tgt;
+    private final Map<String, String> params; // ai model output parameter
 
-    private  ZooModel<NDList, NDList> encoder;
-    private  ZooModel<NDList, NDList> decoder;
-    private  ZooModel<NDList, NDList> positional_encoding;
-    private  ZooModel<NDList, NDList> generator;
-    private  ZooModel<NDList, NDList> src_tok_emb;
-    private  ZooModel<NDList, NDList> tgt_tok_emb;
+    private final ZooModel<NDList, NDList> encoder;
+    private final ZooModel<NDList, NDList> decoder;
+    private final ZooModel<NDList, NDList> positional_encoding;
+    private final ZooModel<NDList, NDList> generator;
+    private final ZooModel<NDList, NDList> src_tok_emb;
+    private final ZooModel<NDList, NDList> tgt_tok_emb;
 
     public WordIndex getVocab_src() {
         return vocab_src;

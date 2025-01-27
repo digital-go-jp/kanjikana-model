@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+Wikipediaのダンプファイルから，概要部分を抜き出す。
+"""
+
 import argparse
 import json
 import os
@@ -23,10 +32,6 @@ def run(args):
         # カッコの中
         tmp = re.sub('^.*?（','',l)
         s = re.sub('）.*$','',tmp)
-
-        # カッコの先頭が読み
-        #if not s.startswith("'''"):
-        #    return False
 
         if re.search('\[\[\d+年\]\]',s) is None:
             return False

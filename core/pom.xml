@@ -5,7 +5,7 @@
 
     <groupId>jp.go.digital.kanjikana</groupId>
     <artifactId>shimei_kanjikana_core_oss</artifactId>
-    <version>1.0</version>
+    <version>1.6o</version>
 
     <description>Shimei Kanji Kana Core OSS</description>
     <properties>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>ai.djl</groupId>
             <artifactId>api</artifactId>
-            <version>0.28.0</version>
+            <version>0.27.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>ai.djl.pytorch</groupId>
             <artifactId>pytorch-engine</artifactId>
-            <version>0.28.0</version>
+            <version>0.27.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
         <dependency>
