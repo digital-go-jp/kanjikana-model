@@ -31,10 +31,27 @@ UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
 # Make sure the tokens are in order of their indices to properly insert them in vocab
 SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
-def split_tokenizer(x):  # noqa: F821
-    # type: (str) -> List[str]
-    # return x.split()
-    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
+#def split_tokenizer(x):  # noqa: F821
+#    # type: (str) -> List[str]
+#    return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
+
+
+import nltk
+nltk.download('punkt_tab')
+nltk.download('wordnet')
+from nltk.tokenize import word_tokenize
+
+def engfra_tokenizer(lang="eng"):
+    if lang=='eng':
+        return eng_tokenizer
+    else:
+        return fra_tokenizer
+
+def eng_tokenizer(x):
+    return word_tokenize(x, language='english')
+
+def fra_tokenizer(x):
+    return word_tokenize(x, language='french')
 
 class Vocab:
     def __init__(self, tokenizer,tokens, special_tokens, unk_token='<unk>'):
@@ -293,16 +310,16 @@ class KanjiKanaTransformer:
         self.args.source_lang=params['source_lang']
         self.args.target_lang=params['target_lang']
 
-        self.token_transform[params['source_lang']] = split_tokenizer
-        self.token_transform[params["target_lang"]] = split_tokenizer
+        self.token_transform[params['source_lang']] = engfra_tokenizer(params['source_lang'])
+        self.token_transform[params["target_lang"]] = engfra_tokenizer(params['target_lang'])
         src=OrderedDict()
         for s in src_vocab:
             src[s]=1
-        self.vocab_transform[params["source_lang"]] = Vocab(split_tokenizer, list(src.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        self.vocab_transform[params["source_lang"]] = Vocab(engfra_tokenizer(params['source_lang']), list(src.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
         tgt=OrderedDict()
         for s in tgt_vocab:
             tgt[s]=1
-        self.vocab_transform[params["target_lang"]] = Vocab(split_tokenizer, list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        self.vocab_transform[params["target_lang"]] = Vocab(engfra_tokenizer(params['target_lang']), list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
@@ -335,19 +352,14 @@ class KanjiKanaTransformer:
             for data_sample in data_iter:
                 yield data_sample[language_index[language]]
 
-
-        #self.token_transform[self.args.source_lang] = get_tokenizer(None)
-        #self.token_transform[self.args.target_lang] = get_tokenizer(None)  # get_tokenizer(None) -> split_tokenizer
-        self.token_transform[self.args.source_lang] = split_tokenizer
-        self.token_transform[self.args.target_lang] = split_tokenizer
+        self.token_transform[self.args.source_lang] = engfra_tokenizer(self.args.source_lang)
+        self.token_transform[self.args.target_lang] = engfra_tokenizer(self.args.target_lang)
 
         src=[t for t in yield_tokens(train_iter, self.args.source_lang)]
         tgt=[t for t in yield_tokens(train_iter, self.args.target_lang)]
 
-        #self.vocab_transform[self.args.source_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.source_lang),min_freq=0, specials=SPECIAL_SYMBOLS, special_first=True)
-        self.vocab_transform[self.args.source_lang] = Vocab(split_tokenizer, src, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
-        #self.vocab_transform[self.args.target_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.target_lang),min_freq=0,specials=SPECIAL_SYMBOLS,special_first=True)
-        self.vocab_transform[self.args.target_lang] = Vocab(split_tokenizer, tgt, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        self.vocab_transform[self.args.source_lang] = Vocab(engfra_tokenizer(self.args.source_lang), src, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        self.vocab_transform[self.args.target_lang] = Vocab(engfra_tokenizer(self.args.target_lang), tgt, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
 
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
