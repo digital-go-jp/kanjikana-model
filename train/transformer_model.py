@@ -42,6 +42,11 @@ def split_tokenizer(x):  # noqa: F821
     # type: (str) -> List[str]
     return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
 
+def char_tokenizer(string):
+    lst=[]
+    for i in range(len(string)):
+        lst.append(string[i])
+    return lst
 
 class Vocab:
 
@@ -284,7 +289,7 @@ class KanjiKanaTransformer:
         model.eval()
         losses = 0
 
-        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file, split_tokenizer, split_tokenizer)
+        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file, char_tokenizer, char_tokenizer)
         val_dataloader = DataLoader(val_iter, batch_size=self.args.batch_size, collate_fn=self.collate_fn, shuffle=True)
 
         for src, tgt in val_dataloader:
@@ -420,7 +425,7 @@ class KanjiKanaTransformer:
         return torch.optim.Adam(transformer.parameters(), lr=lr, betas=(0.9, 0.98), eps=adam_eps)
 
     def train(self):
-        train_iter = KanjiKanaDataSet(self.args, self.args.train_file, split_tokenizer , split_tokenizer)
+        train_iter = KanjiKanaDataSet(self.args, self.args.train_file, char_tokenizer , char_tokenizer)
         transformer, optimizer, loss_fn = self.load(train_iter)
         writer=None
         if len(self.args.tensorboard_logdir)>0:
@@ -500,7 +505,7 @@ def main():
     parser.add_argument('--source_lang', default='kanji', type=str)
     parser.add_argument('--target_lang', default='kana', type=str)
     parser.add_argument('--save_num', default=1, type=int)
-    parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
+    parser.add_argument('--device',default='cuda',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 
