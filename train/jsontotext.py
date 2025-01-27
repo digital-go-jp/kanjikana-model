@@ -1,10 +1,17 @@
-# Copyright (c) 2024 デジタル庁
+#!/bin/env python
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
 
-import jaconv
+"""
+jsonで作成された辞書データを，CSV形式へ変換する
+"""
+
+
 import argparse
 import json
 

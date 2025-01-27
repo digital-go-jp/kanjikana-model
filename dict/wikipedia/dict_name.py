@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+select_name.pyによってWikipediaのダンプファイルから作成した漢字・アルファベットとカタカナのペアを単語単位に分割する
+"""
+
 import argparse
 import json
 import mojimoji

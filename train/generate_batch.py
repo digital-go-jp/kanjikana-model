@@ -1,10 +1,10 @@
 #!/bin/env python
-# Copyright (c) 2024 デジタル庁
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
-
-# coding:utf-8
 
 import argparse
 import torch

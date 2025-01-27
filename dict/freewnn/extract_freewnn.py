@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+Freewnnから辞書ファイルを抽出し，漢字・アルファベットとカタカナのペアを作成する。通常の辞書をパースしているため，氏名以外も含まれる
+"""
+
 import argparse
 import os
 import json

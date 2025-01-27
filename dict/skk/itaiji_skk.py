@@ -1,6 +1,16 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+skkの異体字辞書から，異体字のペアを作成する。
+"""
+
+
 import json
 import argparse
 import re
@@ -10,7 +20,7 @@ class Namae:
         self.hsh={}
 
     def run(self):
-        with open(self.args.infile,"r",encoding="utf-8") as f:
+        with open(self.args.infile,"r",encoding="euc-jp") as f:
             for l in f:
                 l=l.rstrip()
                 if l.find(";;")==0:

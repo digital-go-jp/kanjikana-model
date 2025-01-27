@@ -1,20 +1,23 @@
 #!/bin/env python
 # coding:utf-8
 
-# tankanji
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+mozcの単漢字と読み仮名から，単漢字辞書を抽出する。
+"""
 
 import argparse
 import os
 import glob
-import pandas as pd
-import re
 import json
 
 def run(args):
     if len(os.path.dirname(args.outfile))>0:
         os.makedirs(os.path.dirname(args.outfile),exist_ok=True)
-    #with open(args.outfile,"w",encoding="utf-8") as f:
-    #    f.write("kanji\tkana\n")
 
     for fname in glob.glob(args.indir+"/single_kanji.tsv"):
         lst=extract(fname)

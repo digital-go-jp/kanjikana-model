@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+Cannaから辞書ファイルを抽出し，漢字・アルファベットとカタカナのペアを作成する。地名などを含んでいる
+"""
+
 import argparse
 import os
 import json

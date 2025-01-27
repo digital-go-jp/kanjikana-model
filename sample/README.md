@@ -1,7 +1,8 @@
 # AIモデルサンプル
 
 
-AIモデル(transformer+Seq2Seq)モデルを，Pytorchで学習し，JavaのDjlライブラリを利用して推計するサンプル。
+AIモデル(transformer)モデルを，Pytorchで学習し，Python及びJavaのDjlライブラリを利用して推計するサンプル。
+各ディレクトリの説明については，次のとおりである。
 
 
 ## dataset
@@ -11,6 +12,7 @@ AIモデル(transformer+Seq2Seq)モデルを，Pytorchで学習し，JavaのDjl�
 
 ```json
 {"translation": {"eng": "A new difficulty has arisen.", "fra": "Une nouvelle difficulté est apparue."}}
+..
 ```
 
 詳細は，[dataset.ipynb](dataset/dataset.ipynb)を参照のこと
@@ -18,17 +20,24 @@ AIモデル(transformer+Seq2Seq)モデルを，Pytorchで学習し，JavaのDjl�
 
 ## training
 
-Pythonでdatasetで取得したデータを学習するためのプログラム。それぞれの入出力は，スペース区切りに分割し，
+Pythonでdatasetで取得したデータを学習するためのプログラム。それぞれの入出力の文章は，文字単位で分割しエンコードする。通常，Byte Pair Encoding（SENNRICH, Rico. Neural machine translation of rare words with subword units. arXiv preprint arXiv:1508.07909, 2015.）や，SentencePiece（KUDO, T. Sentencepiece: A simple and language independent subword tokenizer and detokenizer for neural text processing. arXiv preprint arXiv:1808.06226, 2018.）などが使用されるが，本プログラムでは簡単のために，文字単位で分割した。
 
-## inference
+訓練用データを用いて，Transformerで学習し，１エポックごとに開発用データを用いてLossを計算している。開発用データで最もLossが少なかったモデルファイルをcheckpoint_best.ptとしてモデルファイルを作成した。
 
-trainingで学習したモデルを用いて，推論を行うプログラム。PythonとDjlを用いて作成したJavaプログラムを格納。
+学習の詳細については，[training](../training/training.ipynb)を参照のこと。
 
 
-### 推論用プログラム
+## inference_py
 
-[training](../training/training.ipynb)で作成したモデルを用いて，推論するプログラムのサンプル。
+trainingで学習したモデルを用いて，PythonのPytorchライブラリを用いて推論を行うプログラム。推論の探索には，Greedyサーチと，Beamサーチを選択できる。
 
-### サンプル
-- [java](./inference_java/README.md)
-- [python](./inference_py/inference.ipynb)
+実行結果の詳細については，[inference.ipynb](./inference_py/inference.ipynb)を参照のこと
+
+## inference_java
+
+trainingで学習したモデルを用いて，JavaのDjlライブラリを持ちて推論を行うプログラム。Djl内部では，Pytorchライブラリを使用している。
+Djlは，内部で使用しているPytorchライブラリのバージョンを実行する環境で動作するPytorchのバージョンと合わせる必要があるので，[Djl](https://djl.ai/engines/pytorch/pytorch-engine/)のバージョンを適宜変更する日宇町がある。
+
+
+実行結果の詳細については，[inference_java.ipynb](./inference_java/inference_java.ipynb)を参照のこと。
+

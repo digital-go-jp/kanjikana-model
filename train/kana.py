@@ -1,8 +1,15 @@
-# Copyright (c) 2024 デジタル庁
+#!/bin/env python
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+
+"""
+ひらがなとカタカナの一文字ずつのペアを作成する
+"""
 
 import jaconv
 import argparse
