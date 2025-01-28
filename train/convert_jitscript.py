@@ -15,7 +15,7 @@ pytorchで作成したモデルファイルを，DJLライブラリで読み込�
 import argparse
 import torch
 import json
-from transformer_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from train.char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
 
 
 class KanjiKanaTransformerScripted(KanjiKanaTransformer):

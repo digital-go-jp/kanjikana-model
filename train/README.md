@@ -158,11 +158,11 @@ datasetのデータを用いて，漢字姓名（外国人の場合にはアル�
 
 ## 学習用スクリプト
 
-- [trainsfer_model.py](./transformer_model.py)        
-   Transformerモデルで，訓練データと開発データを用いて学習を行う。
+- [char_model.py](./char_model.py)        
+   Transformerモデルで，訓練データと開発データを用いて学習を行う。学習の入出力の文字列は，文字単位の分割を行う。
 
    ```bash
-   python ./transformer_model.py \
+   python ./word_model.py \
   --emb_size 512 \
   --nhead 8 \
   --ffn_hid_dim 2048 \
