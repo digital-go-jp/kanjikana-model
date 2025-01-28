@@ -37,7 +37,7 @@ def main():
     parser = argparse.ArgumentParser(description="jsonで作成された辞書データを，CSV形式へ変換する")
     parser.add_argument("--jsonfile", default="../dict_oss/tankanji.json", type=str)
     parser.add_argument("--outfile", default="tankanji.txt", type=str)
-    parser.add_argument("--reverse", action="store_true",help="trueのとき、カタカナから漢字を学習するデータセットを作成する")
+    parser.add_argument("--reverse", action="store_true",help="このオプションを指定した時、カタカナから漢字を学習するデータセットを作成する")
 
 
     args = parser.parse_args()
