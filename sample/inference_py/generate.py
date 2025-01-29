@@ -171,21 +171,21 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             if self.args.search=='greedy' :
 
                 tgt_token,tgt_prob = self.greedy_decode( transformer,  src, src_mask, max_len=self.args.max_len, start_symbol=BOS_IDX)
-                predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
-                target_sentence = self.remove_space(tgt_sentence)
-                src_sentence = self.remove_space(src_sentence)
+                predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                #target_sentence = self.remove_space(tgt_sentence)
+                #src_sentence = self.remove_space(src_sentence)
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
-                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{tgt_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
             if self.args.search=='beam':
 
                 tgt_tokens ,tgt_probs= self.beam_decode(transformer,src,src_mask, self.args.max_len,self.args.beam_width,self.args.nbest,start_symbol=BOS_IDX )
                 for i, (tgt_token, tgt_prob) in enumerate(zip(tgt_tokens,tgt_probs)):
-                    predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
-                    target_sentence = self.remove_space(tgt_sentence)
-                    src_sentence = self.remove_space(src_sentence)
+                    predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                    #target_sentence = self.remove_space(tgt_sentence)
+                    #src_sentence = self.remove_space(src_sentence)
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
-                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{tgt_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
 
 
@@ -199,7 +199,7 @@ def main():
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
+    parser.add_argument('--search', default='beam', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 
