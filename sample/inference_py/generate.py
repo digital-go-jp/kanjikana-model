@@ -175,7 +175,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                 target_sentence = tgt_sentence
                 src_sentence = src_sentence
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
-                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+                    f.write(f'{no}\tgreeedy\t{src_sentence}\t{tgt_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
             if self.args.search=='beam':
 
@@ -185,7 +185,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                     target_sentence = tgt_sentence
                     src_sentence = src_sentence
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
-                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
+                        f.write(f'{no}\tbeam{i}\t{src_sentence}\t{tgt_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
 
 
@@ -199,7 +199,7 @@ def main():
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='greedy', choices=["greedy",'beam'])
+    parser.add_argument('--search', default='beam', choices=["greedy",'beam'])
 
     args = parser.parse_args()
 
