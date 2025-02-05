@@ -49,8 +49,54 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
     private final SearchParam search_param;
     private final AiModels models;
+    private final String source_lang;
+    private final String target_lang;
 
-    public Main(String vocab_src, String vocab_tgt, String positional_encoding, String params, String encoder, String decoder, String generator, String src_tok_emb, String tgt_tok_emb, int n_best,int beam_width,int max_len) throws Exception{
+    enum SearchType {
+        greedy("greedy"),
+        beam("beam");
+        private final String val;
+
+        SearchType(String val){
+            this.val =val;
+        }
+        public String getVal(){
+            return this.val;
+        }
+        public static SearchType getType(String s){
+            for(SearchType value : SearchType.values()){
+                if(value.getVal().equals(s)){
+                    return value;
+                }
+            }
+            return null;
+        }
+    }
+    enum Lang{
+        eng("eng"),
+        fra("fra");
+
+        private final String val;
+
+        Lang(String val){
+            this.val =val;
+        }
+        public String getVal(){
+            return this.val;
+        }
+        public static Lang getType(String s){
+            for(Lang value : Lang.values()){
+                if(value.getVal().equals(s)){
+                    return value;
+                }
+            }
+            return null;
+        }
+    }
+
+    public Main(String source_lang, String target_lang, String vocab_src, String vocab_tgt, String positional_encoding, String params, String encoder, String decoder, String generator, String src_tok_emb, String tgt_tok_emb, int n_best,int beam_width,int max_len) throws Exception{
+        this.source_lang = source_lang;
+        this.target_lang = target_lang;
         search_param = new SearchParam(max_len,beam_width,n_best);
         models = new AiModels(vocab_src, vocab_tgt, positional_encoding, params, encoder, decoder, generator, src_tok_emb, tgt_tok_emb);
     }
@@ -67,16 +113,28 @@ public class Main {
 
         int no=0;
         for(EngFra ef : lines){
-            List<SearchResult> lst = run_line(ef.eng, ef.fra,search_type);
+            String source = ef.eng;
+            if(Lang.getType(this.source_lang)==Lang.fra){
+                source = ef.fra;
+            }
+            List<SearchResult> lst = run_line(source,search_type);
             int i=0;
             for(SearchResult r : lst ){
                 String pred = r.getPredict();
                 String prob = String.valueOf(r.getProbability());
                 String src = ef.eng;
+                if(Lang.getType(source_lang)==Lang.fra){
+                    src = ef.fra;
+                }
+
                 String tgt = ef.fra;
-                String search = "beam"+String.valueOf(i);
-                if(search_type.equals("greedy")){
-                    search = "greedy";
+                if(Lang.getType(target_lang)==Lang.eng){
+                    tgt = ef.eng;
+                }
+
+                String search = SearchType.beam.getVal()+String.valueOf(i);
+                if(SearchType.getType(search_type) == SearchType.greedy){
+                    search = SearchType.greedy.getVal();
                 }
                 String l = no+"\t"+search+"\t"+src+"\t"+tgt+"\t"+pred+"\t"+prob;
 
@@ -90,7 +148,7 @@ public class Main {
         }
 
     }
-    public List<SearchResult> run_line(String eng, String fra,String search_type) throws Exception{
+    public List<SearchResult> run_line(String eng,String search_type) throws Exception{
         Search search;
         if (search_type.equals("beam")){
             search=new BeamSearch(models,search_param);
@@ -101,6 +159,7 @@ public class Main {
         search.close();
         return res;
     }
+
 
     private static class EngFra{
         public String eng;
@@ -151,7 +210,9 @@ public class Main {
         parser.addArgument("--n_best").setDefault(5).type(Integer.class);
         parser.addArgument("--beam_width").setDefault(5).type(Integer.class);
         parser.addArgument("--max_len").setDefault(100).type(Integer.class);
-        parser.addArgument("--search_type").choices("beam","greedy").setDefault("greedy");
+        parser.addArgument("--search_type").choices(SearchType.beam.getVal(), SearchType.greedy.getVal()).setDefault(SearchType.greedy.getVal());
+        parser.addArgument("--source_lang").choices(Lang.eng.getVal(), Lang.fra.getVal()).setDefault(Lang.fra.getVal());
+        parser.addArgument("--target_lang").choices(Lang.eng.getVal(),Lang.fra).setDefault(Lang.eng.getVal());
 
 
         Namespace ns = parser.parseArgs(args);
@@ -162,6 +223,8 @@ public class Main {
         int n_best = ns.getInt("n_best");
         int beam_width = ns.getInt("beam_width");
         int max_len = ns.getInt("max_len");
+        String source_lang = ns.getString("source_lang");
+        String target_lang =ns.getString("target_lang");
 
         String vocab_src = ns.getString("model_vocab_src");
         String vocab_tgt= ns.getString("model_vocab_tgt");
@@ -173,7 +236,7 @@ public class Main {
         String src_tok_emb= ns.getString("model_src_tok_emb");
         String tgt_tok_emb= ns.getString("model_tgt_tok_emb");
 
-        Main obj = new Main(vocab_src, vocab_tgt, positional_encoding, params, encoder, decoder, generator, src_tok_emb, tgt_tok_emb,n_best,beam_width,max_len);
+        Main obj = new Main(source_lang, target_lang, vocab_src, vocab_tgt, positional_encoding, params, encoder, decoder, generator, src_tok_emb, tgt_tok_emb,n_best,beam_width,max_len);
         obj.run(test_file,out_file,search_type);
 
     }

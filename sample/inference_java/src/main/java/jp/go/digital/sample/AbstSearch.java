@@ -33,12 +33,13 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.ndarray.types.Shape;
 import ai.djl.pytorch.jni.JniUtils;
 import ai.djl.training.ParameterStore;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 推論を行う抽象クラス
@@ -88,8 +89,21 @@ abstract class AbstSearch implements Search{
 
     protected NDList encode(String src) {
         List<String> src_list = new ArrayList<>();
-        for (int i = 0; i < src.length(); i++) {
-            src_list.add(src.substring(i, i + 1));
+        //for (int i = 0; i < src.length(); i++) {
+        //    src_list.add(src.substring(i, i + 1));
+        //}
+
+        // https://stanfordnlp.github.io/CoreNLP/tokenize.html
+        Properties props = new Properties();
+        props.setProperty("annotators","tokenize");
+        //props.setProperty("tokenize.options", "splitHyphenated=false,americanize=false");
+        props.setProperty("tokenize.language","French");
+        //props.setProperty("tokenize.whitespace","true");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        CoreDocument doc = new CoreDocument(src);
+        pipeline.annotate(doc);
+        for (CoreLabel tok : doc.tokens()) {
+            src_list.add(tok.word());
         }
 
         List<Long> inputs = AbstSearch.toIndex(src_list, aimodels.getVocab_src().getWord2Index());
