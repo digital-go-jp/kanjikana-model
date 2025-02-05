@@ -5,6 +5,7 @@
 
 氏名漢字カナ突合システム
 #############################
+|version|
 
 
 .. toctree::
@@ -21,4 +22,5 @@
    ./model/index
    
    ./resources/index
+
 

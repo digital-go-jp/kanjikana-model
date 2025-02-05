@@ -1,16 +1,20 @@
 #!/bin/env python
-# Copyright (c) 2024 デジタル庁
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-# coding:utf-8
+"""
+JSON形式の辞書をマージする
+"""
+
+
 import json
 import os
 import argparse
 import json
-import jaconv
-
 
 def run(args):
 

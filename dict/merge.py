@@ -1,5 +1,20 @@
 #/bin/env python
 # coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+ 漢字・アルファベットとカタカナのペアファイルから，漢字・アルファベットをキーとし，その読みであるカタカナを複数持たせたJSON形式に成形する。また，漢字・アルファベットとカタカナのペアに，その由来をつけて，リストとして保持する。
+ {
+   "太郎":{
+      "タロウ":{"dics":["skk","kakasi"]},   // dicsをキーとして，由来をリストで保持する。
+      "フトロウ":{"dics":["kakasi]},
+
+"""
+
 import json
 import os
 import argparse
@@ -48,8 +63,8 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--infile',default='canna/dict.txt',type=str)
-    parser.add_argument('--jsonfile',default='oss.json',type=str)
-    parser.add_argument('--dicname', default="canna", type=str)
+    parser.add_argument('--jsonfile',default='oss.json',type=str, help="辞書ファイル。infileの内容を追加していく")
+    parser.add_argument('--dicname', default="canna", type=str, help="このペアの由来")
 
     args=parser.parse_args()
     print(json.dumps(args.__dict__, indent=2))

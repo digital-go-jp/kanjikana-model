@@ -1,6 +1,15 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+tankanjiで指定した辞書のデータに，infileのデータのうち入っていない漢字とカナのペアを抜き出して，outfileに出力する
+"""
+
 import argparse
 import json
 import mojimoji

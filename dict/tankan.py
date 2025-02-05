@@ -1,6 +1,17 @@
 #!/bin/env python
 # coding:utf-8
 
+
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+漢字・アルファベットとカタカナのペアから，漢字・アルファベット部分が一文字のもののみ抜き出して，単漢字辞書として作成する。
+"""
+
+
 import argparse
 import os
 import json

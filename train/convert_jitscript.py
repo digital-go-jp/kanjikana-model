@@ -1,19 +1,21 @@
-# Copyright (c) 2024 デジタル庁
+#!/bin/env python
+# coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
 
-
+"""
+pytorchで作成したモデルファイルを，DJLライブラリで読み込めるように，TorchScript形式に変換する
+"""
 # convert pytorch model to jit scripted
-
 
 import argparse
 import torch
 import json
-import operator
-import itertools
-from transformer_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from train.char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
 
 
 class KanjiKanaTransformerScripted(KanjiKanaTransformer):
@@ -52,15 +54,11 @@ class KanjiKanaTransformerScripted(KanjiKanaTransformer):
             for v in self.vocab_transform[self.args.target_lang].itos:
                 f.write(f"{v}\n")
 
-
 def main():
     # 引数の処理
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--model_file', default='model/checkpoint_best.pt', type=str)
-    #parser.add_argument('--prefix', default='translation', type=str)
-    #parser.add_argument('--source_lang', default='kanji', type=str)
-    #parser.add_argument('--target_lang', default='kana', type=str)
 
+    parser.add_argument('--model_file', default='model/checkpoint_best.pt', type=str)
     parser.add_argument('--model_script', default="model/script.pt", type=str)
     parser.add_argument('--encoder', default="model/encoder.pt", type=str)
     parser.add_argument('--decoder', default="model/decoder.pt", type=str)
@@ -73,12 +71,9 @@ def main():
     parser.add_argument('--params',default="model/params.json", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
 
-
     args = parser.parse_args()
 
     KanjiKanaTransformerScripted(args).convert()
-
-
 
 if __name__ == '__main__':
     main()

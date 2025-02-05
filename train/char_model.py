@@ -1,12 +1,20 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+漢字からカナ，もしくは，カナから漢字のデータを入力として与えて，Transformerモデルを作成する
+"""
+
 import warnings
 warnings.simplefilter('ignore')
 
 from typing import Iterable, List
 
-from collections import OrderedDict
 from torch import Tensor
 import torch
 import torch.nn as nn
@@ -15,7 +23,6 @@ import math
 from torch.nn.utils.rnn import pad_sequence
 from timeit import default_timer as timer
 from torch.utils.data import DataLoader
-
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 import json
@@ -33,26 +40,50 @@ SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
 def split_tokenizer(x):  # noqa: F821
     # type: (str) -> List[str]
-    # return x.split()
     return  [t if len(t)>0 else " " for t in x.replace("  "," ").split(" ")]  # 空白も返す
 
+def char_tokenizer(string):
+    lst=[]
+    for i in range(len(string)):
+        lst.append(string[i])
+    return lst
+
 class Vocab:
-    def __init__(self, tokenizer,tokens, special_tokens, unk_token='<unk>'):
+
+    def __init__(self):
         self.itos=[]
         self.stoi={}
-        for token in special_tokens+tokens:
-            for t in tokenizer(token):
+
+    def set_by_token(self, tokenizer,tokens ):
+        self.itos=[]
+        self.stoi={}
+
+        def set(words):
+            for t in words:
                 if t not in self.stoi:
                     n = len(self.stoi)
-                    self.stoi[t]=n
+                    self.stoi[t] = n
                     self.itos.append(t)
-        self.unk_token = unk_token
+
+        set(SPECIAL_SYMBOLS)
+        for token in tokens:
+            set(tokenizer(token))
+
+    def set_by_vocab(self, itos):
+        self.itos = itos
+
+        stoi={}
+        for i,v in enumerate(itos):
+            stoi[v]=i
+        self.stoi=stoi
+
 
     def __len__(self):
         return len(self.stoi)
 
     def __call__(self, token:List[str]):
-        return [self.stoi[t] if t in self.stoi else self.stoi[self.unk_token] for t in token ]
+        unk_token=SPECIAL_SYMBOLS[UNK_IDX]
+        return [self.stoi[t] if t in self.stoi else self.stoi[unk_token] for t in token ]
 
     def lookup_tokens(self, tokens:List[int]):
         return [self.itos[int(i)] for i in tokens]
@@ -137,16 +168,17 @@ class Seq2SeqTransformer(nn.Module):
                           self.tgt_tok_emb(tgt)), memory,
                           tgt_mask)
 
-def transforms(string):
-    lst=[]
-    for i in range(len(string)):
-        lst.append(string[i])
-    return lst
+#def transforms(string):
+#    lst=[]
+#    for i in range(len(string)):
+#        lst.append(string[i])
+#    return lst
 
 class KanjiKanaDataSet(Dataset):
-    def __init__(self,args, root, transforms=transforms) -> None:
+    def __init__(self,args, root, transforms_src, transforms_tgt) -> None:
         super().__init__()
-        self.transforms = transforms
+        self.transforms_src = transforms_src
+        self.transforms_tgt = transforms_tgt
         self.args =  args
         src=[]
         tgt=[]
@@ -166,8 +198,8 @@ class KanjiKanaDataSet(Dataset):
     ) -> Tuple[str, str]:
 
         # データの変形 (transforms)
-        src_batch = self.transforms(self.data[index][0])
-        tgt_batch= self.transforms(self.data[index][1])
+        src_batch = self.transforms_src(self.data[index][0])
+        tgt_batch= self.transforms_tgt(self.data[index][1])
 
         return " ".join(src_batch), " ".join(tgt_batch)
 
@@ -257,7 +289,7 @@ class KanjiKanaTransformer:
         model.eval()
         losses = 0
 
-        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file)
+        val_iter = KanjiKanaDataSet(self.args, self.args.valid_file, char_tokenizer, char_tokenizer)
         val_dataloader = DataLoader(val_iter, batch_size=self.args.batch_size, collate_fn=self.collate_fn, shuffle=True)
 
         for src, tgt in val_dataloader:
@@ -293,16 +325,16 @@ class KanjiKanaTransformer:
         self.args.source_lang=params['source_lang']
         self.args.target_lang=params['target_lang']
 
-        self.token_transform[params['source_lang']] = split_tokenizer
-        self.token_transform[params["target_lang"]] = split_tokenizer
-        src=OrderedDict()
-        for s in src_vocab:
-            src[s]=1
-        self.vocab_transform[params["source_lang"]] = Vocab(split_tokenizer, list(src.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
-        tgt=OrderedDict()
-        for s in tgt_vocab:
-            tgt[s]=1
-        self.vocab_transform[params["target_lang"]] = Vocab(split_tokenizer, list(tgt.keys()), special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        self.token_transform[self.args.source_lang] = split_tokenizer
+        self.token_transform[self.args.target_lang] = split_tokenizer
+
+        svocab = Vocab()
+        svocab.set_by_vocab(src_vocab)
+        self.vocab_transform[params["source_lang"]] = svocab
+
+        tvocab = Vocab()
+        tvocab.set_by_vocab(tgt_vocab)
+        self.vocab_transform[params["target_lang"]] = tvocab
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
@@ -335,19 +367,19 @@ class KanjiKanaTransformer:
             for data_sample in data_iter:
                 yield data_sample[language_index[language]]
 
-
-        #self.token_transform[self.args.source_lang] = get_tokenizer(None)
-        #self.token_transform[self.args.target_lang] = get_tokenizer(None)  # get_tokenizer(None) -> split_tokenizer
         self.token_transform[self.args.source_lang] = split_tokenizer
         self.token_transform[self.args.target_lang] = split_tokenizer
 
         src=[t for t in yield_tokens(train_iter, self.args.source_lang)]
         tgt=[t for t in yield_tokens(train_iter, self.args.target_lang)]
 
-        #self.vocab_transform[self.args.source_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.source_lang),min_freq=0, specials=SPECIAL_SYMBOLS, special_first=True)
-        self.vocab_transform[self.args.source_lang] = Vocab(split_tokenizer, src, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
-        #self.vocab_transform[self.args.target_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.target_lang),min_freq=0,specials=SPECIAL_SYMBOLS,special_first=True)
-        self.vocab_transform[self.args.target_lang] = Vocab(split_tokenizer, tgt, special_tokens=SPECIAL_SYMBOLS, unk_token='<unk>')
+        svocab = Vocab()
+        svocab.set_by_token(split_tokenizer, src)
+        self.vocab_transform[self.args.source_lang] = svocab
+
+        tvocab = Vocab()
+        tvocab.set_by_token(split_tokenizer, tgt)
+        self.vocab_transform[self.args.target_lang] = tvocab
 
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
@@ -393,7 +425,7 @@ class KanjiKanaTransformer:
         return torch.optim.Adam(transformer.parameters(), lr=lr, betas=(0.9, 0.98), eps=adam_eps)
 
     def train(self):
-        train_iter = KanjiKanaDataSet(self.args, self.args.train_file)
+        train_iter = KanjiKanaDataSet(self.args, self.args.train_file, char_tokenizer , char_tokenizer)
         transformer, optimizer, loss_fn = self.load(train_iter)
         writer=None
         if len(self.args.tensorboard_logdir)>0:
@@ -458,22 +490,22 @@ def main():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--emb_size', default=512, type=int)
     parser.add_argument('--nhead', default=8, type=int)
-    parser.add_argument('--ffn_hid_dim', default=1024, type=int)
-    parser.add_argument('--batch_size', default=32, type=int)
+    parser.add_argument('--ffn_hid_dim', default=2048, type=int)
+    parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--num_encoder_layers', default=8, type=int)
     parser.add_argument('--num_decoder_layers', default=8, type=int)
     parser.add_argument('--num_epochs', default=50, type=int)
     parser.add_argument('--lr', default=0.0002, type=float)
     parser.add_argument('--dropout', default=0.3, type=float)
     parser.add_argument('--adam_eps', default=1e-03, type=float)
-    parser.add_argument('--train_file', default='../dataset/test.jsonl', type=str)
-    parser.add_argument('--valid_file', default='../dataset/val.jsonl', type=str)
+    parser.add_argument('--train_file', default='dataset/test.jsonl', type=str)
+    parser.add_argument('--valid_file', default='dataset/val.jsonl', type=str)
     parser.add_argument('--output_dir', default='model', type=str)
     parser.add_argument('--prefix', default='translation', type=str)
-    parser.add_argument('--source_lang', default='eng', type=str)
-    parser.add_argument('--target_lang', default='fra', type=str)
+    parser.add_argument('--source_lang', default='kanji', type=str)
+    parser.add_argument('--target_lang', default='kana', type=str)
     parser.add_argument('--save_num', default=1, type=int)
-    parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
+    parser.add_argument('--device',default='cuda',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 

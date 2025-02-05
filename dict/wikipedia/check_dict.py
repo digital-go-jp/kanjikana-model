@@ -1,9 +1,18 @@
 #!/bin/env python
 # coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+"""
+ossで指定したオープンソースの辞書のデータに，infileのデータのうち入っていない漢字とカナのペアを抜き出して，outfileに出力する
+"""
+
+
 import argparse
 import json
-import mojimoji
 
 def run(args):
     hsh={}
