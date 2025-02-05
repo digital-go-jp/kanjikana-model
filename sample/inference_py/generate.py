@@ -15,7 +15,7 @@ import sys
 sys.path.append("../")
 import argparse
 import torch
-from sample.training.word_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, engfra_tokenizer
+from training.word_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, engfra_tokenizer
 
 # https://qiita.com/Shoelife2022/items/7f2b5e916ebd68ca2c23
 # https://github.com/budzianowski/PyTorch-Beam-Search-Decoding/blob/master/decode_beam.py
@@ -171,9 +171,9 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
             if self.args.search=='greedy' :
 
                 tgt_token,tgt_prob = self.greedy_decode( transformer,  src, src_mask, max_len=self.args.max_len, start_symbol=BOS_IDX)
-                predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
-                target_sentence = self.remove_space(tgt_sentence)
-                src_sentence = self.remove_space(src_sentence)
+                predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                target_sentence = tgt_sentence
+                src_sentence = src_sentence
                 with open(self.args.outfile,'a',encoding='utf-8') as f:
                     f.write(f'{no}\tgreeedy\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
@@ -181,9 +181,9 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
 
                 tgt_tokens ,tgt_probs= self.beam_decode(transformer,src,src_mask, self.args.max_len,self.args.beam_width,self.args.nbest,start_symbol=BOS_IDX )
                 for i, (tgt_token, tgt_prob) in enumerate(zip(tgt_tokens,tgt_probs)):
-                    predict_sentence= "".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
-                    target_sentence = self.remove_space(tgt_sentence)
-                    src_sentence = self.remove_space(src_sentence)
+                    predict_sentence= " ".join(self.vocab_transform[self.args.target_lang].lookup_tokens(list(tgt_token.cpu().numpy()))).replace(SPECIAL_SYMBOLS[BOS_IDX], "").replace(SPECIAL_SYMBOLS[EOS_IDX], "")
+                    target_sentence = tgt_sentence
+                    src_sentence = src_sentence
                     with open(self.args.outfile,'a',encoding='utf-8') as f:
                         f.write(f'{no}\tbeam{i}\t{src_sentence}\t{target_sentence}\t{predict_sentence}\t{tgt_prob}\n')
 
