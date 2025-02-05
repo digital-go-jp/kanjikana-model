@@ -41,7 +41,7 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser(description="ひらがなとカタカナのペアを作成する")
     parser.add_argument("--outfile", default="hirakata.txt", type=str)
-    parser.add_argument("--reverse", action="store_true",help="trueのとき、カタカナから漢字を学習するデータセットを作成する")
+    parser.add_argument("--reverse", action="store_true",help="このオプションを指定した時、カタカナから漢字を学習するデータセットを作成する")
 
 
     args = parser.parse_args()

@@ -8,7 +8,7 @@ warnings.simplefilter('ignore')
 import argparse
 import torch
 import json
-from model import KanjiKanaTransformer
+from word_model import KanjiKanaTransformer
 
 
 class KanjiKanaTransformerScripted(KanjiKanaTransformer):
