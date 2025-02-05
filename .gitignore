@@ -19,3 +19,5 @@ vocab_tgt.txt
 javadoc
 docs
 resources
+input.txt
+*.log
