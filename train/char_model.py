@@ -7,7 +7,7 @@
 # https://opensource.org/licenses/MIT
 
 """
-漢字からカナ，もしくは，カナから漢字のデータを入力として与えて，Transformerモデルを作成する
+漢字からカナ，もしくは，カナから漢字のデータを入力として与えて，Transformerモデルを作成する，漢字とカナは文字単位で学習する
 """
 
 import warnings
@@ -427,6 +427,8 @@ class KanjiKanaTransformer:
     def train(self):
         train_iter = KanjiKanaDataSet(self.args, self.args.train_file, char_tokenizer , char_tokenizer)
         transformer, optimizer, loss_fn = self.load(train_iter)
+
+
         writer=None
         if len(self.args.tensorboard_logdir)>0:
             writer = SummaryWriter(log_dir=self.args.tensorboard_logdir)
@@ -434,23 +436,64 @@ class KanjiKanaTransformer:
         best_loss=None
         num_epochs = self.args.num_epochs
         now_epoch =0
+        best_epoch=0
+        now_loss=None
+
+        params = {"emb_size": self.args.emb_size, "nhead": self.args.nhead, "ffn_hid_dim": self.args.ffn_hid_dim,
+                  "dropout": self.args.dropout, "lr": self.args.lr, "adam_eps": self.args.adam_eps,
+                  "num_encoder_layers": self.args.num_encoder_layers,
+                  "num_decoder_layers": self.args.num_decoder_layers, "prefix": self.args.prefix,
+                  "source_lang": self.args.source_lang, "target_lang": self.args.target_lang,
+                  "batch_size": self.args.batch_size, "num_epochs": num_epochs}
+
+        best_optimizer=None
+        best_transformer=None
+        # 学習中，済みのものがあればロードし，途中から計算する。
         if os.path.exists(self.args.output_dir):
             files = list(sorted(glob.glob(self.args.output_dir + "/checkpoint_*.pt"), reverse=True))
-            if len(files) >=2:
-                # best
-                best_checkpoint = torch.load(files[0])
-                last_checkpoint = torch.load(files[1])
-                transformer.load_state_dict(last_checkpoint['model_state_dict'])
-                optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
-                now_epoch = last_checkpoint['epoch']
+            if len(files) >= 1:
+
+                best_checkpoint = torch.load(files[0], map_location=torch.device(self.args.device))
+
+                best_transformer, best_optimizer, loss_fn = self.load_by_vocab(best_checkpoint['src_vocab'],
+                                                                     best_checkpoint['tgt_vocab'],
+                                                                     best_checkpoint["params"])
+
+                best_transformer.load_state_dict(best_checkpoint['model_state_dict'])
+                best_optimizer.load_state_dict(best_checkpoint['optimizer_state_dict'])
+
+                best_epoch = best_checkpoint['epoch']
                 if 'val_loss' in best_checkpoint:
                     best_loss = best_checkpoint['val_loss']
-                print(f"load:{files[1]},now_epoch={now_epoch},best_loss={best_loss}")
+                print(f"load:{files[0]},best_epoch={best_epoch},best_loss={best_loss}")
+
+            if len(files) >=2:
+                try:
+                    last_checkpoint = torch.load(files[1], map_location=torch.device(self.args.device))
+
+                    transformer, optimizer, loss_fn = self.load_by_vocab(last_checkpoint['src_vocab'],
+                                                                                   last_checkpoint['tgt_vocab'],
+                                                                                   last_checkpoint["params"])
+
+                    transformer.load_state_dict(last_checkpoint['model_state_dict'])
+                    optimizer.load_state_dict(last_checkpoint['optimizer_state_dict'])
+
+                    now_epoch = last_checkpoint['epoch']
+                    if 'val_loss' in last_checkpoint:
+                        now_loss = last_checkpoint['val_loss']
+                except:
+                    pass
+                print(f"load:{files[1]},now_epoch={now_epoch},now_loss={now_loss}")
 
         os.makedirs(self.args.output_dir, exist_ok=True)
         print(f'num_epochs:{num_epochs}')
 
-        params={"emb_size":self.args.emb_size,"nhead":self.args.nhead,"ffn_hid_dim":self.args.ffn_hid_dim,"dropout":self.args.dropout,"lr":self.args.lr,"adam_eps":self.args.adam_eps,"num_encoder_layers":self.args.num_encoder_layers,"num_decoder_layers":self.args.num_decoder_layers,"prefix":self.args.prefix,"source_lang":self.args.source_lang,"target_lang":self.args.target_lang,"batch_size":self.args.batch_size,"num_epochs":num_epochs}
+
+        if now_epoch<best_epoch:
+            now_epoch=best_epoch
+            optimizer=best_optimizer
+            transformer=best_transformer
+
 
         patient=0
         #keta=math.ceil(math.log10(self.args.num_epocs))
@@ -462,7 +505,7 @@ class KanjiKanaTransformer:
             print((f"Epoch: {epoch}, Train loss: {train_loss:.3f}, Val loss: {val_loss:.3f}, "f"Epoch time = {(end_time - start_time):.3f}s"))
 
             # https://wandb.ai/wandb_fc/japanese/reports/PyTorch---VmlldzoxNTAyODQy
-            torch.save({'epoch': epoch, 'model_state_dict':transformer.state_dict(), 'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].itos,"tgt_vocab":self.vocab_transform[self.args.target_lang].itos,"params":params},self.args.output_dir+f"/checkpoint_{epoch:03d}.pt")
+            torch.save({'epoch': epoch, 'model_state_dict':transformer.state_dict(), 'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss, 'val_loss':val_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].itos,"tgt_vocab":self.vocab_transform[self.args.target_lang].itos,"params":params},self.args.output_dir+f"/checkpoint_{epoch:03d}.pt")
 
             # https://zenn.dev/a5chin/articles/log_tensorboard
             if writer is not None:
@@ -472,7 +515,7 @@ class KanjiKanaTransformer:
             if best_loss is None or best_loss > val_loss:
                 best_loss = val_loss
                 torch.save({'epoch': epoch, 'model_state_dict': transformer.state_dict(),
-                            'optimizer_state_dict': optimizer.state_dict(), 'loss': train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].itos,"tgt_vocab":self.vocab_transform[self.args.target_lang].itos,"params":params},
+                            'optimizer_state_dict': optimizer.state_dict(), 'loss': train_loss, 'val_loss':val_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].itos,"tgt_vocab":self.vocab_transform[self.args.target_lang].itos,"params":params},
                            self.args.output_dir + f"/checkpoint_best.pt")
                 patient=0
             else:
@@ -491,21 +534,21 @@ def main():
     parser.add_argument('--emb_size', default=512, type=int)
     parser.add_argument('--nhead', default=8, type=int)
     parser.add_argument('--ffn_hid_dim', default=2048, type=int)
-    parser.add_argument('--batch_size', default=64, type=int)
+    parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--num_encoder_layers', default=8, type=int)
     parser.add_argument('--num_decoder_layers', default=8, type=int)
-    parser.add_argument('--num_epochs', default=50, type=int)
+    parser.add_argument('--num_epochs', default=86, type=int)
     parser.add_argument('--lr', default=0.0002, type=float)
     parser.add_argument('--dropout', default=0.3, type=float)
     parser.add_argument('--adam_eps', default=1e-03, type=float)
-    parser.add_argument('--train_file', default='dataset/test.jsonl', type=str)
-    parser.add_argument('--valid_file', default='dataset/val.jsonl', type=str)
+    parser.add_argument('--train_file', default='dataset/train.jsonl', type=str)
+    parser.add_argument('--valid_file', default='dataset/valid.jsonl', type=str)
     parser.add_argument('--output_dir', default='model', type=str)
     parser.add_argument('--prefix', default='translation', type=str)
     parser.add_argument('--source_lang', default='kanji', type=str)
     parser.add_argument('--target_lang', default='kana', type=str)
     parser.add_argument('--save_num', default=1, type=int)
-    parser.add_argument('--device',default='cuda',choices=('cuda','cpu','mps'))
+    parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 

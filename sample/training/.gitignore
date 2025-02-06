@@ -1,3 +1,4 @@
 model*
 __pycache__
 *.old*
+logs*

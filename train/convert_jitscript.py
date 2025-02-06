@@ -12,10 +12,12 @@ pytorchで作成したモデルファイルを，DJLライブラリで読み込�
 """
 # convert pytorch model to jit scripted
 
+import sys
+sys.path.append("../")
 import argparse
 import torch
 import json
-from train.char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
 
 
 class KanjiKanaTransformerScripted(KanjiKanaTransformer):

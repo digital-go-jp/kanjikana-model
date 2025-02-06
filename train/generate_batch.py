@@ -15,7 +15,7 @@ import sys
 sys.path.append("../")
 import argparse
 import torch
-from training.model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, engfra_tokenizer
+from char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS, char_tokenizer
 
 # https://qiita.com/Shoelife2022/items/7f2b5e916ebd68ca2c23
 # https://github.com/budzianowski/PyTorch-Beam-Search-Decoding/blob/master/decode_beam.py
@@ -101,6 +101,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
                     updated = True
                     with torch.no_grad():
                         ys = concat_input(n)
+                        ys = ys.to(self.args.device)
                         tgt_mask = (self.generate_square_subsequent_mask(ys.size(0)).type(torch.bool)).to(
                             self.args.device)  # tgt_mask[length,batchsize]
 
@@ -161,7 +162,7 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
         with open(self.args.outfile,'w',encoding='utf-8') as f:
             f.write(f"no\tsearch\tsrc\ttgt\tpred\tprob\n")
         transformer.eval()
-        test_iter = KanjiKanaDataSet(self.args, self.args.test_file, engfra_tokenizer(params["source_lang"]),engfra_tokenizer(params["target_lang"]))
+        test_iter = KanjiKanaDataSet(self.args, self.args.test_file, char_tokenizer, char_tokenizer)
 
         for no,(src_sentence,tgt_sentence) in enumerate(test_iter):
             src = self.text_transform[self.args.source_lang](src_sentence).view(-1, 1)
@@ -195,11 +196,11 @@ def main():
     parser.add_argument('--test_file', default='dataset/test.jsonl', type=str)
     parser.add_argument('--model_file', default='model/checkpoint_best.pt', type=str)
     parser.add_argument('--outfile', default="dataset/generate.txt", type=str)
-    parser.add_argument('--device',default='cpu',choices=('cpu','cuda')) # mps is error
+    parser.add_argument('--device',default='mps',choices=('cpu','cuda','mps'))
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
-    parser.add_argument('--search', default='greedy', choices=('greedy','beam'))
+    parser.add_argument('--search', default='beam', choices=('greedy','beam'))
 
     args = parser.parse_args()
 
