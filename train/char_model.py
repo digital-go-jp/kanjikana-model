@@ -322,8 +322,8 @@ class KanjiKanaTransformer:
         self.args.dropout=params['dropout']
         self.args.adam_eps=params['adam_eps']
         self.args.prefix=params['prefix']
-        self.args.source_lang=params['source_lang']
-        self.args.target_lang=params['target_lang']
+        #self.args.source_lang=params['source_lang']
+        #self.args.target_lang=params['target_lang']
 
         self.token_transform[self.args.source_lang] = split_tokenizer
         self.token_transform[self.args.target_lang] = split_tokenizer
@@ -537,7 +537,7 @@ def main():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--num_encoder_layers', default=8, type=int)
     parser.add_argument('--num_decoder_layers', default=8, type=int)
-    parser.add_argument('--num_epochs', default=86, type=int)
+    parser.add_argument('--num_epochs', default=2, type=int)
     parser.add_argument('--lr', default=0.0002, type=float)
     parser.add_argument('--dropout', default=0.3, type=float)
     parser.add_argument('--adam_eps', default=1e-03, type=float)
@@ -545,8 +545,8 @@ def main():
     parser.add_argument('--valid_file', default='dataset/valid.jsonl', type=str)
     parser.add_argument('--output_dir', default='model', type=str)
     parser.add_argument('--prefix', default='translation', type=str)
-    parser.add_argument('--source_lang', default='kanji', type=str)
-    parser.add_argument('--target_lang', default='kana', type=str)
+    parser.add_argument('--source_lang', default='kana', type=str)
+    parser.add_argument('--target_lang', default='kanji', type=str)
     parser.add_argument('--save_num', default=1, type=int)
     parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs',type=str)

@@ -193,16 +193,16 @@ class KanjiKanaTransformerTest(KanjiKanaTransformer):
 def main():
     # 引数の処理
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--test_file', default='dataset_r/test.jsonl', type=str)
-    parser.add_argument('--model_file', default='model_r/checkpoint_best.pt', type=str)
-    parser.add_argument('--outfile', default="dataset_r/generate.txt", type=str)
+    parser.add_argument('--test_file', default='dataset/test.jsonl', type=str)
+    parser.add_argument('--model_file', default='model/checkpoint_best.pt', type=str)
+    parser.add_argument('--outfile', default="dataset/generate.txt", type=str)
     parser.add_argument('--device',default='cpu',choices=('cpu','cuda','mps'))
     parser.add_argument('--nbest', default=5, type=int)
     parser.add_argument('--beam_width', default=5, type=int)
     parser.add_argument('--max_len', default=100, type=int)
     parser.add_argument('--prefix', default='translation', type=str)
-    parser.add_argument('--source_lang', default='kana', type=str)
-    parser.add_argument('--target_lang', default='kanji', type=str)
+    parser.add_argument('--source_lang', default='kanji', type=str)
+    parser.add_argument('--target_lang', default='kana', type=str)
     parser.add_argument('--search', default='greedy', choices=('greedy','beam'))
 
     args = parser.parse_args()
