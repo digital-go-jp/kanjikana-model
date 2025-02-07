@@ -31,7 +31,26 @@ import glob
 from torch.utils.data import Dataset
 from typing import List, Tuple
 
-torch.manual_seed(0)
+import random
+import numpy as np
+
+seed=0
+torch.manual_seed(seed)
+random.seed(seed)
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.deterministic = True
+
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+
+my_generator = torch.Generator()
+my_generator.manual_seed(seed)
+
+
 
 # Define special symbols and indices
 UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
@@ -261,7 +280,7 @@ class KanjiKanaTransformer:
         model.train()
         losses = 0
 
-        train_dataloader = DataLoader(train_iter, batch_size=self.args.batch_size,  collate_fn=self.collate_fn, shuffle=True)
+        train_dataloader = DataLoader(train_iter, batch_size=self.args.batch_size,  collate_fn=self.collate_fn, shuffle=True, worker_init_fn=seed_worker,generator=my_generator)
 
         for i, (src, tgt) in enumerate(train_dataloader):
             src = src.to(self.args.device)
@@ -290,7 +309,7 @@ class KanjiKanaTransformer:
         losses = 0
 
         val_iter = KanjiKanaDataSet(self.args, self.args.valid_file, char_tokenizer, char_tokenizer)
-        val_dataloader = DataLoader(val_iter, batch_size=self.args.batch_size, collate_fn=self.collate_fn, shuffle=True)
+        val_dataloader = DataLoader(val_iter, batch_size=self.args.batch_size, collate_fn=self.collate_fn, shuffle=True,worker_init_fn=seed_worker,generator=my_generator)
 
         for src, tgt in val_dataloader:
             src = src.to(self.args.device)
@@ -537,19 +556,19 @@ def main():
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--num_encoder_layers', default=8, type=int)
     parser.add_argument('--num_decoder_layers', default=8, type=int)
-    parser.add_argument('--num_epochs', default=2, type=int)
+    parser.add_argument('--num_epochs', default=145, type=int)
     parser.add_argument('--lr', default=0.0002, type=float)
     parser.add_argument('--dropout', default=0.3, type=float)
     parser.add_argument('--adam_eps', default=1e-03, type=float)
-    parser.add_argument('--train_file', default='dataset/train.jsonl', type=str)
-    parser.add_argument('--valid_file', default='dataset/valid.jsonl', type=str)
-    parser.add_argument('--output_dir', default='model', type=str)
+    parser.add_argument('--train_file', default='dataset_r.1.6.1o/train.jsonl', type=str)
+    parser.add_argument('--valid_file', default='dataset_r.1.6.1o/valid.jsonl', type=str)
+    parser.add_argument('--output_dir', default='model_r.1.6.1o', type=str)
     parser.add_argument('--prefix', default='translation', type=str)
     parser.add_argument('--source_lang', default='kana', type=str)
     parser.add_argument('--target_lang', default='kanji', type=str)
     parser.add_argument('--save_num', default=1, type=int)
     parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
-    parser.add_argument('--tensorboard_logdir',default='logs',type=str)
+    parser.add_argument('--tensorboard_logdir',default='logs_r.1.6.1o',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 
     args = parser.parse_args()
