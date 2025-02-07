@@ -445,9 +445,8 @@ class KanjiKanaTransformer:
 
     def train(self):
         train_iter = KanjiKanaDataSet(self.args, self.args.train_file, char_tokenizer , char_tokenizer)
-        transformer, optimizer, loss_fn = self.load(train_iter)
 
-
+        transformer ,optimizer , loss_fn = None, None, None
         writer=None
         if len(self.args.tensorboard_logdir)>0:
             writer = SummaryWriter(log_dir=self.args.tensorboard_logdir)
@@ -513,6 +512,9 @@ class KanjiKanaTransformer:
             optimizer=best_optimizer
             transformer=best_transformer
 
+        if transformer is None:
+            transformer, optimizer, loss_fn = self.load(train_iter)
+
 
         patient=0
         #keta=math.ceil(math.log10(self.args.num_epocs))
@@ -567,7 +569,7 @@ def main():
     parser.add_argument('--source_lang', default='kana', type=str)
     parser.add_argument('--target_lang', default='kanji', type=str)
     parser.add_argument('--save_num', default=1, type=int)
-    parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
+    parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs_r.1.6.1o',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 

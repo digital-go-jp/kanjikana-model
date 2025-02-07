@@ -439,9 +439,8 @@ class KanjiKanaTransformer:
 
     def train(self):
         train_iter = KanjiKanaDataSet(self.args, self.args.train_file, engfra_tokenizer(self.args.source_lang) , engfra_tokenizer(self.args.target_lang))
-        transformer, optimizer, loss_fn = self.load(train_iter)
 
-
+        transformer ,optimizer , loss_fn = None, None, None
         writer=None
         if len(self.args.tensorboard_logdir)>0:
             writer = SummaryWriter(log_dir=self.args.tensorboard_logdir)
@@ -503,6 +502,10 @@ class KanjiKanaTransformer:
             now_epoch=best_epoch
             optimizer=best_optimizer
             transformer=best_transformer
+
+        if transformer is None:
+            transformer, optimizer, loss_fn = self.load(train_iter)
+
 
         patient=0
         #keta=math.ceil(math.log10(self.args.num_epocs))
