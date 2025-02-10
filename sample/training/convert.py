@@ -1,4 +1,10 @@
+#!/bin/env python
+# coding:utf-8
 
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 # convert pytorch model to jit scripted
 import warnings

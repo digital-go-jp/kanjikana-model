@@ -24,7 +24,7 @@ Pythonでdatasetで取得したデータを学習するためのプログラム�
 
 訓練用データを用いて，Transformerで学習し，１エポックごとに開発用データを用いてLossを計算している。開発用データで最もLossが少なかったモデルファイルをcheckpoint_best.ptとしてモデルファイルを作成した。
 
-学習の詳細については，[training](../training/training.ipynb)を参照のこと。
+学習の詳細については，[training_sample.ipynb](training/training_sample.ipynb)を参照のこと。
 
 
 ## inference_py
