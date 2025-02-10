@@ -341,8 +341,8 @@ class KanjiKanaTransformer:
         self.args.dropout=params['dropout']
         self.args.adam_eps=params['adam_eps']
         self.args.prefix=params['prefix']
-        #self.args.source_lang=params['source_lang']
-        #self.args.target_lang=params['target_lang']
+        self.args.source_lang=params['source_lang']
+        self.args.target_lang=params['target_lang']
 
         self.token_transform[self.args.source_lang] = split_tokenizer
         self.token_transform[self.args.target_lang] = split_tokenizer
