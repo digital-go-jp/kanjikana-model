@@ -47,7 +47,7 @@
 詳細については，[dict](./dict/README.md)を参照のこと。
 
 
-なお，本モデルで作成した辞書モデルで利用する辞書ファイルについては，[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/index.html)で配布している。
+なお，本モデルで作成した辞書モデルで利用する辞書ファイルについては，[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/resources/index.html)で配布している。
 
 ### 外国人モデル
 アルファベット姓名とカタカナ姓名を入力とし， 日本語(ローマ字表記) - 英語表記 部分対応表をもとに，突合を行う。詳細は[佐藤 理史. 2020 東京オリンピック参加者名簿の翻訳. 自然言語処理, Vol.30, No.2, pp748-772, 2023.](https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja)を参照のこと。
@@ -65,7 +65,7 @@
   学習方法の詳細については，[training_r.ipynb](train/training_r.ipynb)を参照のこと。
 
 
-なお，それぞれの事前に学習済みのモデルについては，[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/index.html)で配布している。
+なお，それぞれの事前に学習済みのモデルについては，[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/resources/index.html)で配布している。
 
 
 ## 実行方法
