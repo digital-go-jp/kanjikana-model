@@ -12,10 +12,12 @@ pytorchで作成したモデルファイルを，DJLライブラリで読み込�
 """
 # convert pytorch model to jit scripted
 
+import sys
+sys.path.append("../")
 import argparse
 import torch
 import json
-from train.char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
+from char_model import KanjiKanaTransformer, KanjiKanaDataSet, EOS_IDX, BOS_IDX, SPECIAL_SYMBOLS
 
 
 class KanjiKanaTransformerScripted(KanjiKanaTransformer):
@@ -58,18 +60,20 @@ def main():
     # 引数の処理
     parser = argparse.ArgumentParser(description='')
 
-    parser.add_argument('--model_file', default='model/checkpoint_best.pt', type=str)
-    parser.add_argument('--model_script', default="model/script.pt", type=str)
-    parser.add_argument('--encoder', default="model/encoder.pt", type=str)
-    parser.add_argument('--decoder', default="model/decoder.pt", type=str)
-    parser.add_argument('--positional_encoding', default="model/positional_encoding.pt", type=str)
-    parser.add_argument('--generator', default="model/generator.pt", type=str)
-    parser.add_argument('--src_tok_emb', default="model/src_tok_emb.pt", type=str)
-    parser.add_argument('--tgt_tok_emb', default="model/tgt_tok_emb.pt", type=str)
-    parser.add_argument('--vocab_src', default="model/vocab_src.txt", type=str)
-    parser.add_argument('--vocab_tgt', default="model/vocab_tgt.txt", type=str)
-    parser.add_argument('--params',default="model/params.json", type=str)
+    parser.add_argument('--model_file', default='model_r.1.6.1o/checkpoint_best.pt', type=str)
+    parser.add_argument('--model_script', default="model_r.1.6.1o/script.pt", type=str)
+    parser.add_argument('--encoder', default="model_r.1.6.1o/encoder.pt", type=str)
+    parser.add_argument('--decoder', default="model_r.1.6.1o/decoder.pt", type=str)
+    parser.add_argument('--positional_encoding', default="model_r.1.6.1o/positional_encoding.pt", type=str)
+    parser.add_argument('--generator', default="model_r.1.6.1o/generator.pt", type=str)
+    parser.add_argument('--src_tok_emb', default="model_r.1.6.1o/src_tok_emb.pt", type=str)
+    parser.add_argument('--tgt_tok_emb', default="model_r.1.6.1o/tgt_tok_emb.pt", type=str)
+    parser.add_argument('--vocab_src', default="model_r.1.6.1o/vocab_src.txt", type=str)
+    parser.add_argument('--vocab_tgt', default="model_r.1.6.1o/vocab_tgt.txt", type=str)
+    parser.add_argument('--params',default="model_r.1.6.1o/params.json", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
+    parser.add_argument('--source_lang',default='kana',type=str)
+    parser.add_argument('--target_lang',default='kanji',type=str)
 
     args = parser.parse_args()
 

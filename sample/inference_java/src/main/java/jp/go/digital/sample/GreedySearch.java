@@ -95,15 +95,18 @@ public final class GreedySearch extends AbstSearch {
             }
         }
 
-        StringBuilder sb = new StringBuilder();
+        List<String> sb = new ArrayList<String>();
         for(long w : outputs){
             String nw = aimodels.getVocab_tgt().getIndex2Word().get(w);
             if(nw.equals(AiModels.BOS) || nw.equals(AiModels.EOS)){
                 continue;
             }
-            sb.append(nw);
+            sb.add(nw);
         }
-        res.add(new SearchResult(sb.toString(),sum_prob));
+        String[] arr = sb.toArray(new String[sb.size()]);
+
+
+        res.add(new SearchResult(String.join(" ",arr),sum_prob));
 
         return res;
     }
