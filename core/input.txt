@@ -1,0 +1,16 @@
+no,kanji,kana,okng
+1,山田　太郎,ヤマダ　ハナコ,ng
+2,山田　太郎,ヤマダタロウ,ok
+3,山田　太郎,サンダ　フトロウ,ok
+4,BILLY JOEL,ビリー　ジョエル,ok
+5,BILLY JOEL,ビリー　ジュエル,ng
+6,BILLY JOEL,ビリージョエル,ok
+7,東京［日本］　花子,ニッポン　ハナコ,ok
+8,東京［日本］　花子,トウキョウ　ハナコ,ok
+9,東京［日本］　花子,ニホン　ハナコ,ok
+10,東京［日本］　花子,ニホン　ジロウ,ng
+11,ALLEN JACKSON＿鈴木　一郎（高橋　二郎）,タカハシ　ジロウ,ok
+12,ALLEN JACKSON＿鈴木　一郎（高橋　二郎）,スズキ　イチロウ,ok
+13,ALLEN JACKSON＿鈴木　一郎（高橋　二郎）,アーレン　イチロウ,ng
+14,ALLEN JACKSON＿鈴木　一郎（高橋　二郎）,アーレン　ジャクソン,ok
+15,ALLEN JACKSON＿鈴木　一郎（高橋　光宙）,タカハシ　ピカチュウ,ok

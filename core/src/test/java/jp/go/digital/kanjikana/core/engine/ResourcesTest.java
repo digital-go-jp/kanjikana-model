@@ -1,0 +1,50 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2024 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package jp.go.digital.kanjikana.core.engine;
+
+import jp.go.digital.kanjikana.core.Resources;
+import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+public class ResourcesTest {
+
+    @Test
+    public void test1(){
+        String s= Resources.getProperty(Resources.PropKey.DIC_CRAWL);
+        assertThat(s,equalTo("/dict/crawl.json"));
+    }
+
+    @Test
+    public void test2(){
+        String s= Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
+        assertThat(s,equalTo("/dict/tankanji.json"));
+    }
+
+    @Test
+    public void test3(){
+        String s= Resources.getProperty(Resources.PropKey.AI_TGTEMB);
+        assertThat(s,equalTo("/ai/tgt_tok_emb.pt"));
+    }
+}

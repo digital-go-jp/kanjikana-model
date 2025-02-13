@@ -1,0 +1,6 @@
+*.txt
+*.json
+old
+*.gz
+*.bz2
+SKK-*

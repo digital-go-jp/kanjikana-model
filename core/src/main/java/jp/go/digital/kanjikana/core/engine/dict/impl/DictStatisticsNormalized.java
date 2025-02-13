@@ -1,0 +1,67 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2024 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package jp.go.digital.kanjikana.core.engine.dict.impl;
+
+import jp.go.digital.kanjikana.core.Resources;
+import jp.go.digital.kanjikana.core.engine.dict.Dict;
+import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+import jp.go.digital.kanjikana.core.utils.Moji;
+
+/**
+ * 大量の漢字カナデータから抽出した，漢字とカナのペアの頻度を保存，統計的に判定する
+ * あまり信頼度が高くない，　resource内で最小の頻度を定義している　Resources.DIC_STATISTICS_MINFREQ　参照
+ *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
+ */
+public class DictStatisticsNormalized extends Dict {
+    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_STATISTICS);
+    private static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
+
+    private static DictStatisticsNormalized dict = null;
+    private DictStatisticsNormalized() throws Exception {
+        super(DefaultFile, true, minFreq);
+    }
+
+    /**
+     * 辞書を得る
+     * @return 辞書
+     * @throws Exception 一般的なエラー
+     */
+    public synchronized static DictIF newInstance() throws Exception{
+        if(dict == null){
+            dict = new DictStatisticsNormalized();
+        }
+        return dict;
+    }
+
+    @Override
+    public boolean containsKey(String key) {
+        return super.containsKey(Moji.normalize(key));
+    }
+
+    @Override
+    public boolean containsValueKey(String key, String valueKey) {
+        return super.containsValueKey(key, Moji.normalize(valueKey));
+    }
+}

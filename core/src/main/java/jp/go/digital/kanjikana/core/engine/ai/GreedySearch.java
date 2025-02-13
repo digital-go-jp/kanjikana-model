@@ -1,0 +1,122 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2024 デジタル庁
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package jp.go.digital.kanjikana.core.engine.ai;
+
+import ai.djl.ndarray.NDArray;
+import ai.djl.ndarray.NDList;
+import ai.djl.ndarray.types.Shape;
+import ai.djl.training.ParameterStore;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 学習済みのモデルから，貪欲法を行い，推論結果を返す
+ */
+public final class GreedySearch extends AbstSearch {
+    private final GreedyCache cache;
+
+    public GreedySearch(AiModels aimodels) throws Exception{
+        super(aimodels);
+        cache = GreedyCache.newInstance();
+    }
+
+    @Override
+    public List<SearchResult> run(String src) {
+        List<SearchResult> res = cache.get(src);
+        if (res != null) {
+            return res;
+        }
+        res = run_sub(src);
+        cache.put(src, res);
+        return res;
+    }
+
+    private List<SearchResult> run_sub(String src){
+        List<SearchResult> res = new ArrayList<>();
+
+        if(src.length()==0){
+            return res;
+        }
+        NDList enc = encode(src);
+
+        ///  above OK
+        ParameterStore ps = new ParameterStore();
+
+        double sum_prob=0;
+        List<Long> outputs = new ArrayList<>();
+        outputs.add(aimodels.getVocab_tgt().getWord2Index().get(AiModels.BOS));
+        for(int loop=0; loop< search_params.getMax_len(); loop++) {
+
+            Shape outputShape = new Shape(outputs.size(), 1);
+            long[] outputLong = outputs.stream().mapToLong(i -> i).toArray();
+            NDArray outputTensor = manager.create(outputLong, outputShape);
+            NDList outputTensorList = new NDList(outputTensor);
+
+            NDList tgt_emb = aimodels.getTgt_tok_emb().getBlock().forward(ps, outputTensorList, false);
+            NDList tgt_pos = aimodels.getPositional_encoding().getBlock().forward(ps, tgt_emb, false);
+
+            NDList tgt_mask = generate_square_subsequent_mask(outputLong.length);
+
+            // memoryは後ろに追加する
+            NDList tgt = tgt_pos.addAll(enc);
+            tgt = tgt.addAll(tgt_mask);
+
+            NDList dec = aimodels.getDecoder().getBlock().forward(ps, tgt, false);
+            NDArray out = dec.get(0);
+            out = out.transpose(1, 0, 2);
+            out = out.squeeze(0);
+            long d = out.size(0);
+            var out2 = out.get(d-1);
+            out2 = out2.reshape(new Shape(1,out2.size(0)));
+            NDList prob = aimodels.getGenerator().getBlock().forward(ps, new NDList(out2), false);
+            NDArray prob_softmaxed = prob.get(0).softmax(1);
+            prob = new NDList(prob_softmaxed);
+
+            NDList prob_top = prob.get(0).topK(1, 1);
+            long next_word = prob_top.get(1).getLong(0);
+            float next_prob = prob_top.get(0).getFloat(0);
+
+            sum_prob+=Math.log(next_prob);
+
+            outputs.add(next_word);
+            if(next_word==aimodels.getVocab_tgt().getWord2Index().get(AiModels.EOS)){
+                break;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(long w : outputs){
+            String nw = aimodels.getVocab_tgt().getIndex2Word().get(w);
+            if(nw.equals(AiModels.BOS) || nw.equals(AiModels.EOS)){
+                continue;
+            }
+            sb.append(nw);
+        }
+        res.add(new SearchResult(sb.toString(),sum_prob));
+
+        return res;
+    }
+}

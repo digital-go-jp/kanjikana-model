@@ -1,0 +1,14 @@
+data*
+target
+
+.djl.ai
+ok.txt
+ng.txt
+log.txt
+
+Dockerfile
+conf
+*.jar
+output*.txt
+input*.txt
+outfile.txt
