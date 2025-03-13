@@ -5,6 +5,8 @@ datasetのデータを用いて，漢字姓名（外国人の場合にはアル�
 漢字姓名からカナ姓名を推計するモデルの実行ほう方法は[training.ipynb](./training.ipynb)を，カナ姓名から漢字姓名を推計するモデルの実行方法は[training_r.ipynb](./training_r.ipynb)を参照のこと。
 
 
+また，[学習済みモデル](https://kktg.digital.go.jp/support/model/index.html)を用いた，ファインチューニング（微調整）は[finetuning.ipynb](./finetuning.ipynb)を参照のこと。
+
 各スクリプトの詳細については下記の通りである。
 
 
@@ -324,3 +326,45 @@ datasetのデータを用いて，漢字姓名（外国人の場合にはアル�
      CUDAが利用できる環境で選択
     - cpu        
      上記以外は，CPUモードを選択
+
+
+## モデルの推計用
+
+  入力を文字列単位で与えて，出力を得る
+  
+  - [generate.py](./generate.py)
+
+  - 入力例
+    ```python
+    args = Args()
+    args.model_file='model/checkpoint_best.pt' # モデルのファイル名
+    args.device='cpu'  # cpuで計算，mpsとcudaが利用可能  mpsはM1 mac
+    args.nbest=5    # searchでbeamを選択した際に，確率の高い上位nbest個を出力,beam_width以下にする
+    args.beam_width=5  # searchでbeamを選択した際のbeam幅
+    args.max_len=100   # 出力する文字列の最大長さ
+    args.prefix='translation'  # 入力データjsonlファイルのキー
+    args.source_lang='kanji'   # 入力データjsonlファイルの，入力となる項目のキー
+    args.target_lang='kana'    # 入力データjsonlファイルの，出力（教師データ）となる項目のキー
+    args.search='greedy'       # サーチタイプ greedy or beam を選択
+
+    kkt = KanjiKanaTransformerTest(args)  # 初期化
+    print(kkt.generate('田中五郎', 'タカカゴロウ'))  # 田中五郎をモデルでカタカナに変換，
+    ```
+
+  - 出力
+    ```bash
+     [Result(search_type=greedy,src_sentence=田中五郎,tgt_sentence=タカカゴロウ,pred_sentence=タナカゴロウ,pred_prob=-0.00013673483044840395)]
+    ```
+
+
+    - search_type    
+      greedyサーチ
+    - src_sentence    
+      入力した漢字姓名
+    - tgt_sentence   
+      漢字姓名に対するカタカナ姓名
+    - pred_sentence    
+      モデルを用いてgreedyサーチで，漢字姓名から推計したカタカナ姓名
+    - pred_prob   
+      greedyサーチで推計したカタカナ姓名の確率
+
