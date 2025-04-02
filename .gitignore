@@ -21,3 +21,4 @@ docs
 resources
 input.txt
 *.log
+*log
