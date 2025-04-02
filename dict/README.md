@@ -55,12 +55,6 @@
 - [itaiji_kakasi.py](kakasi/itaiji_kakasi.py)    
   kakasiの異体字辞書から，異体字のペアを抜き出す。
 
-## mj
-
-  Excelで提供されている，異体字リストから，異体字のペアを抜き出す。
-
-- [extract_xlsx.py](mj/extract_xlsx.py)    
-  mjのExcelファイルから単漢字辞書を作成する。データはExcel形式で提供されているので，Excel形式をCSV形式へ変換する[xlsx2csv](https://github.com/dilshod/xlsx2csv)を利用し，CSVに変換後にこのプログラムで異体字のペアを抽出する。
 
 
 ## mozc
