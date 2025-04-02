@@ -21,12 +21,11 @@
 本モデルでは，漢字・アルファベットとその読みであるカタカナのペアをデータとして使用している。
 使用したデータの一覧は次のとおり
 
-### オープンソース辞書データ
+### 辞書データ
 - [canna](https://osdn.dl.osdn.net/canna/)
 - [freewnn](https://osdn.dl.osdn.net/freewnn/)
 - [ipadic](https://taku910.github.io/mecab/)
 - [kakasi](http://kakasi.namazu.org/)
-- [mj](https://moji.or.jp/)
 - [mozc](https://github.com/google/mozc/)
 - [neologd](https://github.com/neologd/mecab-ipadic-neologd/)
 - [skk](https://github.com/skk-dev/dict/)
