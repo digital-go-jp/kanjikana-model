@@ -1,6 +1,8 @@
-*.txt
+diff.ipynb
 *.json
-old
-*.gz
-*.bz2
-SKK-*
+data*
+
+test.py
+*log
+*tsv
+*txt

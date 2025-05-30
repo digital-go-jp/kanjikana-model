@@ -1,6 +1,11 @@
-dataset*
-logs*
-model*
-*.txt
-*.json
+__pycache__  
 tmp*
+a.sh
+b.sh
+dataset
+model
+logs
+*jsonl
+*src
+*tgt
+events.out*
