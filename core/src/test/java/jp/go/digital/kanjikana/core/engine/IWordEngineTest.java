@@ -24,7 +24,13 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -33,7 +39,7 @@ public class IWordEngineTest {
     private EngineIF engine;
     {
         try{
-            engine = new WordEngine(true);
+            engine = new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),true);
         }catch(Exception e){
             e.printStackTrace();
         }

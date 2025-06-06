@@ -28,19 +28,22 @@ import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 大量の漢字カナデータから抽出した，漢字とカナのペアの頻度を保存，統計的に判定する
  * あまり信頼度が高くない，　resource内で最小の頻度を定義している　Resources.DIC_STATISTICS_MINFREQ　参照
  */
-public class DictStatistics extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_STATISTICS);
-    private static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
+class DictStatistics extends Dict {
+    protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_STATISTICS);
+    protected static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
 
-    private static DictIF dict = null;
-    private DictStatistics() throws Exception {
-        super(DefaultFile, false, minFreq);
+    protected static DictIF dict = null;
+
+    protected DictStatistics(boolean normalized) throws Exception {
+        super(DefaultFile, normalized, minFreq);
     }
-
     /**
      * 辞書を得る
      * @return 辞書
@@ -48,7 +51,7 @@ public class DictStatistics extends Dict {
      */
     public synchronized static DictIF newInstance() throws Exception {
         if (dict == null) {
-            dict = new DictStatistics();
+            dict = new DictStatistics(false);
         }
         return dict;
     }

@@ -27,6 +27,9 @@ import jp.go.digital.kanjikana.core.engine.ai.AiKanjiKanaModels;
 import jp.go.digital.kanjikana.core.engine.ai.BeamSearch;
 import jp.go.digital.kanjikana.core.engine.ai.Search;
 import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaiji;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaijiDummy;
 import jp.go.digital.kanjikana.core.utils.Moji;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +41,20 @@ import java.util.List;
  */
 public class AiWordEngine extends  AbstEngine{
     private static final Logger logger = LogManager.getLogger(AiWordEngine.class);
+
+    private final DictIF idic; // 異体字
+
+/*
     public AiWordEngine() throws Exception{
+        this(false);
+    }
+*/
+    public AiWordEngine(boolean hasItaiji) throws Exception{
+        if(hasItaiji) {
+            this.idic = DictItaiji.newInstance();
+        }else{
+            this.idic = DictItaijiDummy.newInstance();
+        }
     }
 
     private boolean checkMoji(String a, String b){
@@ -53,14 +69,16 @@ public class AiWordEngine extends  AbstEngine{
 
     /**
      * 単語単位，文字単位を入力としてマッチング
-     * @param kanji_part 田中　太郎
+     * @param kanji_part_orig 田中　太郎
      * @param kana_part タナカ　タロウ
      * @return 直近のEnginePartsResult
      */
     @Override
-    public ResultEngineParts check(String kanji_part, String kana_part){
+    public ResultEngineParts check(String kanji_part_orig, String kana_part){
         Search search =null;
         try {
+            String kanji_part = replace_itaiji(kanji_part_orig,idic);
+
             search = new BeamSearch(AiKanjiKanaModels.newInstance());
             List<SearchResult> o = search.run(kanji_part);
             int rank=0;
@@ -79,7 +97,7 @@ public class AiWordEngine extends  AbstEngine{
                 search.close();
             }
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(), null);
+        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part_orig,kana_part,new ResultAttr(), this.getClass(), null);
     }
 
 }

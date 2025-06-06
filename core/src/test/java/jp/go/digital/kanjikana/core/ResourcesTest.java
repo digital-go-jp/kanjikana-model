@@ -26,14 +26,14 @@ package jp.go.digital.kanjikana.core;
 
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 
 public class ResourcesTest {
 
     @Test
     public void test1(){
-        String o = Resources.getProperty(Resources.PropKey.DIC_CRAWL);
-        assertThat(o ,equalTo("/dict/crawl.json"));
+        String o = Resources.getProperty(Resources.PropKey.DIC_RELIABLE);
+        assertThat(o ,startsWith("/dict/reliable"));
     }
 
     @Test

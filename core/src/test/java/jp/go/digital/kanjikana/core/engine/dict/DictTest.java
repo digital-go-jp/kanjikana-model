@@ -25,7 +25,12 @@
 package jp.go.digital.kanjikana.core.engine.dict;
 
 import static org.hamcrest.Matchers.equalTo;
+
+import jp.go.digital.kanjikana.core.Resources;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -40,7 +45,9 @@ public class DictTest {
 
     @Test
     public void test2() throws Exception{
-        Dict dict = new TestDict("/dict/oss.json",true);
+
+        String fname=Resources.getProperty(Resources.PropKey.DIC_RELIABLE);
+        Dict dict = new TestDict(fname,true);
         //var map = dict.getDictMap();
         assertThat(dict.containsKey("東京"),equalTo(true));
         assertThat(dict.containsValueKey("東京","トウキヨウ"),equalTo(true));
@@ -49,7 +56,8 @@ public class DictTest {
 
     @Test
     public void test3() throws Exception{
-        Dict dict = new TestDict("/dict/seimei.json",true);
+        String fname=Resources.getProperty(Resources.PropKey.DIC_RELIABLE);
+        Dict dict = new TestDict(fname,true);
         dict.save("/tmp/dict_freq_normalized.json");
     }
 

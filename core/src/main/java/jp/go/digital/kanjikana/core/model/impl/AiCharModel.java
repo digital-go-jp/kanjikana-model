@@ -24,9 +24,9 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.engine.AiCharEngine;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import org.apache.logging.log4j.LogManager;
@@ -36,14 +36,17 @@ import org.apache.logging.log4j.Logger;
  * AIモデル
  * 文字単位で漢字とカナを分割しつつ検査
  */
-public final class AiCharModel extends AbstCharModel{
+public class AiCharModel extends AbstCharModel{
     private static final Logger logger = LogManager.getLogger(AiCharModel.class);
 
-
+    /*
     public AiCharModel() throws Exception {
-        super(new AiCharEngine());
-    }
+        super(new AiCharEngine(true));
+    }*/
 
+    public AiCharModel(EngineIF engine) throws Exception {
+        super(engine);
+    }
     @Override
     public ModelData run(ModelData modelData) throws Exception {
         String kanji_item = modelData.getKanji();

@@ -26,7 +26,6 @@ package jp.go.digital.kanjikana.core.engine.ai;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,6 +46,7 @@ public class GreedySearchTest {
     @Test
     public void test1() throws Exception{
         List<SearchResult> res = search.run("高野");
-        assertThat(res.get(0).getPredict(),equalTo("コウノ"));
+        assertThat(res.get(0).getPredict(),equalTo("タカノ"));
+        //assertThat(res.get(1).getPredict(),equalTo("タカノ"));
     }
 }

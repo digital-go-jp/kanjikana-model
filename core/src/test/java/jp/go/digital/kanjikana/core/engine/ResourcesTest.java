@@ -27,24 +27,24 @@ package jp.go.digital.kanjikana.core.engine;
 import jp.go.digital.kanjikana.core.Resources;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 public class ResourcesTest {
 
     @Test
     public void test1(){
-        String s= Resources.getProperty(Resources.PropKey.DIC_CRAWL);
-        assertThat(s,equalTo("/dict/crawl.json"));
+        String s= Resources.getProperty(Resources.PropKey.DIC_RELIABLE);
+        assertThat(s,startsWith("/dict/reliable"));
     }
 
     @Test
     public void test2(){
         String s= Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
-        assertThat(s,equalTo("/dict/tankanji.json"));
+        assertThat(s,startsWith("/dict/tankanji"));
     }
 
     @Test
     public void test3(){
         String s= Resources.getProperty(Resources.PropKey.AI_TGTEMB);
-        assertThat(s,equalTo("/ai/tgt_tok_emb.pt"));
+        assertThat(s,startsWith("/ai/tgt_tok_emb"));
     }
 }

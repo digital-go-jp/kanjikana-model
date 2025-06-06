@@ -24,7 +24,6 @@
 
 package jp.go.digital.kanjikana.core.executor.match;
 
-import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.utils.FileReader;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -84,7 +83,7 @@ public class KanjiKanaMatchMain {
         parser.addArgument("--kana_idx").setDefault(2).help("カタカナ表記のフィールド番号");
         parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
         parser.addArgument("--thread_num").type(Integer.class).setDefault(1).help("スレッド数");
-        parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
+        parser.addArgument("--has_header").type(Boolean.class).setDefault(false).help("ヘッダがあるかどうか");
         parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(),
                 KanjiKanaMatchRunner.Strategy.ENSEMBLE.getVal())).setDefault(KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal()).help("モデル");
 
@@ -124,13 +123,13 @@ public class KanjiKanaMatchMain {
             ExecutorService pool = Executors.newFixedThreadPool(thread_num);
             for(int i=0;i<thread_num;i++){
 
-                Params params = new Params(header, kanji_idx,kana_idx,separator,newlines.get(i) );
-                pool.submit(new KanjiKanaMatchRunner(params,newlines.get(i),outfile+"."+i,  strategy));
+                Params params = new Params(has_header, kanji_idx,kana_idx,separator,newlines.get(i) );
+                pool.submit(new KanjiKanaMatchRunner(params,newlines.get(i), header,outfile+"."+i,  strategy));
             }
             pool.shutdown();
         }else{
-            Params params = new Params(header,kanji_idx,kana_idx,separator,lines );
-            KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines,outfile, strategy);
+            Params params = new Params(has_header,kanji_idx,kana_idx,separator,lines );
+            KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, header,outfile, strategy);
             ch.run();
         }
     }

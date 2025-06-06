@@ -24,20 +24,9 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawl;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawlNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSS;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSSNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimei;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.utils.Moji;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,17 +47,6 @@ public class CharEngine extends  AbstEngine{
         this.engine = new WordEngine(dics,this.hasItaiji);
     }
 
-    /**
-     * 異体字を使わない場合にはこちらをつかう
-     * @param hasItaiji falseのとき異体字チェックをしない
-     * @throws Exception
-     */
-    public CharEngine(boolean hasItaiji) throws Exception{
-        this.hasItaiji = hasItaiji;
-        this.engine = new WordEngine(this.hasItaiji);
-    }
-
-
     @Override
     public boolean isValidEngine(){
         return this.engine.isValidEngine();
@@ -85,6 +63,7 @@ public class CharEngine extends  AbstEngine{
      * @return 現在の結果が入っている next==null
      * @deprecated 使用していない
      */
+    /*
     private ResultEngineParts check_short2long(String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kana_orig, int kana_begin_idx, int kana_end_idx ) throws Exception{
 
         WordEngine engine = new WordEngine(this.hasItaiji);
@@ -146,7 +125,7 @@ public class CharEngine extends  AbstEngine{
             now_result.setCharParams(kanji_orig,kanji_begin_idx,kanji_end_idx,kana_orig,kana_begin_idx,kana_end_idx);
         }
         return now_result;
-    }
+    }*/
 
     /**
      *　最長マッチで行う。kanji_chars, kana_charsにはスペースが入っている可能性があるので，スペースは削除してマッチングする

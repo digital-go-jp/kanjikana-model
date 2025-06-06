@@ -29,18 +29,18 @@ import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 大量の漢字カナデータから抽出した，漢字とカナのペアの頻度を保存，統計的に判定する
  * あまり信頼度が高くない，　resource内で最小の頻度を定義している　Resources.DIC_STATISTICS_MINFREQ　参照
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
-public class DictStatisticsNormalized extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_STATISTICS);
-    private static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
+public class DictStatisticsNormalized extends DictStatistics {
 
-    private static DictStatisticsNormalized dict = null;
     private DictStatisticsNormalized() throws Exception {
-        super(DefaultFile, true, minFreq);
+        super(true);
     }
 
     /**
@@ -48,8 +48,8 @@ public class DictStatisticsNormalized extends Dict {
      * @return 辞書
      * @throws Exception 一般的なエラー
      */
-    public synchronized static DictIF newInstance() throws Exception{
-        if(dict == null){
+    public synchronized static DictIF newInstance() throws Exception {
+        if (dict == null) {
             dict = new DictStatisticsNormalized();
         }
         return dict;

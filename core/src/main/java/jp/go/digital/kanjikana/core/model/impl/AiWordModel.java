@@ -39,11 +39,16 @@ import org.apache.logging.log4j.Logger;
  * AIモデル
  * スペースで区切られた単語単位で突合
  */
-public final class AiWordModel extends AbstWordModel{
+public class AiWordModel extends AbstWordModel{
     private static final Logger logger = LogManager.getLogger(AiWordModel.class);
 
+    /*
     public AiWordModel() throws Exception{
         super(new AiWordEngine());
+    }*/
+
+    public AiWordModel(EngineIF engine) throws Exception{
+        super(engine);
     }
 
     @Override

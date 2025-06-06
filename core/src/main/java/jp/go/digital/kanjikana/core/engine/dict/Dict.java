@@ -31,6 +31,7 @@ import jp.go.digital.kanjikana.core.engine.ResultAttr;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public abstract class Dict implements DictIF{
     private final int max_key_len;
     private final int max_val_len;
 
-    private final boolean normalized; // 辞書のカタカナ，漢字を正規化するかどうか
+    private final boolean normalized; // 辞書のカタカナ，漢字を正規化するかどう>か
 
     /**
      * 辞書作成
@@ -58,7 +59,7 @@ public abstract class Dict implements DictIF{
      * 辞書作成
      * @param resource resourceファイル名　/で始める
      * @param normalized 辞書のキーと値をそれぞれMojiで正規化するかどうか
-     * @param min_freq 辞書の漢字とカナのペアの頻度の最小値，この値以下のペアは無視
+     * @param min_freq 辞書の漢字とカナのペアの頻度の最小値，この値以下のペアは>無視
      */
     public Dict(String resource, boolean normalized, int min_freq) throws Exception{
         this.normalized = normalized;

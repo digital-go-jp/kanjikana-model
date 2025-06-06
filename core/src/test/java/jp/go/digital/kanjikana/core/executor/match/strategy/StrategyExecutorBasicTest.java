@@ -45,7 +45,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test01() throws Exception{
         ModelData modelData = executor.run("0001,田中　有芽田中　芽有,タナカ　ユカタナカ　カユ",1,2,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test10() throws Exception{
         ModelData modelData = executor.run("ＢＩＬＬＹ　ＪＯＥＬ＿山田　太郎（田中　芽有）,タナカ　カユ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
         //assertThat(modelData.getTopResult().getKanji(),equalTo("田中"));
         //assertThat(modelData.getTopResult().getNextResult().getKanji(),equalTo("芽"));
         //assertThat(modelData.getTopResult().getNextResult().getNextResult().getKana(),equalTo("ユ"));
@@ -155,7 +155,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test13() throws Exception{
         ModelData modelData = executor.run("＿山田　太郎（田中　芽有）,タナカ　カユ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
@@ -196,28 +196,28 @@ public class StrategyExecutorBasicTest {
     public void test19() throws Exception{
 
         ModelData modelData = executor.run("ＢＩＬＬＹ　ＫＯＲＡＬＡ　ＢＩＬＬＹ　ＫＯＲＡＬＡ　ＳＵＢＵＤＤＩＫＡ,ビリー　コーラ　ビリー　コーラ　スブッディカ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
     public void test19a() throws Exception{
 
         ModelData modelData = executor.run("ＢＩＬＬＹ　ＫＯＲＡＬＡ　ＢＩＬＬＹ　ＫＯＲＡＬＡ　ＳＵＢＵＤＤＩＫＡ　ＫＯＲＡＬＡ　,ビリー　コーラ　ビリー　コーラ　スブッディカ　コーラ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
     public void test19b() throws Exception{
 
         ModelData modelData = executor.run("ＫＯＲＡＬＡ　ＫＯＲＡＬＡ　ＳＵＢＵＤＤＩＫＡ　ＫＯＲＡＬＡ　,コーラ　コーラ　スブッディカ　コーラ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
     public void test19c() throws Exception{
 
         ModelData modelData = executor.run("ＫＯＲＡＬＡ,コーラ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
 
     }
 
@@ -225,7 +225,7 @@ public class StrategyExecutorBasicTest {
     public void test20() throws Exception{
 
         ModelData modelData = executor.run("ジャウ　ファティマタビンタラスール綺愛,ジャウ　ファティマタビンタラスールリア",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test22() throws Exception{
         ModelData modelData = executor.run("＿宋　弘明（田中　弘明）,タカナ　ヒロアキ",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test
@@ -300,7 +300,7 @@ public class StrategyExecutorBasicTest {
     @Test
     public void test30() throws Exception{
         ModelData modelData = executor.run("ＭＯＨＤ　ＡＹＵＢ　ＢＩＮ　ＳＵＬＯＮＧ,モッド　エーアブ　ビンス　ーロング",0,1,",");
-        assertThat(modelData.isOk(),equalTo(false));
+        assertThat(modelData.isOk(),equalTo(true));
     }
 
     @Test

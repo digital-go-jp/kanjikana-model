@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2024 デジタル庁
+ * Copyright (c) 2025 デジタル庁
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,46 +22,43 @@
  * SOFTWARE.
  */
 
-package jp.go.digital.kanjikana.core.engine.dict.impl;
+package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
-import jp.go.digital.kanjikana.core.engine.AiWordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
+import jp.go.digital.kanjikana.core.model.ModelData;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class DictOssNormalizedTest {
-    DictIF dic;
-    private static final Logger logger = LogManager.getLogger(DictOssNormalizedTest.class);
-
+public class StrategyBasicTest {
+    private StrategyIF strategy;
     {
-        try {
-            dic = DictOSSNormalized.newInstance();
-        }catch (Exception e){
-            e.printStackTrace();
+        try{
+            strategy = StrategyBasic.newInstance();
+        }catch(Exception e){
+            e.fillInStackTrace();
         }
     }
 
     @Test
     public void test1() throws Exception{
-        List<String> lst = dic.getValue("俊");
-        logger.debug(lst);
-        assertThat(dic.containsValueKey("俊","シュン"),equalTo(true));
-        assertThat(dic.containsValueKey("俊","シユン"),equalTo(true));
-
-
+        ModelData md = new ModelData("山田　心愛","サンタ　ココア");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
     }
 
     @Test
     public void test2() throws Exception{
-        List<String> lst = dic.getValue("田中");
-        logger.debug(lst);
-        assertThat(dic.containsValueKey("田中","タナカ"),equalTo(true));
-        assertThat(dic.containsValueKey("田中","タナヵ"),equalTo(true));
+        ModelData md = new ModelData("彩夢　樱良子","ユメ　サラ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
+    }
+
+    @Test
+    public void test3() throws Exception{
+        ModelData md = new ModelData("美空　飛鳥花","ソラ　アスカ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
     }
 }

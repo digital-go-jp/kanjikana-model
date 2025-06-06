@@ -24,44 +24,34 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
+import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-import jp.go.digital.kanjikana.core.utils.Moji;
-import jp.go.digital.kanjikana.core.Resources;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * クロールで集めた姓名辞書を保持するシングルトンクラス
- *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
- * 最も信頼度が高い辞書
- * オープンソース版では空っぽ
+ * 作成した辞書を保持するシングルトンクラス
+ * たまに間違いがあるのであまり信頼度高くない
  */
-public class DictCrawlNormalized extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_CRAWL);
+class DictUnReliable extends Dict {
+    protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_UNRELIABLE);
+    protected static DictIF dict = null;
 
-    private static DictCrawlNormalized dict = null;
-    private DictCrawlNormalized() throws Exception {
-        super(DefaultFile, true);
+    protected DictUnReliable(boolean normalized) throws Exception {
+        super(DefaultFile, normalized);
     }
 
     /**
-     * クロール辞書を保持するクラスを返す
+     * 辞書を得る
      * @return 辞書
      * @throws Exception 一般的なエラー
      */
     public synchronized static DictIF newInstance() throws Exception{
         if(dict == null){
-            dict = new DictCrawlNormalized();
+            dict = new DictUnReliable(false);
         }
         return dict;
-    }
-
-    @Override
-    public boolean containsKey(String key) {
-        return super.containsKey(Moji.normalize(key));
-    }
-
-    @Override
-    public boolean containsValueKey(String key, String valueKey) {
-        return super.containsValueKey(key, Moji.normalize(valueKey));
     }
 }

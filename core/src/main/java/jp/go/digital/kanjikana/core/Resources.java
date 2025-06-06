@@ -82,14 +82,11 @@ public final class Resources {
         // 外国人辞書
         FOREIGNER_DIC("FOREIGNER_DIC"),
 
-        // スクレイピングで集めた辞書
-        DIC_CRAWL("DIC_CRAWL"),
+        // JLIS照会辞書,OSS辞書,スクレイピング辞書のマージした辞書
+        DIC_RELIABLE("DIC_RELIABLE"),
 
-        // オープンソース辞書から得た辞書
-        DIC_OSS("DIC_OSS"),
-
-        // デジ庁で作成した辞書
-        DIC_SEIMEI ("DIC_SEIMEI"),
+        // デジ庁で作成した辞書やWikipediaから抜き出した辞書など，信頼性に劣るもの
+        DIC_UNRELIABLE("DIC_UNRELIABLE"),
 
         // オープンソースの異体字辞書
         DIC_ITAIJI("DIC_ITAIJI"),

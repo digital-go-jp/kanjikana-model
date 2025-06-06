@@ -33,7 +33,7 @@ public class AiCharEngineTest {
     private EngineIF engine;
     {
         try {
-            engine = new AiCharEngine();
+            engine = new AiCharEngine(true);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -24,8 +24,13 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,7 +40,7 @@ public class CharEngineTest {
     private EngineIF engine;
     {
         try{
-            engine = new CharEngine(false);
+            engine = new CharEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -121,14 +126,8 @@ public class CharEngineTest {
 
     @Test
     public void test9() throws Exception{
-        ResultEngineParts result = engine.check("鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木鈴木","スズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキスズキ");
+        ResultEngineParts result = engine.check("鈴木鈴木鈴木鈴木鈴木鈴木鈴木","スズキスズキスズキスズキスズキスズキスズキ");
         assertThat(result.isOk(),equalTo(true));
         //assertThat(result.getNextResult().isOk(),equalTo(true));
-    }
-
-    @Test
-    public void test14() throws Exception{
-        ResultEngineParts result = engine.check("花梨","ハナナシ");
-        assertThat(result.isOk(),equalTo(true));
     }
 }

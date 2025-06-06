@@ -28,19 +28,22 @@ import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 単漢字辞書を保持するシングルトンクラス
  * mjから作成
  * 漢字とカナの文字列から，徐々に切り出しつつ，通常辞書と単漢字辞書などを組み合わせながら読み仮名があっているか推測していくため
  */
-public class DictTankanji extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
+class DictTankanji extends Dict {
+    protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
+    protected static DictIF dict=null;
 
-
-    private static DictIF dict=null;
-    private DictTankanji() throws Exception {
-        super(DefaultFile, false);
+    protected DictTankanji(boolean normalized) throws Exception {
+        super(DefaultFile, normalized);
     }
+
     /**
      * 辞書を得る
      * @return 辞書
@@ -48,7 +51,7 @@ public class DictTankanji extends Dict {
      */
     public synchronized static DictIF newInstance() throws Exception{
         if(dict == null){
-            dict = new DictTankanji();
+            dict = new DictTankanji(false);
         }
         return dict;
     }

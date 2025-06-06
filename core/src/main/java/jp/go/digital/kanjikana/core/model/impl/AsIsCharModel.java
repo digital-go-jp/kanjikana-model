@@ -26,7 +26,6 @@ package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.engine.CharEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 
 import java.util.Arrays;
@@ -44,7 +43,7 @@ import java.util.Arrays;
 public final class AsIsCharModel  extends DictCharModel {
 
     public AsIsCharModel() throws Exception {
-        super(new CharEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false));
+        super(new CharEngine(Arrays.asList( DictAsIsNormalized.newInstance()),false));
     }
 
     @Override

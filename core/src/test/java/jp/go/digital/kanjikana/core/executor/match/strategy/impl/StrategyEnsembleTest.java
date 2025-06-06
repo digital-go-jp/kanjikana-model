@@ -75,4 +75,13 @@ public class StrategyEnsembleTest {
         assertThat(res, equalTo(true));
         //assertThat(md.getEnsembleResults().size(),equalTo(3));
     }
+
+    @Test
+    public void test4() throws Exception{
+        ModelData md = new ModelData("額爾敦　巴雅爾","エルデン　バヤル");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
+        //assertThat(md.getEnsembleResults().size(),equalTo(3));
+    }
+
 }

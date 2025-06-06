@@ -27,29 +27,25 @@ package jp.go.digital.kanjikana.core.model.impl;
 import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawl;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawlNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSS;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSSNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 
 import java.util.Arrays;
 
 /**
- * クロール , OSS辞書を用いて単語単位で突合する，最も信頼度高い
+ * クロール , OSS, JLIS辞書を用いて単語単位で突合する，最も信頼度高い
  *
  */
-public class CrawlOSSWordModel extends AbstWordModel  {
+public class ReliableWordModel extends AbstWordModel  {
 
-    public CrawlOSSWordModel() throws Exception {
-        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), false));
+    public ReliableWordModel() throws Exception {
+        super(new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(),  DictReliableNormalized.newInstance(), DictTankanjiNormalized.newInstance()), false));
     }
 
-    public CrawlOSSWordModel(EngineIF engine) throws Exception{
+    public ReliableWordModel(EngineIF engine) throws Exception{
         super(engine);
     }
 

@@ -24,44 +24,35 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
-import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-import jp.go.digital.kanjikana.core.utils.Moji;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
-/**
- * オープンソース辞書を保持するシングルトンクラス
- * 最も信頼度が高い辞書
- * ipadic, mozc, skkの人名辞書から作成している，
- *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
- */
-public class DictOSSNormalized extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_OSS);
+import java.util.List;
 
-    private static DictOSSNormalized dict = null;
-    private DictOSSNormalized() throws Exception {
-        super(DefaultFile, true);
-    }
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
-    /**
-     * 辞書を得る
-     * @return 辞書
-     * @throws Exception 一般的なエラー
-     */
-    public synchronized static DictIF newInstance() throws Exception{
-        if(dict == null){
-            dict = new DictOSSNormalized();
+public class DictReliableTest {
+    DictIF dic;
+    private static final Logger logger = LogManager.getLogger(DictReliableTest.class);
+
+    {
+        try {
+            dic = DictReliableNormalized.newInstance();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return dict;
     }
 
-    @Override
-    public boolean containsKey(String key) {
-        return super.containsKey(Moji.normalize(key));
-    }
+    @Test
+    public void test1() throws Exception{
+        List<String> lst = dic.getValue("俊");
+        logger.debug(lst);
+        assertThat(dic.containsValueKey("俊","シュン"),equalTo(true));
+        assertThat(dic.containsValueKey("俊","シユン"),equalTo(true));
 
-    @Override
-    public boolean containsValueKey(String key, String valueKey) {
-        return super.containsValueKey(key, Moji.normalize(valueKey));
+
     }
 }

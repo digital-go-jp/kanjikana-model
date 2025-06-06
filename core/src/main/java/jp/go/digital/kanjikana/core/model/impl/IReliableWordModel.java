@@ -25,12 +25,9 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawl;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawlNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSS;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSSNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
 import java.util.Arrays;
@@ -45,10 +42,10 @@ import java.util.Arrays;
  * 異体字辞書で順次「邉」を「辺」に置き換えていくことで辞書とマッチできる
  *
  */
-public final class ICrawlOSSWordModel extends CrawlOSSWordModel {
+public final class IReliableWordModel extends ReliableWordModel {
 
-    public ICrawlOSSWordModel() throws Exception{
-        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictCrawl.newInstance(), DictOSS.newInstance(), DictCrawlNormalized.newInstance(), DictOSSNormalized.newInstance()), true));
+    public IReliableWordModel() throws Exception{
+        super(new WordEngine(Arrays.asList(DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictTankanjiNormalized.newInstance()), true));
     }
 
     @Override

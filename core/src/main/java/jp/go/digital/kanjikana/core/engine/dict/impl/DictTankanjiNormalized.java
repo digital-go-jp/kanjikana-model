@@ -29,18 +29,19 @@ import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
 import jp.go.digital.kanjikana.core.Resources;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 単漢字辞書を保持するシングルトンクラス
  * mjから作成
  * 漢字とカナの文字列から，徐々に切り出しつつ，通常辞書と単漢字辞書などを組み合わせながら読み仮名があっているか推測していくため
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
-public class DictTankanjiNormalized extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
+public class DictTankanjiNormalized extends DictTankanji {
 
-    private static DictIF dict=null;
     private DictTankanjiNormalized() throws Exception {
-        super(DefaultFile, true);
+        super(true);
     }
 
     /**

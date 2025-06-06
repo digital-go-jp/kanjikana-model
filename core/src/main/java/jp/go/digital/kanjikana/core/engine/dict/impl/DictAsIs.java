@@ -36,9 +36,9 @@ import java.util.List;
  * カナ姓名「アユミ」
  * をマッチさせる
  */
-public class DictAsIs implements DictIF {
-    private static DictAsIs dict=null;
-    private DictAsIs(){}
+class DictAsIs implements DictIF {
+    protected static DictAsIs dict=null;
+    protected DictAsIs(){}
 
     /**
      * 漢字姓名に含まれるひらがなカタカナを，カタカナ姓名とマッチさせるクラスを取得する

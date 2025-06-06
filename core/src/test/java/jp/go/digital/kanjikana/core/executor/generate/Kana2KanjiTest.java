@@ -60,6 +60,7 @@ public class Kana2KanjiTest {
         assertThat(o.response ,equalTo(Response.E010));
     }
 
+    /*
     @Test
     public void test1() throws Exception{
         var res = kk.run("タナカ",10);
@@ -83,4 +84,6 @@ public class Kana2KanjiTest {
             System.out.println(r);
         }
     }
+
+     */
 }

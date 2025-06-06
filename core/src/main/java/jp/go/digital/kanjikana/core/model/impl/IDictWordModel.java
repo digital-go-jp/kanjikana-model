@@ -25,7 +25,9 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
@@ -44,7 +46,7 @@ import java.util.Arrays;
 public final class IDictWordModel extends DictWordModel {
 
     public IDictWordModel() throws Exception{
-        super(new WordEngine(Arrays.asList(DictSeimeiNormalized.newInstance(), DictTankanjiNormalized.newInstance()),true));
+        super(new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(), DictTankanjiNormalized.newInstance()),true));
     }
 
     @Override

@@ -28,8 +28,14 @@ package jp.go.digital.kanjikana.core.engine;
  * AIを用いて文字単位で検査する
  */
 public final class AiCharEngine extends AiWordEngine{
+    /*
     public AiCharEngine() throws Exception {
         super();
+    }
+    */
+
+    public AiCharEngine(boolean hasItaiji) throws Exception{
+        super(hasItaiji);
     }
 
     /**

@@ -24,22 +24,23 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
-import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+import jp.go.digital.kanjikana.core.utils.Moji;
+import jp.go.digital.kanjikana.core.Resources;
+
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
- * オープンソース辞書を保持するシングルトンクラス
- * 最も信頼度が高い辞書
- * ipadic, mozc, skkの人名辞書から作成している，
+ * 作成した辞書を保持するシングルトンクラス
+ *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
+ * たまに間違いがあるのであまり信頼度高くない
  */
-public class DictOSS extends Dict {
-    private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_OSS);
-
-    private static DictIF dict = null;
-
-    private DictOSS() throws Exception {
-        super(DefaultFile, false);
+public class DictUnReliableNormalized extends DictUnReliable {
+    protected DictUnReliableNormalized() throws Exception {
+        super(true);
     }
 
     /**
@@ -49,9 +50,18 @@ public class DictOSS extends Dict {
      */
     public synchronized static DictIF newInstance() throws Exception{
         if(dict == null){
-            dict = new DictOSS();
+            dict = new DictUnReliableNormalized();
         }
         return dict;
     }
-}
 
+    @Override
+    public boolean containsKey(String key) {
+        return super.containsKey(Moji.normalize(key));
+    }
+
+    @Override
+    public boolean containsValueKey(String key, String valueKey) {
+        return super.containsValueKey(key, Moji.normalize(valueKey));
+    }
+}

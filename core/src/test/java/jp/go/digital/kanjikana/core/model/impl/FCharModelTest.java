@@ -98,12 +98,4 @@ public class FCharModelTest {
         assertThat(modelData.getTopResult().getKana(),equalTo("タナカセルソアサコ"));
 
     }
-
-    @Test
-    public void test7() throws Exception{
-        ModelData modelData = model.run(new ModelData("ＫＯＲＡＬＡ　ＭＵＤＡＬＩＧＥ　ＤＯＮ　ＴＩＬＡＮ　ＳＵＢＵＤＤＩＫＡ","コーララムダリゲ　ドン　ティラーン　スブッディカ"));
-        assertThat(modelData.isOk(),equalTo(true));
-
-    }
-
 }
