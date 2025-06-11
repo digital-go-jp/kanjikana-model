@@ -5,7 +5,7 @@
 
     <groupId>jp.go.digital.kanjikana</groupId>
     <artifactId>kanjikana_core</artifactId>
-    <version>1.6.1o</version>
+    <version>VER</version>
 
     <description>Kanji Kana Core</description>
     <properties>
