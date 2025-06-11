@@ -4,3 +4,6 @@ old
 *.gz
 *.bz2
 SKK-*
+*.xlsx
+*.zip
+*.html
