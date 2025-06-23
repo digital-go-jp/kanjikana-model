@@ -12,3 +12,6 @@ conf
 output*.txt
 input*.txt
 outfile.txt
+old
+*.log
+
