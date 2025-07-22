@@ -26,3 +26,5 @@ input.txt
 *.gz
 *.zip
 *.org
+old
+OLD

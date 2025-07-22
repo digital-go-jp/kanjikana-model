@@ -48,16 +48,27 @@ public class NandokuEngineTest {
 
     @Test
     public void test5() throws Exception{
-        ResultEngineParts result = engine.check("樱良","サラ");
+        ResultEngineParts result = engine.check("櫻良","サラ");
         assertThat(result.isOk(),equalTo(true));
     }
 
     @Test
     public void test5a() throws Exception{
-        ResultEngineParts result = engine.check("樱良子","サラ");
+        ResultEngineParts result = engine.check("櫻良子","サラ");
         assertThat(result.isOk(),equalTo(true));
     }
 
+    @Test
+    public void test5b() throws Exception{
+        ResultEngineParts result = engine.check("桜良","サラ");
+        assertThat(result.isOk(),equalTo(true));
+    }
+
+    @Test
+    public void test5c() throws Exception{
+        ResultEngineParts result = engine.check("桜良子","サラ");
+        assertThat(result.isOk(),equalTo(true));
+    }
 
     @Test
     public void test6() throws Exception{
