@@ -1,17 +1,12 @@
 #!/bin/env python
-# coding:utf-8
-
-# Copyright (c) 2025 デジタル庁
+# Copyright (c) 2024 デジタル庁
 # 
+
+
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-
-"""
-漢字・アルファベットとカタカナの２つのファイルを入力しそれぞれの位置がペアとなるようにしたままで，順番をシャッフルする
-"""
-
-
+# coding:utf-8
 import json
 import argparse
 import pandas as pd
@@ -41,7 +36,7 @@ def run(args):
             f.write(f'{s}\n')
             
 def main():
-    parser = argparse.ArgumentParser(description='入力したsrcとtgtデータを，それぞの同じ行が同じ行になるように行単位でシャッフルする')
+    parser = argparse.ArgumentParser(description='')
     parser.add_argument('--tgt', default="dataset/train.src", type=str)
     parser.add_argument('--src', default="dataset/train.tgt", type=str)
     args = parser.parse_args()

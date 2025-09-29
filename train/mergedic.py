@@ -1,20 +1,16 @@
 #!/bin/env python
-# coding:utf-8
-
-# Copyright (c) 2025 デジタル庁
+# Copyright (c) 2024 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-"""
-JSON形式の辞書をマージする
-"""
-
-
+# coding:utf-8
 import json
 import os
 import argparse
 import json
+import jaconv
+
 
 def run(args):
 
@@ -51,7 +47,7 @@ def run(args):
     
 
 def main():
-    parser = argparse.ArgumentParser(description='dic1とdic2で入力された漢字とかなのペアのJSONデータをマージしする。（同じ漢字とカナのペアがあったものはマージする）')
+    parser = argparse.ArgumentParser()
     parser.add_argument('--dic1',default='../dict/oss/oss.json',type=str)
     parser.add_argument('--dic2',default='../dict/crawl/crawl.json',type=str)
     parser.add_argument('--outfile', default="tmp.json", type=str)

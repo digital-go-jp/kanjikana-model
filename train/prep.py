@@ -1,20 +1,17 @@
 #!/bin/env python
-# coding:utf-8
-
-# Copyright (c) 2025 デジタル庁
+# Copyright (c) 2024 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-"""
-jsonで指定されるデータを訓練用，開発用，検証用に分ける。開発用と検証用がそれぞれ全体のratioで指定される率になる
-"""
+# coding:utf-8
 
 import argparse
 import json
 import random
 import os
-random.seed(1234) # seedを固定する
+random.seed(1234)
+
 
 def run(args):
     with open(args.json,'r',encoding='utf-8') as f:
@@ -27,10 +24,7 @@ def run(args):
         for v in vv.keys():
             if len(k)==0 or len(v)==0:
                 continue
-            if args.reverse:
-                lst.append([v,k])
-            else:
-                lst.append([k,v])
+            lst.append([k,v])
             k_max_len=k_max_len if k_max_len>len(k) else len(k)
             v_max_len=v_max_len if v_max_len>len(v) else len(v)
 
@@ -58,13 +52,17 @@ def run(args):
     write("valid",val)
     write("test",test)
 
+
+
+# %%
+
 def main():
-    parser = argparse.ArgumentParser(description="jsonで指定されるデータを訓練用，開発用，検証用に分ける。開発用と検証用がそれぞれ全体のratioで指定される率になる")
+    parser = argparse.ArgumentParser(description="")
 
     parser.add_argument("--json", default="tmp.json", type=str)
     parser.add_argument("--outdir", default="dataset", type=str)
     parser.add_argument("--ratio", default=0.01, type=float)
-    parser.add_argument("--reverse", action="store_true",help="trueのとき、カタカナから漢字を学習するデータセットを作成する")
+
 
     args = parser.parse_args()
     print(json.dumps(args.__dict__, indent=2))

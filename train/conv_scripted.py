@@ -45,11 +45,11 @@ class KanjiKanaTransformerScripted(KanjiKanaTransformer):
         torch.jit.script(transformer.tgt_tok_emb).save(self.args.tgt_tok_emb)
 
         with open(self.args.vocab_src,'w',encoding='utf-8') as f:
-            for v in self.vocab_transform[self.args.source_lang].vocab.get_itos():
+            for v in self.vocab_transform[self.args.source_lang].get_itos():
                 f.write(f"{v}\n")
 
         with open(self.args.vocab_tgt,'w',encoding='utf-8') as f:
-            for v in self.vocab_transform[self.args.target_lang].vocab.get_itos():
+            for v in self.vocab_transform[self.args.target_lang].get_itos():
                 f.write(f"{v}\n")
 
 

@@ -1,17 +1,13 @@
 #!/bin/env python
-# coding:utf-8
-
-# Copyright (c) 2025 デジタル庁
+# Copyright (c) 2024 デジタル庁
 # 
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-"""
-ファイル内のデータを，文字単位でスペース区切りにする
-"""
-
+# coding:utf-8
 import json
 import argparse
+import pandas as pd
 
 def run(args):
     tgt,src=[],[]
@@ -28,7 +24,7 @@ def run(args):
             
             
 def main():
-    parser = argparse.ArgumentParser(description='一列単位で作成したinfileデータを，スペース区切りにする')
+    parser = argparse.ArgumentParser(description='')
     parser.add_argument('--infile', default="tmp.src", type=str)
     parser.add_argument('--outfile', default="tmp.src2", type=str)
     args = parser.parse_args()

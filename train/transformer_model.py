@@ -6,13 +6,12 @@
 
 # coding:utf-8
 
-import torchtext
-torchtext.disable_torchtext_deprecation_warning()
+#torchtext.disable_torchtext_deprecation_warning()
 
 from typing import Iterable, List
 
 from collections import OrderedDict
-from torchtext.vocab import vocab
+#from torchtext.vocab import vocab
 from torch import Tensor
 import torch
 import torch.nn as nn
@@ -21,8 +20,8 @@ import math
 from torch.nn.utils.rnn import pad_sequence
 from timeit import default_timer as timer
 from torch.utils.data import DataLoader
-from torchtext.data.utils import get_tokenizer
-from torchtext.vocab import build_vocab_from_iterator
+#from torchtext.data.utils import get_tokenizer
+#from torchtext.vocab import build_vocab_from_iterator
 from torch.utils.tensorboard import SummaryWriter
 import argparse
 import json
@@ -30,6 +29,10 @@ import os
 import glob
 from torch.utils.data import Dataset
 from typing import List, Tuple
+
+import itertools
+
+from tokenizers import Tokenizer, models, pre_tokenizers, trainers
 
 
 torch.manual_seed(0)
@@ -39,6 +42,8 @@ UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
 # Make sure the tokens are in order of their indices to properly insert them in vocab
 SPECIAL_SYMBOLS = ['<unk>', '<pad>', '<bos>', '<eos>']
 
+def _split_tokenizer(x):
+    return x.split()
 
 
 # helper Module that adds positional encoding to the token embedding to introduce a notion of word order.
@@ -46,11 +51,12 @@ class PositionalEncoding(nn.Module):
     def __init__(self,
                  emb_size: int,
                  dropout: float,
-                 maxlen: int = 5000):
+                 maxlen: int = 5000,
+                 device: str="cpu"):
         super(PositionalEncoding, self).__init__()
         den = torch.exp(- torch.arange(0, emb_size, 2)* math.log(10000) / emb_size)
         pos = torch.arange(0, maxlen).reshape(maxlen, 1)
-        pos_embedding = torch.zeros((maxlen, emb_size))
+        pos_embedding = torch.zeros((maxlen, emb_size)).to(device)
         pos_embedding[:, 0::2] = torch.sin(pos * den)
         pos_embedding[:, 1::2] = torch.cos(pos * den)
         pos_embedding = pos_embedding.unsqueeze(-2)
@@ -84,19 +90,43 @@ class Seq2SeqTransformer(nn.Module):
                  tgt_vocab_size: int,
                  dim_feedforward: int,
                  dropout: float,
-                 device):
+                 device: str,
+                 return_intermediate: bool = False):
         super(Seq2SeqTransformer, self).__init__()
+        self.return_intermediate = return_intermediate
+
         self.transformer = Transformer(d_model=emb_size,
                                        nhead=nhead,
                                        num_encoder_layers=num_encoder_layers,
                                        num_decoder_layers=num_decoder_layers,
                                        dim_feedforward=dim_feedforward,
                                        dropout=dropout,device=device)
-        self.generator = nn.Linear(emb_size, tgt_vocab_size)
+        self.generator = nn.Linear(emb_size, tgt_vocab_size, device=device)
         self.src_tok_emb = TokenEmbedding(src_vocab_size, emb_size, device)
         self.tgt_tok_emb = TokenEmbedding(tgt_vocab_size, emb_size, device)
         self.positional_encoding = PositionalEncoding(
-            emb_size, dropout=dropout)
+            emb_size, dropout=dropout, device=device)
+        
+        if self.return_intermediate:
+            self._enc_hiddens = []
+            self._dec_hiddens = []
+            # register hooks
+            for layer in self.transformer.encoder.layers:
+                layer.register_forward_hook(self._make_hook(self._enc_hiddens))
+            for layer in self.transformer.decoder.layers:
+                layer.register_forward_hook(self._make_hook(self._dec_hiddens))
+
+    def _make_hook(self, container):
+        def hook(module, inp, out):
+            # out shape: (seq_len, batch, d_model)
+            container.append(out.detach())
+        return hook
+
+    def _clear_intermediates(self):
+        if self.return_intermediate:
+            self._enc_hiddens.clear()
+            self._dec_hiddens.clear()
+
 
     def forward(self,
                 src: Tensor,
@@ -107,11 +137,20 @@ class Seq2SeqTransformer(nn.Module):
                 tgt_padding_mask: Tensor,
                 memory_key_padding_mask: Tensor):
         #a = self.src_tok_emb(src)
+        self._clear_intermediates()
         src_emb = self.positional_encoding(self.src_tok_emb(src))
         tgt_emb = self.positional_encoding(self.tgt_tok_emb(trg))
         outs = self.transformer(src_emb, tgt_emb, src_mask, tgt_mask, None,
                                 src_padding_mask, tgt_padding_mask, memory_key_padding_mask)
-        return self.generator(outs)
+        logits = self.generator(outs)
+        if self.return_intermediate:
+            return {
+                "logits": logits,
+                "encoder_hiddens": self._enc_hiddens,  # list[len_enc_layers] each (S,B,D)
+                "decoder_hiddens": self._dec_hiddens   # list[len_dec_layers] each (T,B,D)
+            }
+        return {"logits": logits}
+        #return self.generator(outs)
 
     @torch.jit.export
     def encode(self, src: Tensor, src_mask: Tensor):
@@ -170,6 +209,86 @@ class KanjiKanaTransformer:
         self.token_transform = {}
         self.vocab_transform = {}
 
+    def get_tokenizer_by_vocab(self, vocab):
+        # トークナイザーの作成
+        tokenizer = Tokenizer(models.WordLevel(vocab,unk_token=SPECIAL_SYMBOLS[UNK_IDX]))
+        # 2. PreTokenizer をスペース区切りに設定
+        tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
+
+        class kanjikana_encode:
+
+            def encode(self, lst):
+                res = []
+                for item in lst:
+                    res.append(tokenizer.encode(item).ids)
+                flattened = list(itertools.chain.from_iterable(res))
+                return flattened
+
+            def decode(self, lst):
+                res = []
+                for item in lst:
+                    if isinstance(item, torch.Tensor):
+                        item = int(item)
+                    res.append(tokenizer.decode([item]))
+                return res
+
+
+            def __call__(self,lst):
+                return self.encode(lst)
+
+            def __len__(self):
+                return len(vocab)
+
+            def get_itos(self):
+                lst=[None]*len(vocab)
+                for k,v in vocab.items():
+                    lst[v]=k
+                return lst
+
+
+
+        return kanjikana_encode()
+
+    def get_tokenizer_by_corpus(self, corpus):
+        tokenizer = Tokenizer(models.WordLevel(unk_token=SPECIAL_SYMBOLS[UNK_IDX]))
+        # 2. PreTokenizer をスペース区切りに設定
+        tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
+        trainer = trainers.WordLevelTrainer(special_tokens=SPECIAL_SYMBOLS)
+        # 5. トークナイザーの学習
+        tokenizer.train_from_iterator(corpus, trainer)
+
+        class kanjikana_encode:
+
+            def encode(self, lst):
+                res = []
+                for item in lst:
+                    res.append(tokenizer.encode(item).ids)
+                flattened = list(itertools.chain.from_iterable(res))
+                return flattened
+
+            def decode(self, lst):
+                res = []
+                for item in lst:
+                    if isinstance(item, torch.Tensor):
+                        item = int(item)
+                    res.append(tokenizer.decode([item]))
+                return res
+
+            def __call__(self, lst):
+                return self.encode(lst)
+
+            def __len__(self):
+                return tokenizer.get_vocab_size()
+
+            def get_itos(self):
+                vocab = tokenizer.get_vocab()
+                lst=[None]*len(vocab)
+                for k,v in vocab.items():
+                    lst[v]=k
+                return lst
+
+        return kanjikana_encode()
+
     def generate_square_subsequent_mask(self,sz):
         mask = (torch.triu(torch.ones((sz, sz), device=self.args.device)) == 1).transpose(0, 1)
         mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
@@ -226,7 +345,7 @@ class KanjiKanaTransformer:
 
             src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = self.create_mask(src, tgt_input)
 
-            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask)
+            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask)['logits']
 
             optimizer.zero_grad()
 
@@ -255,7 +374,7 @@ class KanjiKanaTransformer:
 
             src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = self.create_mask(src, tgt_input)
 
-            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask)
+            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask)['logits']
 
             tgt_out = tgt[1:, :]
             loss = loss_fn(logits.reshape(-1, logits.shape[-1]), tgt_out.reshape(-1))
@@ -264,6 +383,7 @@ class KanjiKanaTransformer:
         return losses / len(list(val_dataloader))
 
     def load_by_vocab(self, src_vocab, tgt_vocab, params):
+
 
         self.args.emb_size=params["emb_size"]
         self.args.nhead=params["nhead"]
@@ -281,20 +401,17 @@ class KanjiKanaTransformer:
         self.args.target_lang=params['target_lang']
 
 
-        self.token_transform[params["source_lang"]] = get_tokenizer(None)
-        self.token_transform[params["target_lang"]] = get_tokenizer(None)  # get_tokenizer(None) -> split_tokenizer
+        self.token_transform[params["source_lang"]] = _split_tokenizer
+        self.token_transform[params["target_lang"]] = _split_tokenizer  # get_tokenizer(None) -> split_tokenizer
         src=OrderedDict()
-        for s in src_vocab:
-            src[s]=1
-        self.vocab_transform[params["source_lang"]]=vocab(src,min_freq=0,
-                                                                  specials=SPECIAL_SYMBOLS,
-                                                                  special_first=True)
+        for i,s in enumerate(src_vocab):
+            src[s]=i
+        self.vocab_transform[params["source_lang"]]=self.get_tokenizer_by_vocab(src)
+            #vocab(src,min_freq=0,specials=SPECIAL_SYMBOLS,special_first=True))
         tgt=OrderedDict()
-        for s in tgt_vocab:
-            tgt[s]=1
-        self.vocab_transform[params["target_lang"]]=vocab(tgt,min_freq=0,
-                                                                  specials=SPECIAL_SYMBOLS,
-                                                                  special_first=True)
+        for i,s in enumerate(tgt_vocab):
+            tgt[s]=i
+        self.vocab_transform[params["target_lang"]]=self.get_tokenizer_by_vocab(tgt)
 
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [params["source_lang"], params["target_lang"]]:
@@ -303,12 +420,14 @@ class KanjiKanaTransformer:
                                                        self.tensor_transform)  # Add BOS/EOS and create tensor
         # Set ``UNK_IDX`` as the default index. This index is returned when the token is not found.
         # If not set, it throws ``RuntimeError`` when the queried token is not found in the Vocabulary.
-        for ln in [params["source_lang"], params["target_lang"]]:
-            self.vocab_transform[ln].set_default_index(UNK_IDX)
+        #for ln in [params["source_lang"], params["target_lang"]]:
+        #    self.vocab_transform[ln].set_default_index(UNK_IDX)
 
 
-        src_vocab_size = len(self.vocab_transform[params["source_lang"]])
-        tgt_vocab_size = len(self.vocab_transform[params["target_lang"]])
+        #src_vocab_size = len(self.vocab_transform[params["source_lang"]])
+        #tgt_vocab_size = len(self.vocab_transform[params["target_lang"]])
+        src_vocab_size = len(src_vocab)
+        tgt_vocab_size = len(tgt_vocab)
 
         transformer = KanjiKanaTransformer.load_model(params["num_encoder_layers"], params["num_decoder_layers"], params["emb_size"],params["nhead"], src_vocab_size, tgt_vocab_size, params["ffn_hid_dim"], params["dropout"],self.args.device)
 
@@ -328,17 +447,11 @@ class KanjiKanaTransformer:
                 yield data_sample[language_index[language]]
 
 
-        self.token_transform[self.args.source_lang] = get_tokenizer(None)
-        self.token_transform[self.args.target_lang] = get_tokenizer(None)  # get_tokenizer(None) -> split_tokenizer
+        self.token_transform[self.args.source_lang] = _split_tokenizer
+        self.token_transform[self.args.target_lang] = _split_tokenizer  # get_tokenizer(None) -> split_tokenizer
 
-        self.vocab_transform[self.args.source_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.source_lang),
-                                                                  min_freq=0,
-                                                                  specials=SPECIAL_SYMBOLS,
-                                                                  special_first=True)
-        self.vocab_transform[self.args.target_lang] = build_vocab_from_iterator(yield_tokens(train_iter, self.args.target_lang),
-                                                                  min_freq=0,
-                                                                  specials=SPECIAL_SYMBOLS,
-                                                                  special_first=True)
+        self.vocab_transform[self.args.source_lang] = self.get_tokenizer_by_corpus(yield_tokens(train_iter, self.args.source_lang))
+        self.vocab_transform[self.args.target_lang] = self.get_tokenizer_by_corpus(yield_tokens(train_iter, self.args.target_lang))
         # ``src`` and ``tgt`` language text transforms to convert raw strings into tensors indices
         for ln in [self.args.source_lang, self.args.target_lang]:
             self.text_transform[ln] = self.sequential_transforms(self.token_transform[ln],  # Tokenization
@@ -346,9 +459,8 @@ class KanjiKanaTransformer:
                                                        self.tensor_transform)  # Add BOS/EOS and create tensor
         # Set ``UNK_IDX`` as the default index. This index is returned when the token is not found.
         # If not set, it throws ``RuntimeError`` when the queried token is not found in the Vocabulary.
-        for ln in [self.args.source_lang, self.args.target_lang]:
-            self.vocab_transform[ln].set_default_index(UNK_IDX)
-
+        #for ln in [self.args.source_lang, self.args.target_lang]:
+        #    self.vocab_transform[ln].set_default_index(UNK_IDX)
 
         src_vocab_size = len(self.vocab_transform[self.args.source_lang])
         tgt_vocab_size = len(self.vocab_transform[self.args.target_lang])
@@ -419,7 +531,7 @@ class KanjiKanaTransformer:
             print((f"Epoch: {epoch}, Train loss: {train_loss:.3f}, Val loss: {val_loss:.3f}, "f"Epoch time = {(end_time - start_time):.3f}s"))
 
             # https://wandb.ai/wandb_fc/japanese/reports/PyTorch---VmlldzoxNTAyODQy
-            torch.save({'epoch': epoch, 'model_state_dict':transformer.state_dict(), 'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].vocab.get_itos(),"tgt_vocab":self.vocab_transform[self.args.target_lang].vocab.get_itos(),"params":params},self.args.output_dir+f"/checkpoint_{epoch:03d}.pt")
+            torch.save({'epoch': epoch, 'model_state_dict':transformer.state_dict(), 'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].get_itos(),"tgt_vocab":self.vocab_transform[self.args.target_lang].get_itos(),"params":params},self.args.output_dir+f"/checkpoint_{epoch:03d}.pt")
 
             # https://zenn.dev/a5chin/articles/log_tensorboard
             if writer is not None:
@@ -429,7 +541,7 @@ class KanjiKanaTransformer:
             if best_loss is None or best_loss > val_loss:
                 best_loss = val_loss
                 torch.save({'epoch': epoch, 'model_state_dict': transformer.state_dict(),
-                            'optimizer_state_dict': optimizer.state_dict(), 'loss': train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].vocab.get_itos(),"tgt_vocab":self.vocab_transform[self.args.target_lang].vocab.get_itos(),"params":params},
+                            'optimizer_state_dict': optimizer.state_dict(), 'loss': train_loss, 'src_vocab':self.vocab_transform[self.args.source_lang].get_itos(),"tgt_vocab":self.vocab_transform[self.args.target_lang].get_itos(),"params":params},
                            self.args.output_dir + f"/checkpoint_best.pt")
                 patient=0
             else:
@@ -455,14 +567,14 @@ def main():
     parser.add_argument('--lr', default=0.00002, type=float)
     parser.add_argument('--dropout', default=0.3, type=float)
     parser.add_argument('--adam_eps', default=1e-06, type=float)
-    parser.add_argument('--train_file', default='dataset/train.jsonl', type=str)
-    parser.add_argument('--valid_file', default='dataset/valid.jsonl', type=str)
-    parser.add_argument('--output_dir', default='model', type=str)
+    parser.add_argument('--train_file', default='dataset/dataset.1.8/test.jsonl', type=str)
+    parser.add_argument('--valid_file', default='dataset/dataset.1.8/valid.jsonl', type=str)
+    parser.add_argument('--output_dir', default='tmp', type=str)
     parser.add_argument('--prefix', default='translation', type=str)
     parser.add_argument('--source_lang', default='kanji', type=str)
     parser.add_argument('--target_lang', default='kana', type=str)
     parser.add_argument('--save_num', default=1, type=int)
-    parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
+    parser.add_argument('--device',default='mps',choices=('cuda','cpu','mps'))
     parser.add_argument('--tensorboard_logdir',default='logs',type=str)
     parser.add_argument('--earlystop_patient',default=99999,type=int,help="number of times not updated from valid best")
 
