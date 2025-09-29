@@ -47,6 +47,8 @@ public final class Resources {
             logger.fatal(e);
             logger.fatal(String.format("ファイルの読み込みに失敗しました。ファイル名:%s", INIT_FILE_PATH));
         }
+        //System.out.println(properties);
+        //System.out.println("---");
     }
 
     // kanjikana.propのキーを定義
@@ -78,6 +80,8 @@ public final class Resources {
         AI_PM_BEAMWIDTH("AI_PM_BEAMWIDTH"), // ビームサーチ幅
         AI_PM_MAXLEN("AI_PM_MAXLEN"), // 推測する文字列の最大長さ
         AI_PM_CACHE_SIZE("AI_PM_CACHE_SIZE"), // AIモデルでCacheするサイズ，
+        AI_PM_PARALLEL_ENABLED("AI_PM_PARALLEL_ENABLED"),
+        AI_PM_PARALLELISM("AI_PM_PARALLELISM"),
 
         // 外国人辞書
         FOREIGNER_DIC("FOREIGNER_DIC"),
@@ -98,6 +102,7 @@ public final class Resources {
         DIC_STATISTICS("DIC_STATISTICS"),
         DIC_STATISTICS_MINFREQ("DIC_STATISTICS_MINFREQ"), // この値未満はNGとする
 
+        DIC_POOL("DIC_POOL"), // DICをキャッシュしておくためのファイル名
 
         SKIP_KANJI_GE_KANA_DIFF("SKIP_KANJI_GE_KANA_DIFF"), // 漢字文字数＞カナ文字数＋SKIP_KANJI_GE_KANA_DIFF の時にループスキップ
 

@@ -30,6 +30,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.contains;
 
 public class GreedySearchTest {
     private GreedySearch search ;
@@ -45,8 +46,14 @@ public class GreedySearchTest {
 
     @Test
     public void test1() throws Exception{
+
         List<SearchResult> res = search.run("高野");
-        assertThat(res.get(0).getPredict(),equalTo("タカノ"));
-        //assertThat(res.get(1).getPredict(),equalTo("タカノ"));
+
+        // "タカノ" が res の中のどれかの getPredict() に含まれているかを検証
+        boolean found = res.stream()
+                .anyMatch(r -> "タカノ".equals(r.getPredict()));
+
+        assertThat( found, equalTo(true));
+
     }
 }

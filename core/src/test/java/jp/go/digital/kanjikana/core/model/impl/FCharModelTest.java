@@ -96,6 +96,5 @@ public class FCharModelTest {
         assertThat(modelData.isOk(),equalTo(false));
         assertThat(modelData.getTopResult().getKanji(),equalTo("ＴＡＮＡＫＡＣＥＬＳＯＨＡＮＡＫＯ"));
         assertThat(modelData.getTopResult().getKana(),equalTo("タナカセルソアサコ"));
-
     }
 }

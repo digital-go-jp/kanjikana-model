@@ -24,6 +24,7 @@
 
 package jp.go.digital.kanjikana.core.executor.match;
 
+import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyAi;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyDict;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyOnlyStatistics;
@@ -112,7 +113,7 @@ public final class KanjiKanaMatchRunner implements Runnable {
      * @throws Exception 一般的な例外
      */
     public KanjiKanaMatchRunner(Params params, List<String> lines, String header, String outfile,  Strategy strategy) throws Exception {
-        FileReader fr = new FileReader(params.isHasHeader());
+        FileReader fr = new FileReader(params.hasHeader());
         this.params = params;
         this.outfile = new FileWriter(outfile);
 

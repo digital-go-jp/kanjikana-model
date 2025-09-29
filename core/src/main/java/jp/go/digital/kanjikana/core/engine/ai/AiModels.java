@@ -127,8 +127,8 @@ public abstract class AiModels {
      * @param src_tok_emb パラメタリソース名
      * @param tgt_tok_emb パラメタリソース名
      */
-    protected AiModels(String vocab_src, String vocab_tgt, String positional_encoding, String params, String encoder, String decoder, String generator, String src_tok_emb, String tgt_tok_emb){
-        try {
+    protected AiModels(String vocab_src, String vocab_tgt, String positional_encoding, String params, String encoder, String decoder, String generator, String src_tok_emb, String tgt_tok_emb) throws Exception{
+        //try {
             this.vocab_src = new WordIndex(getClass().getResourceAsStream(vocab_src));
             this.vocab_tgt = new WordIndex(getClass().getResourceAsStream(vocab_tgt));
             Parameters dl = new Parameters();
@@ -140,10 +140,10 @@ public abstract class AiModels {
             this.generator = loadModelFromResource(generator);
             this.src_tok_emb = loadModelFromResource(src_tok_emb);
             this.tgt_tok_emb = loadModelFromResource(tgt_tok_emb);
-        }catch(Exception e){
-            e.fillInStackTrace();
-            logger.fatal(e);
-        }
+        //}catch(Exception e){
+        //    e.fillInStackTrace();
+        //    logger.fatal(e);
+        //}
     }
 
     /**

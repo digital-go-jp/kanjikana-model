@@ -117,4 +117,9 @@ public class KanjiKanaMatchTest {
         Output o = detail.exec("ＨＥ　ＪＵＮ","カ　シユン");
         assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
+    @Test
+    public void test5c() throws Exception{
+        Output o = detail.exec("ＨＥ　ＪＵＮ","ヘ　シユン");
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+    }
 }

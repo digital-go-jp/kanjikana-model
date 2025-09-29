@@ -105,6 +105,7 @@ public final class GreedySearch extends AbstSearch {
             if(next_word==aimodels.getVocab_tgt().getWord2Index().get(AiModels.EOS)){
                 break;
             }
+            prob.close();
         }
 
         StringBuilder sb = new StringBuilder();

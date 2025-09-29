@@ -57,4 +57,24 @@ public class FWordModelTest {
 
     }
 
+    @Test
+    public void test３() throws Exception{
+        ModelData modelData = model.run(new ModelData("ＫＯＲＡＬＡ","コーラ"));
+        assertThat(modelData.isOk(),equalTo(false));
+    }
+    @Test
+    public void test３a() throws Exception{
+        ModelData modelData = model.run(new ModelData("ＫＯＬＡ","コーラ"));
+        assertThat(modelData.isOk(),equalTo(true));
+    }
+    @Test
+    public void test３c() throws Exception{
+        ModelData modelData = model.run(new ModelData("ＫＯＲＡ","コーラ"));
+        assertThat(modelData.isOk(),equalTo(true));
+    }
+    @Test
+    public void test３d() throws Exception{
+        ModelData modelData = model.run(new ModelData("ＫＯＲＡＬＡ","コーララ"));
+        assertThat(modelData.isOk(),equalTo(true));
+    }
 }

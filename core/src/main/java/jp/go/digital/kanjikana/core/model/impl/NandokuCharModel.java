@@ -3,9 +3,8 @@ package jp.go.digital.kanjikana.core.model.impl;
 import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.NandokuEngine;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
@@ -16,11 +15,12 @@ import java.util.Arrays;
  * 置き字、漢字の読みの一部、熟字訓を許容する
  * 文字単位で実施 「渡辺 雲母」「わたなべ きらら」 渡辺雲母ーわたなべきらら でチェック
  * 漢字名に異体字があれば置き換える
+ * @version 1.8 DictをNormalizedから通常にした。禁則処理の対応のため
  * @since 1.7
  */
 class NandokuCharModel extends AbstCharModel {
     NandokuCharModel() throws Exception{
-        super(new NandokuEngine(Arrays.asList( DictAsIsNormalized.newInstance(),   DictTankanjiNormalized.newInstance()),false));
+        super(new NandokuEngine(Arrays.asList( DictAsIs.newInstance(),   DictTankanji.newInstance()),false));
     }
 
     public NandokuCharModel(EngineIF engine) throws Exception{

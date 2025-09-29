@@ -63,7 +63,7 @@ public abstract class Dict implements DictIF{
      */
     public Dict(String resource, boolean normalized, int min_freq) throws Exception{
         this.normalized = normalized;
-        this.dictMap = DictPool.load(resource, normalized, min_freq);
+        this.dictMap = DictPool.newInstance().load(resource, normalized, min_freq);
 
         int max_key_len=0;
         int max_val_len=0;

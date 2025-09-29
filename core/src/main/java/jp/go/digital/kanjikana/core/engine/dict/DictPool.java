@@ -26,9 +26,20 @@ package jp.go.digital.kanjikana.core.engine.dict;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.ResultAttr;
 import jp.go.digital.kanjikana.core.utils.Moji;
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.Namespace;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -36,17 +47,49 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * 辞書をキャッシュするクラス
  */
-class DictPool {
-    private static Map<String, Map<String, Map<String, ResultAttr>>> pool=new Hashtable<>();
+public class DictPool {
+    private static DictPool dictPool=null;
+    private final Map<String, Map<String, Map<String, ResultAttr>>> pool;
 
+    private DictPool(Map<String, Map<String, Map<String, ResultAttr>>> pool){
+        this.pool = pool;
+    }
+    public static synchronized DictPool newInstance(){
+        if(dictPool!=null){
+            return dictPool;
+        }
 
-    private static JsonNode getNode(String resource) throws Exception{
+        Map<String, Map<String, Map<String, ResultAttr>>> pool=new HashMap<>();
+        // リソースとして読み込み
+        String resource = Resources.getProperty(Resources.PropKey.DIC_POOL);
+        try (InputStream is = DictPool.class.getResourceAsStream(resource)) {
+            if (is == null) {
+                throw new IOException("Resource not found," + Resources.getProperty(Resources.PropKey.DIC_POOL));
+            }
+
+            try (ObjectInputStream ois = new ObjectInputStream(is)) {
+                pool = (Map<String, Map<String, Map<String, ResultAttr>>>) ois.readObject();
+            }
+        }catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        dictPool=new DictPool(pool);
+        return dictPool;
+    }
+
+    private JsonNode getNode(String resource) throws Exception{
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(DictPool.class.getResourceAsStream(resource));
         return node;
+    }
+
+
+    static String getMapKey(String resource, boolean normalized){
+        return resource+"_"+normalized;
     }
 
     /**
@@ -56,13 +99,10 @@ class DictPool {
      * @return 辞書データ
      * @throws Exception 一般的なエラー
      */
-    static synchronized Map<String, Map<String, ResultAttr>> load(String resource, boolean normalized) throws Exception {
-        return load(resource, normalized, 0);
-    }
+    //static synchronized Map<String, Map<String, ResultAttr>> load(String resource, boolean normalized) throws Exception {
+    //    return load(resource, normalized, 0);
+    //}
 
-    static private String getMapKey(String resource, boolean normalized){
-        return resource+"_"+normalized;
-    }
     /**
      * リソース名から辞書を読み込んで返す
      * @param resource リソース名
@@ -71,14 +111,22 @@ class DictPool {
      * @return 辞書データ
      * @throws Exception 一般的なエラー
      */
-    static synchronized Map<String, Map<String, ResultAttr>> load(String resource, boolean normalized, int min_freq) throws Exception {
+     synchronized Map<String, Map<String, ResultAttr>> load(String resource, boolean normalized, int min_freq) throws Exception {
         String poolkey = getMapKey(resource, normalized);
         if(pool.containsKey(poolkey)){
             return pool.get(poolkey);
         }
-        
+
         //ObjectMapper mapper = new ObjectMapper();
         JsonNode node = getNode( resource);
+        Map<String, Map<String, ResultAttr>>  dict =  load(node, normalized, min_freq);
+        pool.put(poolkey, dict);
+        return dict;
+    }
+
+
+    static synchronized Map<String, Map<String, ResultAttr>> load(JsonNode node, boolean normalized, int min_freq) throws Exception{
+
 
         Map<String, Map<String, ResultAttr>> dict =new HashMap<>();
 
@@ -126,7 +174,7 @@ class DictPool {
             }
             dict.put(normkey, valMap);
         }
-        pool.put(poolkey, dict);
+
         return dict;
     }
 

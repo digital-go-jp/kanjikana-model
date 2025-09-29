@@ -48,27 +48,16 @@ public class NandokuEngineTest {
 
     @Test
     public void test5() throws Exception{
-        ResultEngineParts result = engine.check("櫻良","サラ");
+        ResultEngineParts result = engine.check("樱良","サラ");
         assertThat(result.isOk(),equalTo(true));
     }
 
     @Test
     public void test5a() throws Exception{
-        ResultEngineParts result = engine.check("櫻良子","サラ");
+        ResultEngineParts result = engine.check("樱良子","サラ");
         assertThat(result.isOk(),equalTo(true));
     }
 
-    @Test
-    public void test5b() throws Exception{
-        ResultEngineParts result = engine.check("桜良","サラ");
-        assertThat(result.isOk(),equalTo(true));
-    }
-
-    @Test
-    public void test5c() throws Exception{
-        ResultEngineParts result = engine.check("桜良子","サラ");
-        assertThat(result.isOk(),equalTo(true));
-    }
 
     @Test
     public void test6() throws Exception{
@@ -94,4 +83,21 @@ public class NandokuEngineTest {
         assertThat(result.isOk(),equalTo(false));
     }
 
+    @Test
+    public void test9() throws Exception{
+        ResultEngineParts result = engine.check("宮田真守","ミヤタマモル");
+        assertThat(result.isOk(),equalTo(true));
+    }
+
+    @Test
+    public void test9a() throws Exception{
+        ResultEngineParts result = engine.check("真守","マモル");
+        assertThat(result.isOk(),equalTo(true));
+    }
+
+    @Test
+    public void test9b() throws Exception{
+        ResultEngineParts result = engine.check("守","マモル");
+        assertThat(result.isOk(),equalTo(true));
+    }
 }

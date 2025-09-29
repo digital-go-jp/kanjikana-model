@@ -41,7 +41,7 @@ public class BeamSearchTest {
     {
         try{
             search = new BeamSearch(AiKanjiKanaModels.newInstance());
-            search_r = new BeamSearch(AiKanaKanjiModels.newInstance());
+            //search_r = new BeamSearch(AiKanaKanjiModels.newInstance());
             //search = new BeamSearch(new AiKanjiKanaModels());
             //search_r = new BeamSearch(new AiKanaKanjiModels());
         }catch(Exception e){

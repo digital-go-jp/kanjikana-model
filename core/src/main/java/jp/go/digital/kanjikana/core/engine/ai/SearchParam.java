@@ -33,17 +33,21 @@ public final class SearchParam {
     private final int max_len;
     private final int beam_width;
     private final int n_best;
+    private final boolean parallel_enabled;
+    private final int parallelism;
 
     private final static int DEF_MAX_LEN = Integer.parseInt(Resources.getProperty(Resources.PropKey.AI_PM_MAXLEN));
     private final static int DEF_BEAM_WIDTH = Integer.parseInt(Resources.getProperty(Resources.PropKey.AI_PM_BEAMWIDTH));
     private final static int DEF_NBEST = Integer.parseInt(Resources.getProperty(Resources.PropKey.AI_PM_NBEST));
 
+    private final static boolean DEF_PARALLEL_ENABLED= Boolean.parseBoolean(Resources.getProperty((Resources.PropKey.AI_PM_PARALLEL_ENABLED)));
+    private final static int DEF_PARALLELISM = Integer.parseInt(Resources.getProperty(Resources.PropKey.AI_PM_PARALLELISM));
 
     /**
      * resources以下のファイル内で定義されたデフォルト値で初期化する
      */
-    public SearchParam(){
-        this(DEF_MAX_LEN,DEF_BEAM_WIDTH,DEF_NBEST);
+    public SearchParam() throws Exception{
+        this(DEF_MAX_LEN,DEF_BEAM_WIDTH,DEF_NBEST, DEF_PARALLEL_ENABLED, DEF_PARALLELISM);
     }
 
     /**
@@ -52,10 +56,15 @@ public final class SearchParam {
      * @param beam_width ビームサーチ幅，n_best以上にすること
      * @param n_best 推論で作成する最大数
      */
-    public SearchParam(int max_len, int beam_width, int n_best){
+    public SearchParam(int max_len, int beam_width, int n_best, boolean parallel_enabled, int parallelism) throws Exception{
         this.max_len = max_len;
         this.beam_width = beam_width;
         this.n_best = n_best;
+        this.parallel_enabled = parallel_enabled;
+        this.parallelism = parallelism;
+        if (this.parallelism<0){
+            throw new Exception("parallelism_num is negative");
+        }
     }
 
     /**
@@ -81,4 +90,26 @@ public final class SearchParam {
     public int getN_best() {
         return n_best;
     }
+
+    /**
+     * 推論でマルチスレッドを使うかどうか
+     * @return Trueならば使う、Falseならば使わない
+     */
+    public boolean isParallel_enabled() {
+        return parallel_enabled;
+    }
+
+    /**
+     * 推論でマルチスレッドを使う時、何並列で行うか
+     * 0の時は自動でCPU数となる
+     * @return CPU数
+     */
+    public int getParallelism() {
+        return parallelism;
+    }
+
+
+
+
+
 }

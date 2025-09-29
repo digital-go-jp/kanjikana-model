@@ -41,7 +41,7 @@ public final class AiKanjiKanaModels extends AiModels{
     private static final String SrcTokEmb = Resources.getProperty(Resources.PropKey.AI_SRCEMB);
     private static final String TgtTokEmb = Resources.getProperty(Resources.PropKey.AI_TGTEMB);
 
-    private AiKanjiKanaModels(){
+    private AiKanjiKanaModels() throws Exception{
         super(VocabSrc, VocabTgt, PositionEnc, Params, Encoder, Decoder, Generator, SrcTokEmb, TgtTokEmb);
     }
 
@@ -49,7 +49,7 @@ public final class AiKanjiKanaModels extends AiModels{
      * シングルトンのインスタンスを取得する
      * @return モデルパラメタ
      */
-    public synchronized static AiKanjiKanaModels newInstance(){
+    public synchronized static AiKanjiKanaModels newInstance()throws Exception{
         if(models==null){
             models = new AiKanjiKanaModels();
         }

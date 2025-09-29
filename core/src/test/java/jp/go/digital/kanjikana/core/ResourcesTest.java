@@ -26,6 +26,7 @@ package jp.go.digital.kanjikana.core;
 
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 
 public class ResourcesTest {
@@ -40,5 +41,11 @@ public class ResourcesTest {
     public void test2(){
         String o = Resources.getProperty(Resources.PropKey.VERSION);
         //assertThat(o ,equalTo("0.1"));
+    }
+
+    @Test
+    public void test3(){
+        String o = Resources.getProperty(Resources.PropKey.DIC_POOL);
+        assertThat(o.startsWith("/dict") ,equalTo(true));
     }
 }

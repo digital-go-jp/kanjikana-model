@@ -36,7 +36,7 @@ import java.util.List;
  * mjから作成
  * 漢字とカナの文字列から，徐々に切り出しつつ，通常辞書と単漢字辞書などを組み合わせながら読み仮名があっているか推測していくため
  */
-class DictTankanji extends Dict {
+public class DictTankanji extends Dict {
     protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
     protected static DictIF dict=null;
 

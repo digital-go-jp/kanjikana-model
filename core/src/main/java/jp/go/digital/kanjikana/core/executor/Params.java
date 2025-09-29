@@ -151,7 +151,7 @@ public final class Params {
         return this.header;
     }
 
-
+    public boolean hasHeader(){return this.header!=null && !this.header.isEmpty();}
     /**
      * ファイルの1行を与えて，漢字とカナを取得する
      * @param s ファイル内の1行

@@ -36,7 +36,7 @@ import java.util.List;
  * カナ姓名「アユミ」
  * をマッチさせる
  */
-class DictAsIs implements DictIF {
+public class DictAsIs implements DictIF {
     protected static DictAsIs dict=null;
     protected DictAsIs(){}
 

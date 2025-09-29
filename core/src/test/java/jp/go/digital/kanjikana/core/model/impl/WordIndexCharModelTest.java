@@ -131,7 +131,12 @@ public class WordIndexCharModelTest {
         ModelData modelData = model.run(new ModelData("リティシェフ　ユーリ誠人","リティシェフ　ユーリ　マコト"));
         assertThat(modelData.isOk(),equalTo(true));
         //assertThat(modelData.getModel(),equalTo("DictCharModel"));
-
+    }
+    @Test
+    public void test12a() throws Exception{
+        ModelData modelData = model.run(new ModelData("リティシェフ　ユーリ　誠人","リティシェフ　ユーリ　マコト"));
+        assertThat(modelData.isOk(),equalTo(true));
+        //assertThat(modelData.getModel(),equalTo("DictCharModel"));
     }
 
     @Test
@@ -145,10 +150,15 @@ public class WordIndexCharModelTest {
 
     @Test
     public void test14() throws Exception{
-        ModelData modelData = model.run(new ModelData("スール綺愛","スールリア"));
+        ModelData modelData = model.run(new ModelData("スール綺愛","スールキア"));
         assertThat(modelData.isOk(),equalTo(true));
         //assertThat(modelData.getModel(),equalTo("DictCharModel"));
-
+    }
+    @Test
+    public void test14a() throws Exception{
+        ModelData modelData = model.run(new ModelData("スール　綺愛","スール　キア"));
+        assertThat(modelData.isOk(),equalTo(true));
+        //assertThat(modelData.getModel(),equalTo("DictCharModel"));
     }
 
     @Test

@@ -62,7 +62,7 @@ public class Kanji2KanaTest {
 
     @Test
     public void test1() throws Exception{
-        var res = kk.run("田中太郎",10);
+        var res = kk.run("田中太郎",1);
         for(SearchResult r:res){
             System.out.println(r);
         }
@@ -70,31 +70,7 @@ public class Kanji2KanaTest {
 
     @Test
     public void test2() throws Exception{
-        var res = kk.run("田中　次郎",10);
-        for(SearchResult r:res){
-            System.out.println(r);
-        }
-    }
-
-    @Test
-    public void test3() throws Exception{
-        var res = kk.run("太郎",10);
-        for(SearchResult r:res){
-            System.out.println(r);
-        }
-    }
-
-    @Test
-    public void test4() throws Exception{
-        var res = kk.run("次郎",10);
-        for(SearchResult r:res){
-            System.out.println(r);
-        }
-    }
-
-    @Test
-    public void test5() throws Exception{
-        var res = kk.run("田中",10);
+        var res = kk.run("田中太郎",10);
         for(SearchResult r:res){
             System.out.println(r);
         }
