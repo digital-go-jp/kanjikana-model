@@ -42,15 +42,15 @@ import java.util.List;
 
 /**
  * AIを用いて，漢字からカナの候補を作成する実行クラス
-  * バッチ処理で行い，ログファイルに出力する
- * 
+ * バッチ処理で行い，ログファイルに出力する
+ *
  * <p>実行方法</p>
- * 
+ *
  * <pre>{@code
  * java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml -classpath path/to/jarfile jp.go.digital.kanjikana.core.executor.generate.Kanji2KanaMain  --infile path/to/inputfile --n_best number_ge_1
  * }
  * </pre>
- * 
+ *
  * <p>オプション</p>
  * <pre>{@code
  *  -Xmx4096M \   4G以上のメモリが必要

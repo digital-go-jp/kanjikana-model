@@ -28,10 +28,7 @@ import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
-import jp.go.digital.kanjikana.core.model.impl.AsIsWordModel;
-import jp.go.digital.kanjikana.core.model.impl.CrawlOSSWordModel;
-import jp.go.digital.kanjikana.core.model.impl.FWordModel;
-import jp.go.digital.kanjikana.core.model.impl.ICrawlOSSWordModel;
+import jp.go.digital.kanjikana.core.model.impl.*;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +45,7 @@ public class StrategyBasic extends AbstStrategy {
     private final Logger logger = LogManager.getLogger(StrategyBasic.class);
 
     protected StrategyBasic() throws Exception{
-        //super(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
-        setReliableModels(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
+        setReliableModels(Arrays.asList(new IReliableWordModel(), new FWordModel(),new INandokuWordModel()));
     }
 
     /**
@@ -72,6 +68,7 @@ public class StrategyBasic extends AbstStrategy {
      * @return チェックで漢字とカナが一致したかどうか
      * @throws Exception 一般的なエラー
      */
+    @Override
     public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
         modelData.setTopResult(new ResultEngineParts("","")); // reset
         for (ModelIF model : models) {

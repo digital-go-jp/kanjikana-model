@@ -25,16 +25,13 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.EngineIF;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimei;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
 import java.util.Arrays;
@@ -43,10 +40,10 @@ import java.util.Arrays;
  * 単語単位で漢字とカナを辞書を用いて突合する
  * 調達で作成した辞書も入るので信頼度が落ちる
  */
-public class DictWordModel extends AbstWordModel {
+class DictWordModel extends AbstWordModel {
 
     public DictWordModel() throws Exception{
-        super(new WordEngine(false));
+        super(new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(),  DictReliableNormalized.newInstance(),  DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()), false));
     }
 
     public DictWordModel(EngineIF engine) throws Exception{

@@ -28,16 +28,7 @@ import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.model.ModelStatus;
-import jp.go.digital.kanjikana.core.model.impl.AiCharModel;
-import jp.go.digital.kanjikana.core.model.impl.AiWordModel;
-import jp.go.digital.kanjikana.core.model.impl.AsIsCharModel;
-import jp.go.digital.kanjikana.core.model.impl.DictCharModel;
-import jp.go.digital.kanjikana.core.model.impl.DictStatisticsModel;
-import jp.go.digital.kanjikana.core.model.impl.DictWordModel;
-import jp.go.digital.kanjikana.core.model.impl.FCharModel;
-import jp.go.digital.kanjikana.core.model.impl.IDictCharModel;
-import jp.go.digital.kanjikana.core.model.impl.IDictStatisticsModel;
-import jp.go.digital.kanjikana.core.model.impl.IDictWordModel;
+import jp.go.digital.kanjikana.core.model.impl.*;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,11 +51,11 @@ public final class StrategyEnsemble extends StrategyBasic {
     private StrategyEnsemble() throws Exception{
         super();
         // 辞書モデル
-        setUnReliableModels(Arrays.asList(new DictWordModel(), new IDictWordModel(),new AsIsCharModel(),new DictCharModel(), new FCharModel(), new IDictCharModel()));
+        setUnReliableModels(Arrays.asList(new IReliableWordModel(), new FWordModel(),new INandokuWordModel(), new IDictWordModel(), new FCharModel(), new IDictCharModel()));
         // 統計モデル
-        setUnReliableModels(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel()));
+        setUnReliableModels(Arrays.asList( new IDictStatisticsModel()));
         // AIモデル
-        setUnReliableModels(Arrays.asList(new AiWordModel(),new AiCharModel()));
+        setUnReliableModels(Arrays.asList(new IAiWordModel(),new IAiCharModel()));
     }
 
 

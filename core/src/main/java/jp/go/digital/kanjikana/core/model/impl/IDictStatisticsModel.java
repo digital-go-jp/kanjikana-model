@@ -25,9 +25,7 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictStatistics;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictStatisticsNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
@@ -47,7 +45,7 @@ import java.util.Arrays;
 public final class IDictStatisticsModel extends DictStatisticsModel {
 
     public IDictStatisticsModel() throws Exception{
-        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictStatistics.newInstance(), DictStatisticsNormalized.newInstance()),true));
+        super(new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictStatisticsNormalized.newInstance()),true));
     }
 
     @Override

@@ -32,7 +32,7 @@ def main():
     # 引数の処理
     parser = argparse.ArgumentParser(description='漢字とかなのカンマ区切のテキストデータを，列位置を指定して追加する')
 
-    parser.add_argument('--infile', default='../dict/wikipedia/wikiname.txt', type=str, help="入力ファイル")
+    parser.add_argument('--infile', default='../dict/oss/wikipedia/wikiname.txt', type=str, help="入力ファイル")
     parser.add_argument('--begin_idx_per', default=0, type=float, help="ファイルから抜き出す先頭の位置，ファイル全体行からのパーセント")
     parser.add_argument('--end_idx_per', default=100, type=float, help="ファイルから抜き出す末尾の位置，ファイル全体行からのパーセント")
     parser.add_argument('--appendfile', default="dataset/train.src", type=str)

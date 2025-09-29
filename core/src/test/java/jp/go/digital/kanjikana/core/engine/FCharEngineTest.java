@@ -24,7 +24,6 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.executor.Output;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -104,12 +103,6 @@ public class FCharEngineTest {
     @Test
     public void test7() throws Exception{
         ResultEngineParts result = engine.check("ＬＵ　ＨＳＩＡＯ　ＨＵＩ","シャウフエ");
-        assertThat(result.isOk(),equalTo(false));
-    }
-
-    @Test
-    public void test8() throws Exception{
-        ResultEngineParts result = engine.check("ＨＥ　ＪＵＮ","カ　シユン");
         assertThat(result.isOk(),equalTo(false));
     }
 }

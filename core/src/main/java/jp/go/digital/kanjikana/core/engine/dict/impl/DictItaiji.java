@@ -28,6 +28,9 @@ import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 異体字の対応を保持するシングルトンクラス
  * oss, クロールから作成している

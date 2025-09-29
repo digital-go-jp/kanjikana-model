@@ -24,19 +24,23 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class WordEngineTest {
 
-    private WordEngine engine;
+    private EngineIF engine;
     {
         try{
-            engine = new WordEngine(false);
+            engine = new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -57,19 +61,19 @@ public class WordEngineTest {
     @Test
     public void test3() throws Exception{
         ResultEngineParts result = engine.check("靑陦","アオシマ");
-        assertThat(result.isOk(),equalTo(false));
+        assertThat(result.isOk(),equalTo(true));
     }
 
     @Test
     public void test4() throws Exception{
         ResultEngineParts result = engine.check("青陦","アオシマ");
-        assertThat(result.isOk(),equalTo(false));
+        assertThat(result.isOk(),equalTo(true));
     }
 
     @Test
     public void test5() throws Exception{
         ResultEngineParts result = engine.check("靑島","アオシマ");
-        assertThat(result.isOk(),equalTo(false));
+        assertThat(result.isOk(),equalTo(true));
     }
 
     @Test
@@ -82,7 +86,7 @@ public class WordEngineTest {
     public void test7() throws Exception{
         ResultEngineParts result = engine.check("トウキョウ","トウキョウ");
         assertThat(result.isOk(),equalTo(true));
-        assertThat(result.getDict(),equalTo(DictAsIs.class));
+        assertThat(result.getDict(),equalTo(DictAsIsNormalized.class));
     }
 
     @Test
@@ -110,7 +114,7 @@ public class WordEngineTest {
     public void test11() throws Exception{
         ResultEngineParts result = engine.check("ＢＩＬＬＹ","ＢＩＬＬＹ");
         assertThat(result.isOk(),equalTo(true));
-        assertThat(result.getDict(),equalTo(DictAsIs.class));
+        assertThat(result.getDict(),equalTo(DictAsIsNormalized.class));
     }
 
     @Test
@@ -127,7 +131,7 @@ public class WordEngineTest {
     @Test
     public void test14() throws Exception{
         ResultEngineParts result = engine.check("花梨","ハナナシ");
-        assertThat(result.isOk(),equalTo(false));
+        assertThat(result.isOk(),equalTo(true));
     }
     @Test
     public void test15() throws Exception{

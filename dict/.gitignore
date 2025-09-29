@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 *.txt
 *.zip
+=======
+diff.ipynb
+>>>>>>> v1.7o
 *.json
-old
-*.gz
-*.bz2
-SKK-*
+data*
+
+test.py

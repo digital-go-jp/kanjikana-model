@@ -24,6 +24,8 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -53,14 +55,12 @@ public final class ResultAttr implements Serializable {
         this.dictTypes = new ArrayList<>();
     }
 
-
     /**
      *
      * @param freq 統計情報，実際に何個あったか
      * @param dictNames 辞書の名前
-     * @throws Exception 一般的なエラー
      */
-    public ResultAttr(int freq, List<String> dictNames) throws Exception{
+    public ResultAttr(int freq, List<String> dictNames) {
         this.freq = freq;
 
         this.dictTypes = new ArrayList<>();

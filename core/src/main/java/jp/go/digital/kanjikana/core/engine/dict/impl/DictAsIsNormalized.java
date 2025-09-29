@@ -28,6 +28,7 @@ import jp.go.digital.kanjikana.core.engine.ResultAttr;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,10 +39,16 @@ import java.util.List;
  * カナ姓名「アユミ」
  * をマッチさせる
  */
-public class DictAsIsNormalized implements DictIF {
-    private static DictAsIsNormalized dict=null;
-    private DictAsIsNormalized(){}
+public class DictAsIsNormalized extends DictAsIs {
+    private DictAsIsNormalized(){
+        super();
+    }
 
+    /**
+     * 漢字姓名に含まれるひらがなカタカナを，カタカナ姓名とマッチさせるクラスを取得する
+     * @return 辞書
+     * @throws Exception 一般的なエラー
+     */
     public synchronized static DictIF newInstance() throws Exception{
         if(dict == null){
             dict = new DictAsIsNormalized();
@@ -63,7 +70,10 @@ public class DictAsIsNormalized implements DictIF {
 
     @Override
     public List<String> getValue(String key) {
-        return Arrays.asList(key,Moji.normalize(key));
+        if(Moji.isKatakana(key) && Moji.isHiragana(key) && Moji.isAlphabet(key)) {
+            return Arrays.asList(key, Moji.normalize(key));
+        }
+        return new ArrayList();
     }
 
     @Override
@@ -85,4 +95,5 @@ public class DictAsIsNormalized implements DictIF {
     public boolean isNormalized() {
         return true;
     }
+
 }

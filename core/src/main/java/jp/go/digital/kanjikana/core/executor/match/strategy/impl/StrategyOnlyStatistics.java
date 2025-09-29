@@ -29,13 +29,13 @@ import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.model.ModelStatus;
-import jp.go.digital.kanjikana.core.model.impl.DictStatisticsModel;
 import jp.go.digital.kanjikana.core.model.impl.IDictStatisticsModel;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -47,13 +47,13 @@ import java.util.List;
  */
 public final class StrategyOnlyStatistics extends AbstStrategy {
     private static StrategyIF sb=null;
+    private static final double EnsembleOkUnderLimit=0.5; // アンサンブルでOKを出したモデルの割合の最小値
 
+    private final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
     private final Logger logger = LogManager.getLogger(StrategyEnsemble.class);
 
     private StrategyOnlyStatistics() throws Exception{
-        //setReliableModels(Arrays.asList(new AsIsWordModel(), new CrawlOSSWordModel(), new FWordModel(), new ICrawlOSSWordModel()));
-        // 統計モデル
-        setUnReliableModels(Arrays.asList(new DictStatisticsModel(), new IDictStatisticsModel()));
+        UnReliableModels.add(Arrays.asList( new IDictStatisticsModel())); // 統計モデル
     }
 
     /**
@@ -70,10 +70,12 @@ public final class StrategyOnlyStatistics extends AbstStrategy {
 
     @Override
     public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception {
-
+        //if(super.modelCheck(modelData, kanji, kana)){ // 簡易モデルでチェック。NGならばアンサンブルへ
+        //    return true;
+        //}
         int idx=0;
         double okcnt=0.0; // モデルがOKを出した数
-        for(List<ModelIF> unreliable: getUnReliableModels()){
+        for(List<ModelIF> unreliable: UnReliableModels){
             Date stdate=new Date();
             logger.debug(idx+",start,"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(stdate));
             ModelData md = SerializationUtils.clone(modelData); // reliableなモデルで計算したものを保存しておく
@@ -107,7 +109,7 @@ public final class StrategyOnlyStatistics extends AbstStrategy {
         }
 
         // 複数のモデルでOKが出たモデルの数を数えておき，閾値以上の正解数ならばOKを返す
-        if(okcnt/(double)getUnReliableModels().size()>getEnsembleOkUnderLimit()){
+        if(okcnt/(double)UnReliableModels.size()>EnsembleOkUnderLimit){
             modelData.setStatus(ModelStatus.OK);
             return true;
         }

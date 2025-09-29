@@ -84,4 +84,31 @@ public abstract class AbstStrategy implements StrategyIF{
         return EnsembleOkUnderLimit;
     }
 
+
+    /**
+     * モデルを順次用いてチェックする
+     * @param modelData 前のモデルで判定した結果を入力する
+     * @param kanji　漢字姓名　「山田　太郎」
+     * @param kana　カタカナ姓名　「ヤマダ　タロウ」
+     * @return チェックで漢字とカナが一致したかどうか
+     * @throws Exception 一般的なエラー
+     */
+    public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
+        modelData.setTopResult(new ResultEngineParts("","")); // reset
+        for (ModelIF model : models) {
+            modelData = model.run(kanji,kana, modelData);
+
+            logger.debug(model.getClass()+",kanji="+kanji+",isOK="+modelData.isOk());
+
+            if (modelData.isOk()) {
+                modelData.setModel(model.getClass());
+                return true;
+            }
+        }
+        if (modelData.isOk()) {
+            return true;
+        }
+        return false;
+    }
+
 }

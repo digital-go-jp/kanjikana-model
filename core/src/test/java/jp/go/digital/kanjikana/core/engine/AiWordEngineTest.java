@@ -33,7 +33,7 @@ public class AiWordEngineTest {
     private EngineIF engine;
     {
         try {
-            engine = new AiWordEngine();
+            engine = new AiWordEngine(true);
         }catch(Exception e){
             e.printStackTrace();
         }

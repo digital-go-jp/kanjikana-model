@@ -25,6 +25,7 @@
 package jp.go.digital.kanjikana.core.engine;
 
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+import jp.go.digital.kanjikana.core.utils.Moji;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +39,37 @@ abstract class AbstEngine implements EngineIF{
             }
         }
         return res;
+    }
+
+    protected String norm_string(String s, DictIF dic){
+        if(dic.isNormalized()){
+            return Moji.normalize(s);
+        }
+        return s;
+    }
+
+
+    /**
+     * 漢字内に異体字があれば置き換える
+     * @param kanji_part  漢字姓名
+     * @param idic 異体字辞書
+     * @return  異体字を置き換えた漢字姓名
+     * @since 1.7
+     */
+    protected String replace_itaiji(String kanji_part, DictIF idic){
+
+        StringBuilder sb = new StringBuilder();
+        // 漢字側を一つずつ異体字に置き換える
+        for(int i = 0; i<kanji_part.length();i++) {
+            String moji = kanji_part.substring(i, i + 1);
+            if (idic.containsKey(moji)) {
+                List<String> itaiji_list = idic.getValue(moji); // 必ず1文字
+                String s =itaiji_list.get(0);
+                sb.append(s);
+            }else{
+                sb.append(moji);
+            }
+        }
+        return sb.toString();
     }
 }

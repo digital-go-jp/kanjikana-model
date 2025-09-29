@@ -25,7 +25,6 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.WordEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
@@ -44,7 +43,7 @@ import java.util.Arrays;
 public final class AsIsWordModel  extends DictWordModel {
 
     public AsIsWordModel() throws Exception {
-        super(new WordEngine(Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance()),false));
+        super(new WordEngine(Arrays.asList( DictAsIsNormalized.newInstance()),false));
     }
 
     @Override

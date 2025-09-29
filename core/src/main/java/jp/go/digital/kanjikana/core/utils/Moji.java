@@ -36,6 +36,59 @@ import java.util.regex.Pattern;
 public final class Moji {
     static final Pattern KINSOKU= Pattern.compile("[ァィゥェォッャュョヮンー　]");
 
+
+    /**
+     * 全角ひらがなチェック
+     * https://medium-company.com/java-%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF/
+     * @param value 検証対象の値
+     * @return 結果（true：ひらがな、false：ひらがなではない）
+     */
+    public static boolean isHiragana(String value) {
+        boolean result = false;
+
+        if (value != null) {
+            Pattern pattern = Pattern.compile("^[\u3040-\u309F]+$");
+            result = pattern.matcher(value).matches();
+        }
+
+        return result;
+    }
+
+    /**
+     * 全角カタカナチェック
+     * https://medium-company.com/java-%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF/
+     * @param value 検証対象の値
+     * @return 結果（true：カタカナ、false：カタカナではない）
+     */
+    public static boolean isKatakana(String value) {
+        boolean result = false;
+
+        if (value != null) {
+            Pattern pattern = Pattern.compile("^[\u30A0-\u30FF]+$");
+            result = pattern.matcher(value).matches();
+        }
+
+        return result;
+    }
+
+    /**
+     * 全角アルファベットチェック
+     * https://medium-company.com/java-%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF/
+     * @param value 検証対象の値
+     * @return 結果（true：アルファベット、false：アルファベットではない）
+     */
+    public static boolean isAlphabet(String value) {
+        boolean result = false;
+
+        if (value != null) {
+            Pattern pattern = Pattern.compile("^[Ａ-Ｚａ-ｚ]+$");
+            result = pattern.matcher(value).matches();
+        }
+
+        return result;
+    }
+
+
     /**
      * 小書き文字など，単語の先頭にこない文字をチェックする。Charモデルで一文字ずつ切り出してチェックしている時に発生する
      * @param s　カタカナ姓名

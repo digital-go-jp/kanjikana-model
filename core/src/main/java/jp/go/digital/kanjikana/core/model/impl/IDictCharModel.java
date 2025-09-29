@@ -24,9 +24,10 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
 import jp.go.digital.kanjikana.core.model.ModelStatus;
 import jp.go.digital.kanjikana.core.engine.CharEngine;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.model.ModelData;
 
@@ -46,16 +47,17 @@ import java.util.Arrays;
 public final class IDictCharModel extends DictCharModel {
 
     public IDictCharModel() throws Exception{
-        super(new CharEngine(Arrays.asList(DictSeimeiNormalized.newInstance(), DictTankanjiNormalized.newInstance()),true));
+        super(new CharEngine(Arrays.asList(DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(), DictTankanjiNormalized.newInstance()),true));
     }
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
+        /*
         if(kanji_item.length()>10){
             modelData.setStatus(ModelStatus.E100);
             modelData.setModel(this.getClass());
             return modelData;
-        }
+        }*/
         ModelData md =  super.run(kanji_item,kana_item,modelData);
         md.setModel(this.getClass());
         return md;

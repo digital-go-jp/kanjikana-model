@@ -25,23 +25,13 @@
 package jp.go.digital.kanjikana.core.engine;
 
 import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawl;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictCrawlNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaijiDummy;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaiji;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSS;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictOSSNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimei;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictSeimeiNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
-import jp.go.digital.kanjikana.core.model.impl.AsIsCharModel;
-import jp.go.digital.kanjikana.core.model.impl.AsIsWordModel;
-import jp.go.digital.kanjikana.core.utils.Moji;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,8 +41,6 @@ import java.util.List;
  */
 public class WordEngine extends  AbstEngine{
     private final List<DictIF> dics;
-    private final List<DictIF> defaultDics=Arrays.asList(DictAsIs.newInstance(), DictAsIsNormalized.newInstance(), DictOSS.newInstance(), DictOSSNormalized.newInstance(), DictCrawl.newInstance(), DictCrawlNormalized.newInstance(), DictSeimei.newInstance(), DictSeimeiNormalized.newInstance(), DictTankanji.newInstance(), DictTankanjiNormalized.newInstance());;
-
     private int SKIP_KANJI_GE_KANA_DIFF=0; // 漢字文字数よりもカナ文字数が少ない場合にはスキップするときの，バッファ文字数。　漢字文字数　＞＝　カナ文字数　＋　SKIP_KANJI_GE_KANA_DIFF　で判定
 
     private int max_key_len;  // 辞書の値の最大単語長さ
@@ -75,29 +63,13 @@ public class WordEngine extends  AbstEngine{
         init();
     }
 
-    /**
-     * 異体字チェックをしない場合にはこちら
-     * @param hasItainji falseのとき異体字を使わない
-     * @throws Exception
-     */
-    public WordEngine(boolean hasItainji) throws Exception{
-        this.dics =omitInvalidDict( defaultDics);
-        if(hasItainji) {
-            this.idic = DictItaiji.newInstance();
-        }else{
-            this.idic = DictItaijiDummy.newInstance();
-        }
-        init();
-    }
-
-
     private void init(){
         SKIP_KANJI_GE_KANA_DIFF = Integer.parseInt(Resources.getProperty(Resources.PropKey.SKIP_KANJI_GE_KANA_DIFF));
 
         int max_key_len=0;
         int max_val_len=0;
         for(DictIF dict:dics){
-            if(dict instanceof DictAsIs || dict instanceof DictAsIsNormalized){
+            if(dict instanceof DictAsIsNormalized){
                 continue;
             }
             //if(dict.getMaxKeyLen()>=Integer.MAX_VALUE){ // AsIs辞書は除く
@@ -119,7 +91,7 @@ public class WordEngine extends  AbstEngine{
     public boolean isValidEngine(){
         int max_key_len=0;
         for(DictIF dict:dics) {
-            if (dict instanceof DictAsIs || dict instanceof DictAsIsNormalized) {
+            if ( dict instanceof DictAsIsNormalized) {
                 continue;
             }
             max_key_len=max_key_len<dict.getMaxValLen()?dict.getMaxKeyLen():max_val_len;
@@ -175,12 +147,7 @@ public class WordEngine extends  AbstEngine{
         return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(),null);
     }
 
-    private String norm_string(String s, DictIF dic){
-        if(dic.isNormalized()){
-            return Moji.normalize(s);
-        }
-        return s;
-    }
+
 
     /**
      * 単語単位，文字単位を入力としてマッチング

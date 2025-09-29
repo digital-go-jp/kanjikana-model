@@ -255,6 +255,12 @@ public class StrategyExecutorAdvTest {
     }
 
     @Test
+    public void test23a() throws Exception{
+        ModelData modelData = executor.run("レフトサーリ　サミペッカ　神之助,レフトサーリ　サミペッカ　シンノスケ",0,1,",");
+        assertThat(modelData.isOk(),equalTo(true));
+    }
+
+    @Test
     public void test24() throws Exception{
         ModelData modelData = executor.run("ＵＭＥＭＯＴＯ　ＧＵＩＬＨＥＲＭＥ　ＫＡＺＵＯ（梅本　グリレーム　カズオ）,ギリレーム　カズオ　ウメモト",0,1,",");
         assertThat(modelData.isOk(),equalTo(false));

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] - %m (%C.java:%L)%n" charset="utf-8"></PatternLayout>
+        </Console>
+	<File name="Logfile" filename="/tmp/app.log" >
+            <PatternLayout pattern="%d %-5p [%t] - %m (%C.java:%L)%n" charset="utf-8"></PatternLayout>
+	</File>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Logfile"/>
+        </Root>
+    </Loggers>
+</Configuration>
