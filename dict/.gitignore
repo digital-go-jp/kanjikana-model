@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 *.txt
 *.zip
-=======
 diff.ipynb
->>>>>>> v1.7o
 *.json
 data*
 
