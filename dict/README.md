@@ -65,6 +65,8 @@
 
 ## mj
 
+  MJ文字情報一覧表は[クリエイティブ・コモンズ 表示 – 継承 2.1 日本 ライセンス条件](https://creativecommons.org/licenses/by-sa/2.1/jp/)で提供されています。
+
   Excelで提供されている，異体字リストから，異体字のペアを抜き出す。
 
 - [extract_xlsx.py](oss/mj/extract_xlsx.py)    
