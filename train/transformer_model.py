@@ -149,8 +149,8 @@ class Seq2SeqTransformer(nn.Module):
                 "encoder_hiddens": self._enc_hiddens,  # list[len_enc_layers] each (S,B,D)
                 "decoder_hiddens": self._dec_hiddens   # list[len_dec_layers] each (T,B,D)
             }
-        return {"logits": logits}
-        #return self.generator(outs)
+        #return {"logits": logits}
+        return self.generator(outs)
 
     @torch.jit.export
     def encode(self, src: Tensor, src_mask: Tensor):
@@ -345,7 +345,7 @@ class KanjiKanaTransformer:
 
             src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = self.create_mask(src, tgt_input)
 
-            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask)['logits']
+            logits = model(src, tgt_input, src_mask, tgt_mask,src_padding_mask, tgt_padding_mask, src_padding_mask) #TODO
 
             optimizer.zero_grad()
 
