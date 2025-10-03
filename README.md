@@ -30,6 +30,10 @@
 - [neologd](https://github.com/neologd/mecab-ipadic-neologd/)
 - [skk](https://github.com/skk-dev/dict/)
 
+### 異体字データ
+
+- [mj]()
+
 ### Webデータ
 - [wikipedia](https://dumps.wikimedia.org/)
 
