@@ -9,3 +9,4 @@ logs
 *src
 *tgt
 events.out*
+*.txt

@@ -45,32 +45,33 @@ class KanjiKanaTransformerScripted(KanjiKanaTransformer):
         torch.jit.script(transformer.tgt_tok_emb).save(self.args.tgt_tok_emb)
 
         with open(self.args.vocab_src,'w',encoding='utf-8') as f:
-            for v in self.vocab_transform[self.args.source_lang].vocab.get_itos():
+            for v in self.vocab_transform[self.args.source_lang].get_itos():
                 f.write(f"{v}\n")
 
         with open(self.args.vocab_tgt,'w',encoding='utf-8') as f:
-            for v in self.vocab_transform[self.args.target_lang].vocab.get_itos():
+            for v in self.vocab_transform[self.args.target_lang].get_itos():
                 f.write(f"{v}\n")
 
 
 def main():
+    import os
+    with open('../version.txt') as f:
+        ver=f.readline().rstrip()
+    print(f'ver={ver}')
+    DIR=f'model/model.{ver}'
     # 引数の処理
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--model_file', default='model.dbg/checkpoint_best_conv.pt', type=str)
-    #parser.add_argument('--prefix', default='translation', type=str)
-    #parser.add_argument('--source_lang', default='kanji', type=str)
-    #parser.add_argument('--target_lang', default='kana', type=str)
-
-    parser.add_argument('--model_script', default="model.dbg/script.pt", type=str)
-    parser.add_argument('--encoder', default="model.dbg/encoder.pt", type=str)
-    parser.add_argument('--decoder', default="model.dbg/decoder.pt", type=str)
-    parser.add_argument('--positional_encoding', default="model.dbg/positional_encoding.pt", type=str)
-    parser.add_argument('--generator', default="model.dbg/generator.pt", type=str)
-    parser.add_argument('--src_tok_emb', default="model.dbg/src_tok_emb.pt", type=str)
-    parser.add_argument('--tgt_tok_emb', default="model.dbg/tgt_tok_emb.pt", type=str)
-    parser.add_argument('--vocab_src', default="model.dbg/vocab_src.txt", type=str)
-    parser.add_argument('--vocab_tgt', default="model.dbg/vocab_tgt.txt", type=str)
-    parser.add_argument('--params',default="model.dbg/params.json", type=str)
+    parser.add_argument('--model_file', default=f'{DIR}/checkpoint_best.pt', type=str)
+    parser.add_argument('--model_script', default=f"{DIR}/script_{ver}.pt", type=str)
+    parser.add_argument('--encoder', default=f"{DIR}/encoder_{ver}.pt", type=str)
+    parser.add_argument('--decoder', default=f"{DIR}/decoder_{ver}.pt", type=str)
+    parser.add_argument('--positional_encoding', default=f"{DIR}/positional_encoding_{ver}.pt", type=str)
+    parser.add_argument('--generator', default=f"{DIR}/generator_{ver}.pt", type=str)
+    parser.add_argument('--src_tok_emb', default=f"{DIR}/src_tok_emb_{ver}.pt", type=str)
+    parser.add_argument('--tgt_tok_emb', default=f"{DIR}/tgt_tok_emb_{ver}.pt", type=str)
+    parser.add_argument('--vocab_src', default=f"{DIR}/vocab_src_{ver}.txt", type=str)
+    parser.add_argument('--vocab_tgt', default=f"{DIR}/vocab_tgt_{ver}.txt", type=str)
+    parser.add_argument('--params',default=f"{DIR}/params_{ver}.json", type=str)
     parser.add_argument('--device',default='cpu',choices=('cuda','cpu','mps'))
 
 
