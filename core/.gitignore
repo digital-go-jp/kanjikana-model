@@ -6,7 +6,6 @@ ok.txt
 ng.txt
 log.txt
 
-Dockerfile
 conf
 *.jar
 output*.txt
