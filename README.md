@@ -22,6 +22,7 @@
 使用したデータの一覧は次のとおり
 
 ### オープンソース辞書データ
+利用にあたっては、それぞれのライセンスをご確認の上ご利用ください。
 - [canna](https://osdn.dl.osdn.net/canna/)
 - [freewnn](https://osdn.dl.osdn.net/freewnn/)
 - [ipadic](https://taku910.github.io/mecab/)
@@ -32,8 +33,10 @@
 - [skk](https://github.com/skk-dev/dict/)
 
 ### 異体字データ
+利用にあたっては、それぞれのライセンスをご確認の上ご利用ください。
 - [mj](https://moji.or.jp/mojikiban/)  「MJ文字情報一覧表は[クリエイティブ・コモンズ 表示 – 継承 2.1 日本 ライセンス条件](https://creativecommons.org/licenses/by-sa/2.1/jp/)で提供されています。」
 ### Webデータ
+利用にあたっては、それぞれのライセンスをご確認の上ご利用ください。
 - [wikipedia](https://dumps.wikimedia.org/)
 
 
