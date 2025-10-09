@@ -19,10 +19,9 @@
 
 ## 使用データ
 本モデルでは，漢字・アルファベットとその読みであるカタカナのペアをデータとして使用している。
-使用したデータの一覧は次のとおり
+使用したデータの一覧は次のとおり。なお、利用にあたってはそれぞれのライセンスをご確認ください。
 
 ### オープンソース辞書データ
-利用にあたってはそれぞれの来船をご確認願います
 - [canna](https://osdn.dl.osdn.net/canna/)
 - [freewnn](https://osdn.dl.osdn.net/freewnn/)
 - [ipadic](https://taku910.github.io/mecab/)
@@ -33,7 +32,6 @@
 - [skk](https://github.com/skk-dev/dict/)
 
 ### Webデータ
-利用にあたってはそれぞれの来船をご確認願います
 - [wikipedia](https://dumps.wikimedia.org/)
 
 
