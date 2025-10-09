@@ -248,11 +248,11 @@ datasetのデータを用いて，漢字姓名（外国人の場合にはアル�
 
 ## 検証用スクリプト
 
-- [generate_batch.py](./generate_batch.py)    
+- [generate.py](./generate.py)    
   検証用データを用いて，モデルで推論し，推論した結果と，元の出力側のデータと比較し，正解率を出力する
 
   ```bash
-  python generate_batch.py \
+  python generate.py \
   --test_file test.jsonl \
   --model_file checkpoint_best.pt \
   --outfile generate.txt \

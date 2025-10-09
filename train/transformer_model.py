@@ -90,10 +90,10 @@ class Seq2SeqTransformer(nn.Module):
                  tgt_vocab_size: int,
                  dim_feedforward: int,
                  dropout: float,
-                 device: str,
-                 return_intermediate: bool = False):
+                 device: str):
+                 #return_intermediate: bool = False):
         super(Seq2SeqTransformer, self).__init__()
-        self.return_intermediate = return_intermediate
+        #self.return_intermediate = return_intermediate
 
         self.transformer = Transformer(d_model=emb_size,
                                        nhead=nhead,
@@ -106,15 +106,14 @@ class Seq2SeqTransformer(nn.Module):
         self.tgt_tok_emb = TokenEmbedding(tgt_vocab_size, emb_size, device)
         self.positional_encoding = PositionalEncoding(
             emb_size, dropout=dropout, device=device)
-        
-        if self.return_intermediate:
-            self._enc_hiddens = []
-            self._dec_hiddens = []
+        self._enc_hiddens = []
+        self._dec_hiddens = []
+        #if self.return_intermediate:
             # register hooks
-            for layer in self.transformer.encoder.layers:
-                layer.register_forward_hook(self._make_hook(self._enc_hiddens))
-            for layer in self.transformer.decoder.layers:
-                layer.register_forward_hook(self._make_hook(self._dec_hiddens))
+        #    for layer in self.transformer.encoder.layers:
+        #        layer.register_forward_hook(self._make_hook(self._enc_hiddens))
+        #    for layer in self.transformer.decoder.layers:
+        #        layer.register_forward_hook(self._make_hook(self._dec_hiddens))
 
     def _make_hook(self, container):
         def hook(module, inp, out):
@@ -122,10 +121,10 @@ class Seq2SeqTransformer(nn.Module):
             container.append(out.detach())
         return hook
 
-    def _clear_intermediates(self):
-        if self.return_intermediate:
-            self._enc_hiddens.clear()
-            self._dec_hiddens.clear()
+    #def _clear_intermediates(self):
+    #    if self.return_intermediate:
+    #        self._enc_hiddens.clear()
+    #        self._dec_hiddens.clear()
 
 
     def forward(self,
@@ -137,18 +136,18 @@ class Seq2SeqTransformer(nn.Module):
                 tgt_padding_mask: Tensor,
                 memory_key_padding_mask: Tensor):
         #a = self.src_tok_emb(src)
-        self._clear_intermediates()
+        #self._clear_intermediates()
         src_emb = self.positional_encoding(self.src_tok_emb(src))
         tgt_emb = self.positional_encoding(self.tgt_tok_emb(trg))
         outs = self.transformer(src_emb, tgt_emb, src_mask, tgt_mask, None,
                                 src_padding_mask, tgt_padding_mask, memory_key_padding_mask)
         logits = self.generator(outs)
-        if self.return_intermediate:
-            return {
-                "logits": logits,
-                "encoder_hiddens": self._enc_hiddens,  # list[len_enc_layers] each (S,B,D)
-                "decoder_hiddens": self._dec_hiddens   # list[len_dec_layers] each (T,B,D)
-            }
+        #if self.return_intermediate:
+        #    return {
+        #        "logits": logits,
+        #        "encoder_hiddens": self._enc_hiddens,  # list[len_enc_layers] each (S,B,D)
+        #        "decoder_hiddens": self._dec_hiddens   # list[len_dec_layers] each (T,B,D)
+        #    }
         #return {"logits": logits}
         return self.generator(outs)
 
