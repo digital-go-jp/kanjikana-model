@@ -22,7 +22,6 @@ resources
 input.txt
 *.log
 *.orig
-*.txt
 *.gz
 *.zip
 *.org
