@@ -1,9 +1,0 @@
-version: '3'
-services:
-  check:
-    image: 143481092318.dkr.ecr.ap-northeast-1.amazonaws.com/kanjikana
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:8080
