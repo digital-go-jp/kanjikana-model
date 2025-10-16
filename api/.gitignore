@@ -1,18 +1,5 @@
-*.jar
-pom.xml
-
-old
-target
-
-*.old
-src/main/resources/ai*/*txt
-src/main/resources/ai*/*json
-src/main/resources/ai*/*json
-src/main/resources/*/*json
-src/main/resources/*/*pt
-lib
-
-Dockerfile
 .djl.ai
 
 data*
+target
+lib
