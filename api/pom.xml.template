@@ -95,8 +95,6 @@
             <groupId>jp.go.digital.kanjikana</groupId>
             <artifactId>kanjikana_core</artifactId>
             <version>VER</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/kanjikana_core-VER-jar-with-dependencies.jar</systemPath>
         </dependency>
 
 
@@ -142,7 +140,7 @@
                         <id>install-external</id>
                         <phase>clean</phase>
                         <configuration>
-                            <file>${basedir}/lib/kanjikana_core-VER-jar-with-dependencies.jar</file>
+                            <file>${basedir}/../core/lib/kanjikana_core-VER-jar-with-dependencies.jar</file>
                             <groupId>jp.go.digital.kanjikana</groupId>
                             <artifactId>kanjikana_core</artifactId>
                             <version>VER</version>
