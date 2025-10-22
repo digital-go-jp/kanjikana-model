@@ -15,8 +15,6 @@
 import argparse
 import os
 import json
-import jaconv
-import glob
 
 def run(args):
     if len(os.path.dirname(args.outfile))>0:

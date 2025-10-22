@@ -1,22 +1,22 @@
 # core
-漢字カナ突合モデルのコアとなるライブラリ・実行ファイルを格納している
+氏名漢字カナ突合モデルのコアとなるライブラリ・実行ファイルを格納している。
 
 ## 実行環境
 本プログラムの実行は次の環境で確認している。
 
-- Redhat EL 8, MacOS 15
-- jdk 17
-- maven 3
+- Redhat Enterprise Linux 8, MacOS 26
+- JDK 17
+- Maven 3
 - Python 3.11
 
 
 ## 機能
 本モジュールは，次の機能を有する
-- 漢字カナ突合    
+- 漢字カナ突合
 漢字・アルファベット姓名とカナ姓名を入力し，一致しているかどうかを判定する
-- カタカナ推計    
+- カタカナ推計
 漢字・アルファベット姓名を入力し，その漢字姓名から推測される読みのカタカナを出力する
-- 漢字・アルファベット推計    
+- 漢字・アルファベット推計
 カタカナ姓名を入力し，そのカタカナ姓名から推測される漢字・アルファベット姓名を出力する
 
 
@@ -67,34 +67,34 @@ mvn compile assembly:single
    !java -Xmx8196M -Dlog4j.configurationFile=log4j2.xml -classpath lib/kanjikana_core-$VER-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.match.KanjiKanaMatchMain --infile input.txt --outfile outfile.txt --kanji_idx 1 --kana_idx 2 --strategy ENSEMBLE --has_header true --thread_num 1 --sep csv
    ```
    - VMオプション
-      - -Xmx4096M     
+      - -Xmx4096M
          JavaVMに4Gバイト以上のメモリを与える。これ未満での動作は保証しておらず，OutOfMemoryエラーが出る。
-      - -Dlog4j.configureationFile    
+      - -Dlog4j.configureationFile
          本プログラムでは内部のロッギングにLog4jを使用している。ログ出力する際にはlog4j2.xmlを作成し，指定すること。
-      - -classpath    
+      - -classpath
         Jarファイルまでのパスを記述する。なお，環境変数CLASSPATHにJarファイルまでのパスを記載した場合には本項目不要である。
 
    - プログラムオプション
-      - --infile（デフォルト：input.txt）          
+      - --infile（デフォルト：input.txt）
         入力ファイル名を指定すること。
-      - --outfile（デフォルト：output.txt）    
+      - --outfile（デフォルト：output.txt）
         出力ファイル名を指定すること。
-      - --kanji_idx（デフォルト：1）    
+      - --kanji_idx（デフォルト：1）
         入力ファイル内における，漢字・アルファベット姓名の列の位置を指定する。１列目は0を指定し，以下，2列目は１という形で，指定すること。
-      - --kana_idx（デフォルト：2）    
+      - --kana_idx（デフォルト：2）
         入力ファイル内における，カタカナ姓名の列の位置を指定する。１列目は0を指定し，以下，2列目は１という形で，指定すること。
-      - --sep（デフォルト：csv）    
+      - --sep（デフォルト：csv）
         入力ファイル及び出力ファイルの列の区切り文字。csvかtsvを指定する。
-      - --thread_num（デフォルト：1）    
+      - --thread_num（デフォルト：1）
         大量入力データなどの時に，計算を多重化して行う場合には2以上の値を指定する。CPUの数以下を推奨。1を設定した場合には多重化処理を行わない。なお，1超の値を入力した際には，出力ファイル名の末尾に".数字"がついたファイルが，thread_numで指定した数だけ作成される。
-      - --has_header（デフォルト：true）    
+      - --has_header（デフォルト：true）
         入力ファイルの１行目をヘッダ行の場合にはtrue，１行目のデータの場合にはfalseを指定する。trueを指定した際には，出力ファイルの１行目にヘッダ行が出力される。
-      - --strategy（デフォルト：ENSEMBLE）    
-        氏名漢字カナ突合に使用する，ストラテジを指定する。ストラテジの詳細は [氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/index.html)を参照のこと。
-      
-        
+      - --strategy（デフォルト：ENSEMBLE）
+        氏名漢字カナ突合に使用する，ストラテジを指定する。ストラテジの詳細は [氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)を参照のこと。
+
+
         |ストラテジ    |  内容                                                                   |
-        |------------|-------------------------------------------------------------------------| 
+        |------------|-------------------------------------------------------------------------|
         |BASIC       |  信頼度の高い辞書を用いて判定                                                |
         |ENSEMBLE    |  BASICを実行し，NGとなったものに対して，信頼度の高くないモデル(AI,辞書,統計)で多数決|
         |ONLY_AI     |  ENSEMBLE内のAIモデルのみで判定                                             |
@@ -128,21 +128,21 @@ mvn compile assembly:single
 
 
         ```
-        {簡易モデルでの結果}{簡易モデルでの結果}..      
+        {簡易モデルでの結果}{簡易モデルでの結果}..
         ```
 
 
       結果は単語単位で{}内に作成される
 
         ```
-         {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]  
+         {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]
         ```
 
 
     - 簡易モデルでの結果
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
-    
+
         ```
          {true;東京;トウキョウ;WordEngine;DictOSS;0:/canna/freewnn/kakasi/;null}
         ```
@@ -162,7 +162,7 @@ mvn compile assembly:single
         入力したカタカナ
 
       - WordEngine
-      
+
         東京とトウキョウをtrueと判定したモデルのクラス名
 
       - DictOSS
@@ -179,9 +179,9 @@ mvn compile assembly:single
 
 
       - null
-    
+
         必ずnull
-  
+
   - 2025-01-15 09:39:43.148 +0900
 
       このレコードの計算開示時間を記載している。
@@ -219,21 +219,21 @@ mvn compile assembly:single
     - フォーマット
 
         ```
-        {簡易モデルでの結果}{簡易モデルでの結果}..      
+        {簡易モデルでの結果}{簡易モデルでの結果}..
         ```
 
 
       結果は単語単位で{}内に作成される
 
         ```
-         {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]  
+         {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]
         ```
 
 
     - 簡易モデルでの結果
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
-    
+
         ```
          {true;ＡＬＬＥＮ;アーレン;FWordEngine;;0:/;0000000}
         ```
@@ -254,7 +254,7 @@ mvn compile assembly:single
         入力したカタカナ
 
       - FWordEngine
-      
+
         ＡＬＬＥＮとアーレンをtrueと判定したモデルのクラス名
 
       - ブランク
@@ -271,12 +271,12 @@ mvn compile assembly:single
 
 
       - 0000000
-    
+
         外国人モデルが判定した結果。０１のビットで下記表に基づいて出力される。0の場合にはTrue，１の場合にはFalseであり，そのビットの判定において成功したか否かを示している。
 
 
         |左からのビット位置     |   判定の説明                                                             |
-        |--------------------|------------------------------------------------------------------------| 
+        |--------------------|------------------------------------------------------------------------|
         | 1                  |  アルファベット文字列は許された文字のみで構成されているか                        |
         | 2                  |  カタカナ文字列は許された文字のみで構成されているか                             |
         | 3                  |  アルファベット側にイニシャルが含まれていないか                                |
@@ -323,7 +323,7 @@ mvn compile assembly:single
     - フォーマット
 
         ```
-        {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]    
+        {簡易モデルでの結果} [<辞書モデルでの結果> <統計モデルでの結果><AIモデルでの結果>]
         ```
 
 
@@ -333,7 +333,7 @@ mvn compile assembly:single
     - 簡易モデルでの結果
 
       単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
-    
+
         ```
          {false;山田;サンダ;WordEngine;;0:/;}
         ```
@@ -353,7 +353,7 @@ mvn compile assembly:single
         入力したカタカナ
 
       - WordEngine
-      
+
         東京とトウキョウをfalseと判定したモデルのクラス名。WordEngineはスペース区切りの単語単位で検査する
 
       - ブランク
@@ -369,7 +369,7 @@ mvn compile assembly:single
         一致していないので，辞書の由来は"/"のみ。
 
     - 詳細モデルでの結果
-      
+
       詳細モデルでは，辞書モデルと，AIモデルの２つで同時に評価し，多数決で評価判定している。本プログラムでは，２つの多数決となるので，２つともTrueと判定したときにはTrue,それ以外はFalseとなる。
 
       結果のフォーマットは [<辞書モデルでの結果><AIモデルでの結果>]となっている
@@ -381,7 +381,7 @@ mvn compile assembly:single
       - 辞書モデルでの結果
 
         単語単位に分割し，それぞれの漢字・アルファベットとカタカナの一致を判断している。
-    
+
            ```
            <|DictCharModel|{true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}{true;田;ダ;CharEngine;DictTankanji;0:/canna/freewnn/kakasi/mozc/;null}{true;太;フト;CharEngine;DictSeimei;0:/wikipedia/;null}{true;郎;ロウ;CharEngine;DictSeimei;0:/wikipedia/;null}>
            ```
@@ -393,7 +393,7 @@ mvn compile assembly:single
           以下，{}で単語単位，文字単位での漢字・アルファベットとカタカナの突合結果が格納される。
 
         - {true;山;サン;CharEngine;DictSeimei;0:/wikipedia/;null}
-          
+
           ;区切りの各項目の説明は以下の通り。
 
           - true
@@ -463,7 +463,7 @@ mvn compile assembly:single
             常に０
 
           - rank:1
-          
+
             AIモデルで，漢字・アルファベットからカタカナを推計した際に，サンダが何番目に確率が高いか
 
           - Probability:0.13658617050112723
@@ -481,10 +481,10 @@ mvn compile assembly:single
       このレコードの計算終了時間を記載している
 
 
-## カタカナ推計    
+## カタカナ推計
 ### 実行コマンド
 ```
-java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.generate.Kanji2KanaMain --infile path/to/inputfile --outfile path/to/okfile --kanji_idx 2 --sep csv --has_header true 
+java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.generate.Kanji2KanaMain --infile path/to/inputfile --outfile path/to/okfile --kanji_idx 2 --sep csv --has_header true
 
 ```
   - VMオプション
@@ -504,9 +504,9 @@ java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/
       Jarファイルまでのパスを記述する。なお，環境変数CLASSPATHにJarファイルまでのパスを記載した場合には本項目不要である。
 
   - プログラムオプション
-  
+
     - --infile（デフォルト：input.txt）
-      
+
       入力ファイル名を指定すること。
 
     - --outfile（デフォルト：output.txt）
@@ -546,7 +546,7 @@ java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/
   - kanji:東京［日本］　花子;kanji1:東京　花子;best:1;predict:トウキョウハナコ;probability:-0.0029718216878316236
 
      フォーマットは キー１:値１;キー２:値２..  のように，各項目のキーと値を：で区切り，キーと値の組み合わせを;で繋いだ形である。
-    
+
 
     ;区切りの各項目の説明は以下の通り。
 
@@ -579,11 +579,11 @@ java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/
 
       このレコードの計算終了時間を記載している
 
-## 漢字・アルファベット推計 
+## 漢字・アルファベット推計
 ### 実行コマンド
 ```
 java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/shimei_kanjikana_core_oss-1.0-jar-with-dependencies.jar jp.go.digital.kanjikana.core.executor.generate.Kana2KanjiMain --infile path/to/inputfile --outfile path/to/okfile --kana_idx 1 --sep csv --has_header true --n_best 5
-```  
+```
 - VMオプション
 
     - -Xmx4096M
@@ -601,9 +601,9 @@ java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/
       Jarファイルまでのパスを記述する。なお，環境変数CLASSPATHにJarファイルまでのパスを記載した場合には本項目不要である。
 
   - プログラムオプション
-  
+
     - --infile（デフォルト：input.txt）
-      
+
       入力ファイル名を指定すること。
 
     - --outfile（デフォルト：output.txt）
@@ -643,7 +643,7 @@ java -Xmx4096M -Dlog4j.configurationFile=path/to/log4j2.xml  -classpath path/to/
   - kana:ニッポン　ハナコ;best:2;predict:日本華子;probability:-1.1956451967940704
 
      フォーマットは キー１:値１;キー２:値２..  のように，各項目のキーと値を：で区切り，キーと値の組み合わせを;で繋いだ形である。
-    
+
 
     ;区切りの各項目の説明は以下の通り。
 

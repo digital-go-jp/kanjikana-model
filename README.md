@@ -1,7 +1,7 @@
 # 氏名漢字カナ突合モデル
 
 
-本プログラムの詳細および使用方法については、[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/index.html)をご参照ください。
+本プログラムの詳細および使用方法については、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)をご参照ください。
 
 ## 説明
 
@@ -30,7 +30,7 @@
 
 
 ### 辞書データ
-- [IPAdic](https://canna-input.github.io/)
+- [Canna](https://canna-input.github.io/)
 - [FreeWnn](http://www.tomo.gr.jp/FreeWnn/)
 - [IPAdic](https://taku910.github.io/mecab/)
 - [KAKASI](http://kakasi.namazu.org/)
@@ -47,7 +47,7 @@
 
 ## モデル
 
-各機能のアルゴリズムの詳細については、[モデル](https://kktg.digital.go.jp/support/model/index.html)をご参照ください。
+各機能のアルゴリズムの詳細については、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)の「氏名漢字カナ突合モデル」をご参照ください。
 
 ### 辞書モデル
 
@@ -59,7 +59,7 @@
 詳細は、[dict](./dict/README.md)をご参照ください。
 
 
-なお、作成した辞書モデルで使用する辞書ファイルは、[氏名突合支援サービス](https://kktg.digital.go.jp/support/resources/index.html)で配布しています。
+なお、作成した辞書モデルで使用する辞書ファイルは、[氏名突合支援サービス](https://kktg.digital.go.jp/support/index.html)の「リソース」で配布しています。
 
 ### 外国人モデル
 アルファベット表記の氏名とカタカナ表記の氏名を入力とし、 「日本語（ローマ字表記）–英語表記部分対応表」に基づいて突合を行います。
@@ -89,13 +89,13 @@
   学習方法の詳細は、[training_r.ipynb](train/training_r.ipynb)をご参照ください。
 
 
-事前学習済みモデルは、[氏名漢字カナ突合システムサポートサイト](https://kktg.digital.go.jp/support/resources/index.html)で配布しています。
+事前学習済みモデルは、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)の「リソース」で配布しています。
 
 
 ## 実行方法
 
 本モデルは、コマンドラインから実行可能なプログラムとして提供されています。
-また，[氏名突合支援API](https://api.kktg.digital.go.jp/)の内部でも利用しています。
+また，[氏名突合支援サービス](https://api.kktg.digital.go.jp/)の内部でも利用しています。
 
 プログラムの詳細は、[core](./core/README.md)をご参照ください。
 

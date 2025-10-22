@@ -1,7 +1,7 @@
 # AIモデルサンプル
 
 
-AIモデル(transformer)モデルを，Pytorchで学習し，Python及びJavaのDjlライブラリを利用して推計するサンプル。
+AIモデル(Transformer)モデルを，PyTorchで学習し，Python及びJavaのDJLライブラリを利用して推計するサンプル。
 各ディレクトリの説明については，次のとおりである。
 
 
@@ -29,14 +29,14 @@ Pythonでdatasetで取得したデータを学習するためのプログラム�
 
 ## inference_py
 
-trainingで学習したモデルを用いて，PythonのPytorchライブラリを用いて推論を行うプログラム。推論の探索には，Greedyサーチと，Beamサーチを選択できる。
+trainingで学習したモデルを用いて，PythonのPyTorchライブラリを用いて推論を行うプログラム。推論の探索には，Greedyサーチと，Beamサーチを選択できる。
 
 実行結果の詳細については，[inference.ipynb](./inference_py/inference.ipynb)を参照のこと
 
 ## inference_java
 
-trainingで学習したモデルを用いて，JavaのDjlライブラリを持ちて推論を行うプログラム。Djl内部では，Pytorchライブラリを使用している。
-Djlは，内部で使用しているPytorchライブラリのバージョンを実行する環境で動作するPytorchのバージョンと合わせる必要があるので，[Djl](https://djl.ai/engines/pytorch/pytorch-engine/)のバージョンを適宜変更する日宇町がある。
+trainingで学習したモデルを用いて，JavaのDjlライブラリを持ちて推論を行うプログラム。DJL内部では，PyTorchライブラリを使用している。
+DJLは，内部で使用しているPytorchライブラリのバージョンを実行する環境で動作するPytorchのバージョンと合わせる必要があるので，[Djl](https://djl.ai/engines/pytorch/pytorch-engine/)のバージョンを適宜変更する日宇町がある。
 
 
 実行結果の詳細については，[inference_java.ipynb](./inference_java/inference_java.ipynb)を参照のこと。

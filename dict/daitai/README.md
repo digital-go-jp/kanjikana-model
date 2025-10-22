@@ -4,16 +4,16 @@
 
 ## JIS水準
 
-別途用意すること
-1. [JIS第一水準](./jisdai1.dat)
-2. [JIS第二水準](./jisdai2.dat)
-3. [JIS第三水準](./jisdai3.dat)
-4. [JIS第四水準](./jisdai4.dat)
+別途CSV形式で用意すること
+1. JIS第一水準 jisdai1.dat
+2. JIS第二水準 jisdai2.dat
+3. JIS第三水準 jisdai3.dat
+4. JIS第四水準 jisdai4.dat
 
 ## 小学校、中学校、高校文字
 
 別途用意すること
-1. [小学校](./syogaku.dat)
-1. [中学校](./cyugaku.dat)
-1. [高校](./koukou.dat)
+1. 小学校　syogaku.dat
+1. 中学校　cyugaku.dat
+1. 高校　koukou.dat
 

@@ -1,11 +1,15 @@
-#!/bin/env python
+#/bin/env python
 # coding:utf-8
+
+# Copyright (c) 2025 デジタル庁
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
 import argparse
 import os
 import json
-import jaconv
-import glob
+
 
 def run(args):
     if len(os.path.dirname(args.outfile))>0:

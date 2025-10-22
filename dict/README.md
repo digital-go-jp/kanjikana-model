@@ -16,10 +16,10 @@
 
 ## 共通
 
-- [tankan.py](./tankan.py)   
+- [tankan.py](./oss/tankan.py)
   漢字・アルファベットとカタカナのペアのファイルから，漢字・アルファベット部分が一文字のもののみ抜き出して，単漢字辞書として作成する。
 
-- [merge.py](./merge.py)    
+- [merge.py](./oss/merge.py)
    漢字・アルファベットとカタカナのペアファイルから，漢字・アルファベットをキーとし，その読みであるカタカナを複数持たせたJSON形式に成形する。また，漢字・アルファベットとカタカナのペアに，その由来をつけて，リストとして保持する。
    ```json
    {
@@ -29,112 +29,112 @@
 
    ```
 
-## canna
+## Canna
 
   漢字カナ変換辞書データから，漢字・アルファベットとその読み仮名をカタカナに変換し，ペアを作成する。
 
-- [extract_canna.py](oss/canna/extract_canna.py)     
+- [extract_canna.py](oss/canna/extract_canna.py)
   Cannaから辞書ファイルを抽出し，漢字・アルファベットとカタカナのペアを作成する。通常の辞書をパースしているため，氏名以外も含まれる
 
-- [words.py](oss/canna/words.py)    
+- [words.py](oss/canna/words.py)
   Cannaから，地名などの名詞を抽出し，漢字・アルファベットとカタカナのペアを抜き出す。
 
-## freewnn
+## FreeWnn
 
   漢字カナ変換辞書データから，漢字・アルファベットとその読み仮名をカタカナに変換し，ペアを作成する。
 
-- [extract_freewnn.py](freewnn/extract_freewnn.py)    
-  Freewnnから辞書ファイルを抽出し，漢字・アルファベットとカタカナのペアを作成する。通常の辞書をパースしているため，氏名以外も含まれる
+- [extract_freewnn.py](oss/freewnn/extract_freewnn.py)
+  FreeWnnから辞書ファイルを抽出し，漢字・アルファベットとカタカナのペアを作成する。通常の辞書をパースしているため，氏名以外も含まれる
 
-## ipadic
+## IPAdic
 
   漢字カナ変換辞書データから，漢字・アルファベットとその読み仮名をカタカナに変換し，ペアを作成する。
 
-- [extract_ipadic.py](oss/ipadic/extract_ipadic.py)    
-   ipadicから，漢字・アルファベットとその読みを抜き出し，漢字・アルファベットとカタカナのペアを作成する。氏名以外のものも含まれる。
+- [extract_ipadic.py](oss/ipadic/extract_ipadic.py)
+   IPAdicから，漢字・アルファベットとその読みを抜き出し，漢字・アルファベットとカタカナのペアを作成する。氏名以外のものも含まれる。
 
-## kakasi
-  
+## KAKASI
+
   漢字カナ変換辞書から，漢字・アルファベットとカタカナのペアを，異体字辞書から異体字のペアを抜き出す。
 
-- [dict_kakasi.py](oss/kakasi/dict_kakasi.py)    
-   kakasiの漢字かな変換辞書から，，漢字・アルファベットとカタカナのペアを作成する。氏名以外のものも含まれる。
+- [dict_kakasi.py](oss/kakasi/dict_kakasi.py)
+   KAKASIの漢字かな変換辞書から，，漢字・アルファベットとカタカナのペアを作成する。氏名以外のものも含まれる。
 
-- [itaiji_kakasi.py](oss/kakasi/itaiji_kakasi.py)    
-  kakasiの異体字辞書から，異体字のペアを抜き出す。
+- [itaiji_kakasi.py](oss/kakasi/itaiji_kakasi.py)
+  KAKASIの異体字辞書から，異体字のペアを抜き出す。
 
-## mj
+## MJ
 
   MJ文字情報一覧表は[クリエイティブ・コモンズ 表示 – 継承 2.1 日本 ライセンス条件](https://creativecommons.org/licenses/by-sa/2.1/jp/)で提供されています。
 
   Excelで提供されている，異体字リストから，異体字のペアを抜き出す。
 
-- [extract_xlsx.py](oss/mj/extract_xlsx.py)    
-  mjのExcelファイルから単漢字辞書を作成する。データはExcel形式で提供されているので，Excel形式をCSV形式へ変換する[xlsx2csv](https://github.com/dilshod/xlsx2csv)を利用し，CSVに変換後にこのプログラムで異体字のペアを抽出する。
+- [extract_xlsx.py](oss/mj/extract_xlsx.py)
+  MJのExcelファイルから単漢字辞書を作成する。データはExcel形式で提供されているので，Excel形式をCSV形式へ変換する[xlsx2csv](https://github.com/dilshod/xlsx2csv)を利用し，CSVに変換後にこのプログラムで異体字のペアを抽出する。
 
 
-## mozc
+## Mozc
 
-  mozcからは，単語辞書と単漢字辞書，異体字辞書を作成する。単漢字辞書は単語辞書から一文字の漢字を抜き出したもの。
+  Mozcからは，単語辞書と単漢字辞書，異体字辞書を作成する。単漢字辞書は単語辞書から一文字の漢字を抜き出したもの。
 
-- [extract_mozc.py](oss/mozc/extract_mozc.py)      
+- [extract_mozc.py](oss/mozc/extract_mozc.py)
   mozcの漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
 
-- [extract_oss.py](oss/mozc/extract_oss.py)    
+- [extract_oss.py](oss/mozc/extract_oss.py)
   mozcの漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
-  
-- [extract_single.py](oss/mozc/extract_single.py)    
+
+- [extract_single.py](oss/mozc/extract_single.py)
   mozcの単漢字と読み仮名から，単漢字辞書を抽出する。
 
-- [extract_variant.py](oss/mozc/extract_variant.py)    
+- [extract_variant.py](oss/mozc/extract_variant.py)
   mozcの異体字辞書から，異体字のペアを作成する。
 
-## neologd
+## NEologd
 
   漢字カナ変換辞書データから，漢字・アルファベットとその読み仮名をカタカナに変換し，ペアを作成する。
 
-- [extract_neologd.py](oss/neologd/extract_neologd.py)    
-  neologdの漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
+- [extract_neologd.py](oss/neologd/extract_neologd.py)
+  NEologdの漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
 
-## skk
+## SKK
 
   漢字カナ変換辞書データから，漢字・アルファベットとその読み仮名をカタカナに変換し，ペアを作成する。また，異体字辞書から異体字を抜き出しペアを作成する。
 
-- [fullname.py](oss/skk/fullname.py)    
-  skkの姓名辞書の漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
+- [fullname.py](oss/skk/fullname.py)
+  SKKの姓名辞書の漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
 
-- [jinmei.py](oss/skk/jinmei.py)    
-  skkの姓名辞書の漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
+- [jinmei.py](oss/skk/jinmei.py)
+  SKKの姓名辞書の漢字・アルファベットと読み仮名から，漢字・アルファベットとカタカナのペアを作成する。
 
-- [itaiji_skk.py](oss/skk/itaiji_skk.py)    
+- [itaiji_skk.py](oss/skk/itaiji_skk.py)
   skkの異体字辞書から，異体字のペアを作成する。
 
-## wikipedia
- 
+## Wikipedia
+
   wikipediaからは，概要部分を抜き出して，文頭に　「漢字（読み）・・」　と記載されている場合に，漢字と読み仮名のペアを抜き出す。多少間違えている可能性があるので注意が必要。
 
-- [extract_wiki.py](oss/wikipedia/extract_wiki.py)    
+- [extract_wiki.py](oss/wikipedia/extract_wiki.py)
   Wikipediaのダンプファイルから，概要部分を抜き出す。
 
-- [extract_name.py](oss/wikipedia/extract_name.py)    
+- [extract_name.py](oss/wikipedia/extract_name.py)
   Wikipediaの概要部分から，名前のペアらしきものを抜き出す。
   概要の先頭の漢字，アルファベットを名前と認識し，その直後のカッコ内のカタカナを読みとして抽出する。
   ただし，この抽出基準に則っていないものもあるため，漢字・アルファベットとカタカナのペアに間違いが含まれる可能性がある。
 
-- [select_name.py](oss/wikipedia/select_name.py)    
+- [select_name.py](oss/wikipedia/select_name.py)
   extract_name.pyによってWikipediaのダンプファイルから，概要部分が抜き出されたものに対して，漢字・アルファベットとカタカナのペアのうち，正しいと推測されるものを選択する。
 
   漢字・アルファベット部分に，漢字もしくはアルファベットだけのもののみ残す。
   漢字・アルファベットのスペースで区切られた単語数と，カタカナ部分のスペースで区切られた単語数が同じものを残す
 
-- [dict_name.py](oss/wikipedia/dict_name.py)    
+- [dict_name.py](oss/wikipedia/dict_name.py)
   select_name.pyによってWikipediaのダンプファイルから作成した漢字・アルファベットとカタカナのペアを単語単位に分割する
 
 
-- [check_dict.py](oss/wikipedia/check_dict.py)    
+- [check_dict.py](oss/wikipedia/check_dict.py)
   ossで指定したオープンソースの辞書のデータに，infileのデータのうち入っていない漢字とカナのペアを抜き出して，outfileに出力する
 
-- [check_tankanji.py](oss/wikipedia/check_tankanji.py)    
+- [check_tankanji.py](oss/wikipedia/check_tankanji.py)
   tankanjiで指定した辞書のデータに，infileのデータのうち入っていない漢字とカナのペアを抜き出して，outfileに出力する
 
 
