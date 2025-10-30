@@ -28,11 +28,12 @@ def exec(**kwargs):
     for kk in kklst:
         stdate = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         kanji,kana=kk.split(',')
-        params={'kanji':kanji,'kana':kana}
+        params={'kanji':kanji,'kana':kana,'debug':'1'}
         req = urllib.request.Request('{}?{}'.format(url,urllib.parse.urlencode(params)))
         with urllib.request.urlopen(req) as res:
             body = res.read()
             jdata = json.loads(body)
+            print(jdata)
         if 'result' in jdata:
             stat = jdata['result']['status']
         else:
@@ -63,12 +64,12 @@ def run(args):
         print('Process joined.')
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input",default="data/input.txt", type=str)
+    parser.add_argument("--input",default="../core/input.txt", type=str)
     parser.add_argument('--kanji_idx', default=1, type=int)
     parser.add_argument('--kana_idx', default=2, type=int)
     parser.add_argument('--thread_num', default=2, type=int)
     parser.add_argument('--url', default='http://localhost:8080/detail', type=str)
-    parser.add_argument('--outfile', default='data/out.txt', type=str)
+    parser.add_argument('--outfile', default='out.txt', type=str)
 
     args = parser.parse_args()
     run(args)
