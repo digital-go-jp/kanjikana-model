@@ -349,6 +349,7 @@ public final class Moji {
         s = norm_dakuten(s);
         s = norm_chouon(s);
         s = ReplaceString(s, " ","　");
+        s = s.replaceAll("　{2,}", "　"); // 連続する全角スペースを１つのスペースへ 20260303
         return s;
     }
 

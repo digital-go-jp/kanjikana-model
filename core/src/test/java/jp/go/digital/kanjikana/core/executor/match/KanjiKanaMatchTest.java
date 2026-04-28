@@ -71,10 +71,27 @@ public class KanjiKanaMatchTest {
         Output o = simple.exec("山田　太郎","ヤマダ　タロウ");
         assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
-
     @Test
     public void test2a() throws Exception{
-        Output o = detail.exec("山田　太郎","ヤマダ　タロウ");
+        Output o = simple.exec("山田　　太郎","ヤマダ　　　タロウ");
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+    }
+
+    @Test
+    public void test2b() throws Exception{
+        Output o = simple.exec("山田　　太郎","ヤマダ　　タロウ");
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+    }
+
+    @Test
+    public void test2a1() throws Exception{
+        Output o = detail.exec("山田　　太郎","ヤマダ　　　タロウ");
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+    }
+
+    @Test
+    public void test2b1() throws Exception{
+        Output o = detail.exec("山田　　太郎","ヤマダ　　タロウ");
         assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
 
@@ -109,17 +126,17 @@ public class KanjiKanaMatchTest {
     @Test
     public void test5a() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ＿何　俊","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
     }
 
     @Test
     public void test5b() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
     }
     @Test
     public void test5c() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ","ヘ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
     }
 }

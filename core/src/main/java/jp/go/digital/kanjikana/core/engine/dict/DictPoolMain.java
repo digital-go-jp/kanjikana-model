@@ -17,6 +17,8 @@ import java.util.Map;
 public class DictPoolMain {
     private final Map<String, Map<String, Map<String, ResultAttr>>> pool=new Hashtable<>();
     private final String dir;
+    protected static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
+
     private DictPoolMain(String dir){
         this.dir = dir;
     }
@@ -30,12 +32,14 @@ public class DictPoolMain {
         JsonNode node = mapper.readTree(jsonFile);
         return node;
     }
-
-    private void loadDic(String resource, boolean normalized) throws Exception{
+    private void loadDic(String resource, boolean normalized) throws Exception {
+        this.loadDic(resource, normalized, 0);
+    }
+    private void loadDic(String resource, boolean normalized, int min_freq) throws Exception{
         String poolkey=DictPool.getMapKey(resource,normalized);
         System.out.println("load,"+poolkey);
         JsonNode node = getNode(dir+resource);
-        Map<String, Map<String, ResultAttr>>  dict = DictPool.load(node, normalized,0);
+        Map<String, Map<String, ResultAttr>>  dict = DictPool.load(node, normalized,min_freq);
         pool.put(poolkey, dict);
     }
 
@@ -59,8 +63,8 @@ public class DictPoolMain {
 
         DictPoolMain obj = new DictPoolMain(dir);
 
-        obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_STATISTICS),true);
-        obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_STATISTICS),false);
+        obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_STATISTICS),true, minFreq);
+        obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_STATISTICS),false, minFreq);
         obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_RELIABLE),true);
         obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_RELIABLE),false);
         obj.loadDic(Resources.getProperty(Resources.PropKey.DIC_UNRELIABLE),true);

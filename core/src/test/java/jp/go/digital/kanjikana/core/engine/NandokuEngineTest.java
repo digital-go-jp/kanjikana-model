@@ -1,7 +1,9 @@
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIs;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
+import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,7 @@ public class NandokuEngineTest {
     private NandokuEngine engine;
     {
         try{
-            engine = new NandokuEngine(Arrays.asList( DictAsIsNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),true);
+            engine = new NandokuEngine(Arrays.asList( DictAsIs.newInstance(),  DictTankanji.newInstance()),true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -31,13 +33,13 @@ public class NandokuEngineTest {
     @Test
     public void test2() throws Exception{
         ResultEngineParts result = engine.check("手心㤅","ココア");
-        assertThat(result.isOk(),equalTo(true));
+        assertThat(result.isOk(),equalTo(false));
     }
 
     @Test
     public void test3() throws Exception{
         ResultEngineParts result = engine.check("心手愛","ココア");
-        assertThat(result.isOk(),equalTo(true));
+        assertThat(result.isOk(),equalTo(false));
     }
 
     @Test
@@ -98,6 +100,30 @@ public class NandokuEngineTest {
     @Test
     public void test9b() throws Exception{
         ResultEngineParts result = engine.check("守","マモル");
+        assertThat(result.isOk(),equalTo(true));
+    }
+
+    @Test
+    public void test10() throws Exception{
+        ResultEngineParts result = engine.check("光里","アキ");
+        assertThat(result.isOk(),equalTo(true));
+    }
+
+    @Test
+    public void test10a() throws Exception{
+        ResultEngineParts result = engine.check("光里","カル");
+        assertThat(result.isOk(),equalTo(false));
+    }
+
+    @Test
+    public void test10b() throws Exception{
+        ResultEngineParts result = engine.check("光里","アカリ");
+        assertThat(result.isOk(),equalTo(false));
+    }
+
+    @Test
+    public void test10c() throws Exception{
+        ResultEngineParts result = engine.check("光里","ヒカリ");
         assertThat(result.isOk(),equalTo(true));
     }
 }
