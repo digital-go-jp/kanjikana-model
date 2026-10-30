@@ -26,13 +26,15 @@ package jp.go.digital.kanjikana.core.executor.etc;
 
 
 import jp.go.digital.kanjikana.core.executor.Output;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class KanjiKanaVersionTest {
-    private KanjiKanaVersion kk;
-    {
+    private static KanjiKanaVersion kk;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try {
             kk = new KanjiKanaVersion();
         }catch(Exception e){

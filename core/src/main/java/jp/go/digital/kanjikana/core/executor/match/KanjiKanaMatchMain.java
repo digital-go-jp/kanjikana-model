@@ -84,9 +84,8 @@ public class KanjiKanaMatchMain {
         parser.addArgument("--kana_idx").setDefault(2).help("カタカナ表記のフィールド番号");
         parser.addArgument("--sep").choices("csv","tsv").setDefault("csv").help("入力行のセパレータ");
         parser.addArgument("--thread_num").type(Integer.class).setDefault(1).help("スレッド数");
-        parser.addArgument("--has_header").type(Boolean.class).setDefault(false).help("ヘッダがあるかどうか");
-        parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(),
-                KanjiKanaMatchRunner.Strategy.ENSEMBLE.getVal())).setDefault(KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal()).help("モデル");
+        parser.addArgument("--has_header").type(Boolean.class).setDefault(true).help("ヘッダがあるかどうか");
+        parser.addArgument("--strategy").choices(Arrays.asList(KanjiKanaMatchRunner.Strategy.BASIC.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI_CLASSIFY.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_AI_GENERATE.getVal(), KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal(),KanjiKanaMatchRunner.Strategy.ONLY_STAT.getVal(), KanjiKanaMatchRunner.Strategy.ENSEMBLE.getVal(), KanjiKanaMatchRunner.Strategy.GENERATE_ENSEMBLE.getVal(), KanjiKanaMatchRunner.Strategy.CLASSIFY_ENSEMBLE.getVal(),KanjiKanaMatchRunner.Strategy.UNRELIABLE.getVal())).setDefault(KanjiKanaMatchRunner.Strategy.ONLY_DICT.getVal()).help("モデル");
 
         Namespace ns = parser.parseArgs(args);
 
@@ -123,7 +122,6 @@ public class KanjiKanaMatchMain {
             // thread pool
             ExecutorService pool = Executors.newFixedThreadPool(thread_num);
             for(int i=0;i<thread_num;i++){
-
                 Params params = new Params(header, kanji_idx,kana_idx,separator,newlines.get(i) );
                 pool.submit(new KanjiKanaMatchRunner(params,newlines.get(i), header,outfile+"."+i,  strategy));
             }

@@ -24,10 +24,10 @@
 
 package jp.go.digital.kanjikana.core.executor;
 
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import jp.go.digital.kanjikana.core.engine.ai.generate.SearchResult;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelStatus;
-
+import jp.go.digital.kanjikana.core.utils.Probability;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +49,12 @@ public class OutputMaker {
         }
     }
 
-
+    /**
+     * match output
+     * @param modelData
+     * @return
+     * @throws Exception
+     */
     public static Output exec(ModelData modelData) throws Exception{
         Output o = new Output();
         o.response = Response.OK;
@@ -62,7 +67,7 @@ public class OutputMaker {
             }
         }
 
-        if (modelData.getEnsembleResults().isEmpty()) {
+        if (modelData.isEnsembleResultEmpty()) {
             if(modelData.getStatus() == ModelStatus.OK ){
                 o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.OK);
             }else{
@@ -70,13 +75,16 @@ public class OutputMaker {
             }
 
         } else {
+            /*
             int okcnt = 0;
             for (ModelData md : modelData.getEnsembleResults()) {
                 if (md.getStatus() == ModelStatus.OK) {
                     okcnt += 1;
                 }
             }
-            o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS,StatusMatch.getStatus(modelData.getEnsembleResults().size(),okcnt));
+            */
+
+            //o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS,StatusMatch.getStatus(modelData.getEnsembleResults().size(),okcnt));
             /*
             switch (okcnt) {
                 case 0 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.NG);
@@ -85,13 +93,26 @@ public class OutputMaker {
                 case 3 -> o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusMatch.ENSEMBLE3);
             }
              */
+            double prob =  modelData.getModelProbability();
+
+            int iprob = Probability.modifyProb((int)(prob * 100));
+            o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, new StatusMatch(iprob));
+            //o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, iprob);
         }
 
         String notes = modelData.getResult();
         o.result.setAdditionalProperty(ADDITIONAL_KEY_NOTES, notes);
+
         return o;
     }
 
+    /**
+     * generate output
+     * @param res
+     * @param generateKey
+     * @return
+     * @throws Exception
+     */
     public static Output exec(List<SearchResult> res, GenKey generateKey) throws Exception {
         Output o = new Output();
 
@@ -102,10 +123,13 @@ public class OutputMaker {
             return o;
         }
         List<String> pred = new ArrayList<>();
+        //List<Integer> prob = new ArrayList<>();
         List<Double> prob = new ArrayList<>();
         for (SearchResult r : res) {
             pred.add(r.getPredict());
-            prob.add(Math.pow(10.0, r.getProbability()));
+            //int ip = (int)(r.getProbability() * 100);
+            //prob.add(Probability.modifyProb(ip));
+            prob.add(r.getProbability());
         }
         o.result.setAdditionalProperty(ADDITIONAL_KEY_STATUS, StatusGen.OK);
         o.result.setAdditionalProperty(generateKey.val, pred);

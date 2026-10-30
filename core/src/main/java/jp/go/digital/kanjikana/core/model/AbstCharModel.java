@@ -94,7 +94,7 @@ public abstract class AbstCharModel extends AbstModel {
     @Override
     public ModelData exec(String kanji_item, String kana_item, ModelData modelData) throws Exception{
 
-        if (modelData.getTopResult().getKanji().length() == 0) {
+        if (modelData.getTopResult()==null) {
             modelData.setTopResult(new ResultEngineParts(kanji_item, kana_item));
         }
 
@@ -102,7 +102,8 @@ public abstract class AbstCharModel extends AbstModel {
         List<String> kana_part = new ArrayList<>(); // 元の空白区切りの単語単位での単語リスト
         ResultEngineParts nowResult = modelData.getTopResult();
         ResultEngineParts newResult = null;// 新しく検査し直したものを入れていく，末尾を保存
-        while (true) {
+        boolean breakTrue=false;
+        for(int i=0;i<Integer.MAX_VALUE;i++){
 
             // NGのもの、もくは、1文字ずつのCharEngineはやり直す
             if (!nowResult.isOk() || reDoCheck(nowResult)) {
@@ -137,9 +138,13 @@ public abstract class AbstCharModel extends AbstModel {
 
             }
             if (nowResult.getNextResult() == null) {
+                breakTrue=true;
                 break;
             }
             nowResult = nowResult.getNextResult();
+        }
+        if (!breakTrue) {
+            throw new RuntimeException("infinite loop,("+this.getClass().getSimpleName()+"),"+kanji_item+","+kana_item);
         }
 
         // 残りがあれば検査

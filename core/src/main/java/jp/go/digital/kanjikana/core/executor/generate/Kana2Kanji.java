@@ -24,9 +24,12 @@
 
 package jp.go.digital.kanjikana.core.executor.generate;
 
-import jp.go.digital.kanjikana.core.engine.ai.AiKanaKanjiModels;
-import jp.go.digital.kanjikana.core.engine.ai.BeamSearch;
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import com.google.common.util.concurrent.SimpleTimeLimiter;
+import com.google.common.util.concurrent.TimeLimiter;
+import jp.go.digital.kanjikana.core.Resources;
+import jp.go.digital.kanjikana.core.engine.ai.generate.AiKanaKanjiEngine;
+import jp.go.digital.kanjikana.core.engine.ai.generate.BeamSearch;
+import jp.go.digital.kanjikana.core.engine.ai.generate.SearchResult;
 import jp.go.digital.kanjikana.core.utils.Moji;
 import jp.go.digital.kanjikana.core.executor.Output;
 import jp.go.digital.kanjikana.core.executor.OutputMaker;
@@ -35,12 +38,34 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * AIを用いて，カナから漢字の候補を作成するクラス
  */
 public class Kana2Kanji {
     private static final Logger logger = LogManager.getLogger(Kana2Kanji.class);
+    private final static int TIMEOUT_SECOND= Integer.parseInt(Resources.getProperty(Resources.PropKey.TIMEOUT_SECOND));
+    /**
+     * カナ姓名を与えて，漢字姓名の一覧を得る, watchdog追加 ver2.0
+     * @param kana カナ姓名　「ヤマダ」
+     * @param n_best 何個，候補を取得するか
+     * @return 漢字姓名の候補一覧，最大n_best個を返す
+     * @throws Exception 一般的なエラー
+     *
+     */
+    List<SearchResult> run(String kana, int n_best) throws Exception {
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        try {
+            TimeLimiter limiter = SimpleTimeLimiter.create(es);
+            return limiter.callWithTimeout(() -> run_sub(kana, n_best), TIMEOUT_SECOND, TimeUnit.SECONDS);
+        } finally {
+            es.shutdownNow();
+        }
+    }
 
     /**
      * カナ姓名を与えて，漢字姓名の一覧を得る
@@ -49,12 +74,13 @@ public class Kana2Kanji {
      * @return 漢字姓名の候補一覧，最大n_best個を返す
      * @throws Exception 一般的なエラー
      */
-    public List<SearchResult> run(String kana, int n_best) throws Exception{
-
-        BeamSearch search = new BeamSearch(AiKanaKanjiModels.newInstance());
-        List<SearchResult> res = search.run(n_best, n_best, Moji.normalize_basic(kana.replace("　","")));
-        search.close();
-        return res;
+    private List<SearchResult> run_sub(String kana, int n_best) throws Exception{
+        BeamSearch search = new BeamSearch(AiKanaKanjiEngine.newInstance());
+        try {
+            return search.run(n_best, n_best, Moji.normalize_basic(kana.replace("　","")));
+        } finally {
+            search.close();
+        }
     }
 
     /**
@@ -75,7 +101,13 @@ public class Kana2Kanji {
             o.response = Response.E010;
             return o;
         }
-        List<SearchResult> res = run(kana, n_best);
-        return OutputMaker.exec(res, OutputMaker.GenKey.KANJI);
+        try {
+            List<SearchResult> res = run(kana, n_best);
+            return OutputMaker.exec(res, OutputMaker.GenKey.KANJI);
+        }catch(TimeoutException e){
+            Output o = new Output();
+            o.response = Response.E101;
+            return o;
+        }
     }
 }

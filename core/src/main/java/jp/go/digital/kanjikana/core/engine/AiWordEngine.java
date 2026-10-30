@@ -23,18 +23,9 @@
  */
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.engine.ai.AiKanjiKanaModels;
-import jp.go.digital.kanjikana.core.engine.ai.BeamSearch;
-import jp.go.digital.kanjikana.core.engine.ai.Search;
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
-import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaiji;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaijiDummy;
-import jp.go.digital.kanjikana.core.utils.Moji;
+import jp.go.digital.kanjikana.core.utils.FJClassify;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 /**
  * AIを用いて単語単位で突合するエンジン
@@ -42,23 +33,11 @@ import java.util.List;
 public class AiWordEngine extends  AbstEngine{
     private static final Logger logger = LogManager.getLogger(AiWordEngine.class);
 
-    private final DictIF idic; // 異体字
-
-/*
-    public AiWordEngine() throws Exception{
-        this(false);
-    }
-*/
+    private final AiGenerateWordEngine generate_engine;
+    private final AiClassifyWordEngine classify_engine;
     public AiWordEngine(boolean hasItaiji) throws Exception{
-        if(hasItaiji) {
-            this.idic = DictItaiji.newInstance();
-        }else{
-            this.idic = DictItaijiDummy.newInstance();
-        }
-    }
-
-    private boolean checkMoji(String a, String b){
-        return Moji.normalize(a).equals(Moji.normalize(b));
+        generate_engine = new AiGenerateWordEngine(hasItaiji);
+        classify_engine = new AiClassifyWordEngine(hasItaiji);
     }
 
     @Override
@@ -75,29 +54,10 @@ public class AiWordEngine extends  AbstEngine{
      */
     @Override
     public ResultEngineParts check(String kanji_part_orig, String kana_part){
-        Search search =null;
-        try {
-            String kanji_part = replace_itaiji(kanji_part_orig,idic);
-
-            search = new BeamSearch(AiKanjiKanaModels.newInstance());
-            List<SearchResult> o = search.run(kanji_part);
-            int rank=0;
-            for(SearchResult r :o){
-                if(checkMoji(r.getPredict(),kana_part)){
-                    //logger.debug("AiWordEngine.OK;"+r.getProbability());
-                    return new ResultEngineParts(ResultEngineParts.Type.OK,kanji_part, kana_part, new ResultAttr("rank:"+rank+";Probability:"+Math.exp(r.getProbability())),this.getClass(),null);
-                }
-                rank+=1;
-            }
-        }catch (Exception e){
-            e.fillInStackTrace();
-            logger.fatal(e);
-        }finally{
-            if(search!=null){
-                search.close();
-            }
+        if (FJClassify.isForeigner(kanji_part_orig)) {
+            return classify_engine.check(kanji_part_orig,kana_part);
+        }else{
+            return generate_engine.check(kanji_part_orig,kana_part);
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part_orig,kana_part,new ResultAttr(), this.getClass(), null);
     }
-
 }

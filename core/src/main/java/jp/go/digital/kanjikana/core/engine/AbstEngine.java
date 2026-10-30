@@ -27,10 +27,11 @@ package jp.go.digital.kanjikana.core.engine;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class AbstEngine implements EngineIF{
+public abstract class AbstEngine implements EngineIF, Serializable {
     protected List<DictIF> omitInvalidDict(List<DictIF> dicts){
         List<DictIF> res = new ArrayList<>();
         for(DictIF dict:dicts){

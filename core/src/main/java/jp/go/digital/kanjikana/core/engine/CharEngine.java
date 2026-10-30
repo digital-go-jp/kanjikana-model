@@ -53,81 +53,6 @@ public class CharEngine extends  AbstEngine{
     }
 
     /**
-     *　最短マッチで行う。kanji_chars, kana_charsにはスペースが入っている可能性があるので，スペースは削除してマッチングする
-     * @param kanji_orig 元の文字列
-     * @param kanji_begin_idx kanjiのkanji_origでの開始位置 substringの引数参照
-     * @param kanji_end_idx kanjiのkanji_origでの終了位置 substringの引数参照
-     * @param kana_orig 元の読み仮名文字列
-     * @param kana_begin_idx　kanaのkana_origでの開始位置 substringの引数参照
-     * @param kana_end_idx kanaのkana_origでの終了位置 substringの引数参照
-     * @return 現在の結果が入っている next==null
-     * @deprecated 使用していない
-     */
-    /*
-    private ResultEngineParts check_short2long(String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kana_orig, int kana_begin_idx, int kana_end_idx ) throws Exception{
-
-        WordEngine engine = new WordEngine(this.hasItaiji);
-
-        String kanji_chars = kanji_orig.substring(kanji_begin_idx,kanji_end_idx);
-        String kana_chars = kana_orig.substring(kana_begin_idx, kana_end_idx);
-
-        if(kanji_chars.length()==0 && kana_chars.length()==0){
-            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.OK,"","",new ResultAttr(),this.getClass(), null); // EOD
-            return res; // 直近を返す
-        }else if(kanji_chars.length()==0 && kana_chars.length()>0 || kanji_chars.length()>0 && kana_chars.length()==0){
-            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this.getClass(),null); // ERROR
-            return res;
-        }
-
-        ResultEngineParts next_result = null;
-        ResultEngineParts now_result = null;
-        for(int i=1;i<=kanji_chars.length();i++){
-            // 次の文字が禁則文字のときにはスキップ
-            if(i<kanji_chars.length() && Moji.isKinsoku(kanji_chars.substring(i))){
-                continue;
-            }
-
-            for(int j=1;j<=kana_chars.length();j++){
-
-                // 次の文字が禁則文字のときにはスキップ
-                if(j<kana_chars.length() && Moji.isKinsoku(kana_chars.substring(j))){
-                    continue;
-                }
-
-                String kanji_tmp = kanji_chars.substring(0,i);
-                String kana_tmp = kana_chars.substring(0,j);
-                // ここでスペースを削除して検査
-                now_result = engine.check(kanji_tmp.replace("　",""),kana_tmp.replace("　",""));
-                now_result.setEngine(this.getClass());
-                if(now_result.isOk()){
-                    now_result.setCharParams(kanji_orig,kanji_begin_idx,kanji_begin_idx+i,kana_orig,kana_begin_idx,kana_begin_idx+j);
-                    next_result = check_short2long(kanji_orig,kanji_begin_idx+i,kanji_orig.length(),kana_orig,kana_begin_idx+j,kana_orig.length());
-                    next_result.setEngine(this.getClass());
-
-                    // OKもしくは最後まで行った場合には終了
-                    if(next_result.isOk() ){
-                        if(next_result.getKanji().length()==0 && next_result.getKana().length()==0){
-                            return now_result;
-                        }
-                        next_result.setPrevResult(now_result);
-                        now_result.setNextResult(next_result);
-                        return now_result;
-                    }
-                    now_result.setNextResult(null); // 削除する
-                }
-            }
-        }
-        if(next_result!=null && now_result.getNextResult()==null){
-            now_result.setNextResult(next_result);
-            next_result.setPrevResult(now_result);
-        }else{
-            now_result = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this.getClass(),null);
-            now_result.setCharParams(kanji_orig,kanji_begin_idx,kanji_end_idx,kana_orig,kana_begin_idx,kana_end_idx);
-        }
-        return now_result;
-    }*/
-
-    /**
      *　最長マッチで行う。kanji_chars, kana_charsにはスペースが入っている可能性があるので，スペースは削除してマッチングする
      * @param kanji_orig 元の文字列
      * @param kanji_begin_idx kanjiのkanji_origでの開始位置 substringの引数参照
@@ -143,15 +68,16 @@ public class CharEngine extends  AbstEngine{
         String kana_chars = kana_orig.substring(kana_begin_idx, kana_end_idx);
 
         if(kanji_chars.length()==0 && kana_chars.length()==0){
-            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.OK,"","",new ResultAttr(),this.getClass(), null); // EOD
+            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.OK,"","",new ResultAttr(),this, null); // EOD
             return res; // 直近を返す
         }else if(kanji_chars.length()==0 && kana_chars.length()>0 || kanji_chars.length()>0 && kana_chars.length()==0){
-            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this.getClass(),null); // ERROR
+            ResultEngineParts res = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this,null); // ERROR
             return res;
         }
 
         ResultEngineParts next_result = null;
         ResultEngineParts now_result = null;
+        // 漢字とカナを最長方向から順に縮めながら検査　「太郎」「タロウ」のときには「太郎」「タロウ」、「太郎」「タロ」、「太郎」「タ」、「太」「タロウ」、「太」「タロ」、「太」「タ」の順に調べていく
         for(int i=kanji_chars.length();i>0;i--){
             // 次の文字が禁則文字のときにはスキップ
             if(i<kanji_chars.length() && Moji.isKinsoku(kanji_chars.substring(i))){
@@ -169,11 +95,11 @@ public class CharEngine extends  AbstEngine{
                 String kana_tmp = kana_chars.substring(0,j);
                 // ここでスペースを削除して検査
                 now_result = engine.check(kanji_tmp.replace("　",""),kana_tmp.replace("　",""));
-                now_result.setEngine(this.getClass());
+                now_result.setEngine(this);
                 if(now_result.isOk()){
                     now_result.setCharParams(kanji_orig,kanji_begin_idx,kanji_begin_idx+i,kana_orig,kana_begin_idx,kana_begin_idx+j);
                     next_result = check_long2short(kanji_orig,kanji_begin_idx+i,kanji_orig.length(),kana_orig,kana_begin_idx+j,kana_orig.length());
-                    next_result.setEngine(this.getClass());
+                    next_result.setEngine(this);
 
                     // OKもしくは最後まで行った場合には終了
                     if(next_result.isOk() ){
@@ -192,7 +118,7 @@ public class CharEngine extends  AbstEngine{
             now_result.setNextResult(next_result);
             next_result.setPrevResult(now_result);
         }else{
-            now_result = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this.getClass(),null);
+            now_result = new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_chars,kana_chars,new ResultAttr(),this,null);
             now_result.setCharParams(kanji_orig,kanji_begin_idx,kanji_end_idx,kana_orig,kana_begin_idx,kana_end_idx);
         }
         return now_result;
@@ -202,7 +128,7 @@ public class CharEngine extends  AbstEngine{
     public ResultEngineParts check(String kanji_part, String kana_part) throws Exception{
         ResultEngineParts result ;
         result = check_long2short(kanji_part,0,kanji_part.length(),kana_part,0,kana_part.length());
-        result.setEngine(this.getClass());
+        result.setEngine(this);
         return result;
     }
 }

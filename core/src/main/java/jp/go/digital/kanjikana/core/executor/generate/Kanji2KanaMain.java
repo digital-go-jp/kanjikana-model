@@ -26,7 +26,7 @@ package jp.go.digital.kanjikana.core.executor.generate;
 
 import jp.go.digital.kanjikana.core.executor.Params;
 import jp.go.digital.kanjikana.core.utils.FileReader;
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import jp.go.digital.kanjikana.core.engine.ai.generate.SearchResult;
 import jp.go.digital.kanjikana.core.utils.FileWriter;
 import jp.go.digital.kanjikana.core.utils.KanjiKanaUtil;
 import net.sourceforge.argparse4j.ArgumentParsers;

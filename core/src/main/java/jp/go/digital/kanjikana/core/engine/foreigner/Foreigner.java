@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
  *     アルファベット側の区切り記号の消失を認める (standardの場合) <br/>
  */
 public final class Foreigner {
-    Logger logger = LogManager.getLogger(Foreigner.class);
+    private static final Logger logger = LogManager.getLogger(Foreigner.class);
     private final Romaji romaji = new Romaji();
     private ParamsForeigner params = null;
 

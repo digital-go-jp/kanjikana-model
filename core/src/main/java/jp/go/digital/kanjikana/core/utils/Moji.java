@@ -27,6 +27,8 @@ package jp.go.digital.kanjikana.core.utils;
 import org.terasoluna.gfw.common.fullhalf.DefaultFullHalf;
 
 import java.util.regex.Pattern;
+import java.text.Normalizer;
+import java.util.Locale;
 
 /**
  * カタカナ姓名を正規化する
@@ -315,6 +317,30 @@ public final class Moji {
     }
 
     /**
+     * アルファベットを全角大文字にする
+     * @param input　
+     * @return
+     * @since 2.0
+     */
+    public static String toZenkakuUpper(String input) {
+        String upper = Normalizer
+                .normalize(input, Normalizer.Form.NFKC)
+                .toUpperCase(Locale.ROOT);
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : upper.toCharArray()) {
+            if (c >= 0x21 && c <= 0x7E) {
+                sb.append((char)(c + 0xFEE0)); // 半角→全角
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+
+
+    /**
      * 漢字カナ姓名のカタカナひらがな部分を正規化し，正規化したカタカナに変換する
      * normalize_basicに追加し
      * 小書き文字を大書文字へ変換
@@ -327,6 +353,7 @@ public final class Moji {
         s = normalize_basic(s);
         s = norm_kogaki(s);
         s = norm_zengin(s);
+        s = toZenkakuUpper(s); // since 2.0
         return s;
     }
 

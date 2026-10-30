@@ -24,9 +24,10 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy;
 
+import jp.go.digital.kanjikana.core.Resources;
+import jp.go.digital.kanjikana.core.model.AbstModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
-import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,12 +41,8 @@ public abstract class AbstStrategy implements StrategyIF{
     private static final Logger logger = LogManager.getLogger(AbstStrategy.class);
     protected final List<ModelIF> models = new ArrayList<>(); ;
 
-    private static final double EnsembleOkUnderLimit=0.5; // アンサンブルでOKを出したモデルの割合の最小値
-    private final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
-
-    //protected AbstStrategy(List<ModelIF> models){
-    //    this.models = models;
-    //}
+    protected static final double EnsembleOkUnderLimit= Double.parseDouble(Resources.getProperty(Resources.PropKey.STRATEGY_EnsembleOkUnderLimit)); // アンサンブルでOKを出したモデルの割合の最小値
+    protected final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
 
     protected void setUnReliableModels(List<ModelIF> models){
         List<ModelIF> validModels=new ArrayList<>();
@@ -84,6 +81,16 @@ public abstract class AbstStrategy implements StrategyIF{
         return EnsembleOkUnderLimit;
     }
 
+    /**
+     * アンサンブルで計算したそれぞれの確率を基に、このストラテジでの結果を判定する
+     * @param probs モデルごとの確率
+     * @return 漢字とカナの一致の判定結果
+     */
+    /*
+    protected boolean isModelOk(List<Double> probs){
+        double avg = probs.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+        return avg >= EnsembleOkUnderLimit;
+    }*/
 
     /**
      * モデルを順次用いてチェックする
@@ -93,15 +100,26 @@ public abstract class AbstStrategy implements StrategyIF{
      * @return チェックで漢字とカナが一致したかどうか
      * @throws Exception 一般的なエラー
      */
-    public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
-        modelData.setTopResult(new ResultEngineParts("","")); // reset
+    public abstract boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception;
+
+    /**
+     * モデルを順次用いてチェックする
+     * @param modelData 前のモデルで判定した結果を入力する
+     * @param kanji　漢字姓名　「山田　太郎」
+     * @param kana　カタカナ姓名　「ヤマダ　タロウ」
+     * @return チェックで漢字とカナが一致したかどうか
+     * @throws Exception 一般的なエラー
+     */
+    public boolean simpleModelCheck(ModelData modelData, String kanji, String kana) throws Exception{
+        //modelData.setTopResult(new ResultEngineParts("","")); // reset
+        modelData.resetTopResult();
         for (ModelIF model : models) {
             modelData = model.run(kanji,kana, modelData);
 
             logger.debug(model.getClass()+",kanji="+kanji+",isOK="+modelData.isOk());
 
             if (modelData.isOk()) {
-                modelData.setModel(model.getClass());
+                modelData.setModel((AbstModel)model);
                 return true;
             }
         }

@@ -27,11 +27,13 @@ package jp.go.digital.kanjikana.core.model;
 import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 
+import java.io.Serializable;
+
 /**
  * implで定義するモデルの抽象クラス
  *
  */
-public abstract class AbstModel implements ModelIF{
+public abstract class AbstModel implements ModelIF, Serializable {
     private final EngineIF engine;
 
     public AbstModel(EngineIF engine){
@@ -52,14 +54,15 @@ public abstract class AbstModel implements ModelIF{
      * @param res　結果のリスト形式のどこかのノード
      * @return 結果のリスト形式のトップのノード
      */
-    protected ResultEngineParts getTopResult(ResultEngineParts res){
+    protected ResultEngineParts getTopResult(ResultEngineParts res) throws Exception{
         ResultEngineParts now = res;
-        while(true){
+        for(int i=0;i<Integer.MAX_VALUE;i++){
             if(now.getPrevResult()==null){
                 return now;
             }
             now = now.getPrevResult();
         }
+        throw new RuntimeException("infinite loop,("+this.getClass().getSimpleName()+"),"+res);
     }
 
     /**
@@ -67,33 +70,23 @@ public abstract class AbstModel implements ModelIF{
      * @param res　結果のリスト形式のどこかのノード
      * @return 結果のリスト形式の末尾のノード
      */
-    protected ResultEngineParts getLastResult(ResultEngineParts res){
+    protected ResultEngineParts getLastResult(ResultEngineParts res) throws Exception{
         ResultEngineParts now = res;
-        while(true){
+        for(int i=0;i<Integer.MAX_VALUE;i++){
             if(now.getNextResult()==null){
                 return now;
             }
             now = now.getNextResult();
         }
+        throw new RuntimeException("infinite loop,("+this.getClass().getSimpleName()+"),"+res);
     }
 
     /**
      * ステータスをセットする
      * @param modelData 結果データ
      */
-    protected void setStatus(ModelData modelData){
-        ResultEngineParts now=modelData.getTopResult();
-        modelData.setStatus(ModelStatus.OK);
-        while(true){
-            if(!now.isOk()){
-                modelData.setStatus(ModelStatus.NG);
-                return;
-            }
-            now=now.getNextResult();
-            if(now==null){
-                return;
-            }
-        }
+    protected void setStatus(ModelData modelData) throws Exception{
+        modelData.setProbability();
     }
 
     /**
@@ -114,4 +107,13 @@ public abstract class AbstModel implements ModelIF{
      * @throws Exception 一般的なエラー
      */
     protected abstract ResultEngineParts run_sub(String kanji_str, String kana_str)throws Exception;
+
+
+    /**
+     * デフォルトでAIでないを返す
+     * @return AIモデルかどうか
+     */
+    public boolean isAiModel(){
+        return false;
+    }
 }

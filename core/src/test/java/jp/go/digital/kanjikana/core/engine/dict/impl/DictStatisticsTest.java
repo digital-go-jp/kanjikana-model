@@ -27,6 +27,7 @@ package jp.go.digital.kanjikana.core.engine.dict.impl;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,10 +36,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DictStatisticsTest {
-    DictIF dic;
+    static DictIF dic;
     private static final Logger logger = LogManager.getLogger(DictStatisticsTest.class);
 
-    {
+    @BeforeAll
+    public static void setUp() throws Exception {
         try {
             dic = DictStatistics.newInstance();
         }catch (Exception e){

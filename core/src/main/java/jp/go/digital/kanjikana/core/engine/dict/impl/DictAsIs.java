@@ -27,6 +27,7 @@ package jp.go.digital.kanjikana.core.engine.dict.impl;
 import jp.go.digital.kanjikana.core.engine.ResultAttr;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,8 +37,8 @@ import java.util.List;
  * カナ姓名「アユミ」
  * をマッチさせる
  */
-public class DictAsIs implements DictIF {
-    protected static DictAsIs dict=null;
+public class DictAsIs implements DictIF, Serializable {
+    private static DictAsIs dict=null;
     protected DictAsIs(){}
 
     /**

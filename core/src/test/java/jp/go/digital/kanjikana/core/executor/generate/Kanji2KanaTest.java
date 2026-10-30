@@ -24,17 +24,19 @@
 
 package jp.go.digital.kanjikana.core.executor.generate;
 
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
+import jp.go.digital.kanjikana.core.engine.ai.generate.SearchResult;
 import jp.go.digital.kanjikana.core.executor.Output;
 import jp.go.digital.kanjikana.core.executor.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Kanji2KanaTest {
-    private Kanji2Kana kk;
-    {
+    private static Kanji2Kana kk;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try {
             kk = new Kanji2Kana();
         }catch(Exception e){
@@ -75,4 +77,10 @@ public class Kanji2KanaTest {
             System.out.println(r);
         }
     }
+     @Test
+    public void test10() throws Exception{
+        var res = kk.exec("田中太郎",10);
+        System.out.println(res);
+    }
+
 }

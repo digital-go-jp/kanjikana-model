@@ -14,6 +14,10 @@ import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 import java.util.Map;
 
+/**
+ * あらかじめ辞書を読み込んでシリアライズするためのMainクラス
+ * @since v1.8
+ */
 public class DictPoolMain {
     private final Map<String, Map<String, Map<String, ResultAttr>>> pool=new Hashtable<>();
     private final String dir;
@@ -79,5 +83,4 @@ public class DictPoolMain {
             oos.writeObject(obj.pool);
         }
     }
-
 }

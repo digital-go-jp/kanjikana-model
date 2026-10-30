@@ -1,35 +1,33 @@
-# 氏名漢字カナ突合モデル
+# Name Kanji/Kana Matching Model
 
+English | [日本語](./README_ja.md)
 
-本プログラムの詳細および使用方法については、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)をご参照ください。
+For details about this program and how to use it, see the [Name Matching Support Service website](https://kktg.digital.go.jp/support/index.html).
 
-## 説明
+## Overview
 
+The Name Kanji/Kana Matching Model matches a name written in kanji or the Latin alphabet with its reading written in katakana.
+The model provides the following three features:
 
-氏名漢字カナ突合モデルは、氏名の漢字またはアルファベット表記と、その読みであるカタカナ表記を突合するモデルです。
-本モデルは、以下の3つの機能を備えています。
+- Name kanji/kana matching
 
-- 氏名漢字カナ突合機能
+  Takes a name written in kanji or the Latin alphabet and a name written in katakana, and determines whether they match. The result is a score from 0 to 100; a higher score indicates a higher degree of match.
 
-  漢字またはアルファベット表記の氏名とカタカナ表記の氏名を入力し、それらが一致しているかを判定します。判定結果は0〜100の数値で返され、数値が高いほど一致度が高いことを示します。
+- Name katakana prediction
 
+  Given a name written in kanji or the Latin alphabet, outputs predicted katakana readings in descending order of estimated probability.
 
-- 氏名カタカナ推計機能
+- Name kanji prediction
 
-  漢字またはアルファベット表記の氏名を入力すると、推定される読みのカタカナ表記を、推定確率の高い順に出力します。
+  Given a name written in katakana, outputs corresponding names in kanji or the Latin alphabet in descending order of estimated probability.
 
-- 氏名漢字推計機能
+## Data Used
 
-  カタカナ表記の氏名を入力すると、対応する漢字またはアルファベット表記の氏名を、推定確率の高い順に出力します。
+The model uses pairs of kanji or Latin-alphabet names and their readings in katakana.
+The following data sources were used. Please check the license of each dataset before using it.
 
+### Dictionary data
 
-## 使用データ
-
-本モデルでは、漢字・アルファベットとその読みであるカタカナのペアをデータとして使用しています。
-使用したデータは以下の通りです。利用にあたっては、各データのライセンスをご確認ください。
-
-
-### 辞書データ
 - [Canna](https://canna-input.github.io/)
 - [FreeWnn](http://www.tomo.gr.jp/FreeWnn/)
 - [IPAdic](https://taku910.github.io/mecab/)
@@ -38,79 +36,91 @@
 - [NEologd](https://github.com/neologd/mecab-ipadic-neologd/)
 - [SKK](https://github.com/skk-dev/dict/)
 
-### 異体字データ
-- [MJ](https://moji.or.jp/mojikiban/)  「MJ文字情報一覧表は[クリエイティブ・コモンズ 表示 – 継承 2.1 日本 ライセンス条件](https://creativecommons.org/licenses/by-sa/2.1/jp/)で提供されています。」
+### Variant character data
 
-### Webデータ
+- [MJ](https://moji.or.jp/mojikiban/) The MJ Character Information List is provided under the [Creative Commons Attribution-ShareAlike 2.1 Japan License](https://creativecommons.org/licenses/by-sa/2.1/jp/).
+
+### Web data
+
 - [Wikipedia](https://dumps.wikimedia.org/)
 
+## Models
 
-## モデル
+For details about the algorithms used by each feature, see “Name Kanji/Kana Matching Model” on the [Name Matching Support Service website](https://kktg.digital.go.jp/support/index.html).
 
-各機能のアルゴリズムの詳細については、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)の「氏名漢字カナ突合モデル」をご参照ください。
+### Dictionary model
 
-### 辞書モデル
+This model uses a dictionary of kanji or Latin-alphabet names and their readings in katakana to determine whether an input name matches.
+The dictionary can be created by downloading the data listed above under “Data Used” and running the provided scripts.
 
-漢字・アルファベットとその読みであるカタカナの辞書を用いて突合を行い、入力された氏名が一致しているかを判定します。
-使用する辞書データは、上記「使用データ」からダウンロードし、スクリプトを用いて作成可能です。
+For details, see the [dict](./dict/README.md) documentation.
 
+The dictionary files used by the resulting dictionary model are distributed under “Resources” on the [Name Matching Support Service website](https://kktg.digital.go.jp/support/index.html).
 
+### Foreign-name model
 
-詳細は、[dict](./dict/README.md)をご参照ください。
+This model takes a name written in the Latin alphabet and a name written in katakana, and matches them based on the “Correspondence Table for Japanese (Romanized) and English Name Components.”
+For details, see the following publication:
 
+[Satoshi Sato. Translation of the List of Participants in the 2020 Tokyo Olympics. Journal of Natural Language Processing, Vol. 30, No. 2, pp. 748–772, 2023.](https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja)
 
-なお、作成した辞書モデルで使用する辞書ファイルは、[氏名突合支援サービス](https://kktg.digital.go.jp/support/index.html)の「リソース」で配布しています。
+### AI model
 
-### 外国人モデル
-アルファベット表記の氏名とカタカナ表記の氏名を入力とし、 「日本語（ローマ字表記）–英語表記部分対応表」に基づいて突合を行います。
-詳細は以下の文献をご参照ください。
+Datasets are created from pairs of kanji or Latin-alphabet names and katakana names extracted from the data listed above under “Data Used.” A Transformer model is then trained on these datasets.
 
-[佐藤 理史. 2020 東京オリンピック参加者名簿の翻訳. 自然言語処理, Vol.30, No.2, pp748-772, 2023.](https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja)
+For the name kanji/kana matching feature, a binary classification model is also trained using pairs of kanji or Latin-alphabet names and katakana names. Each pair is labeled as a match or a non-match, and the model predicts which class the pair belongs to.
 
-### AIモデル
+During training, kanji, Latin-alphabet, and katakana strings are split into individual characters and supplied to the Transformer as input and output.
+For details, see the [train](./train/README.md) documentation.
 
-上記「使用データ」から抽出した漢字・アルファベットとカタカナのペアを用いてデータセットを作成し、Transformerモデルで学習を行います。
+Four types of models are provided:
 
-学習時には、漢字・アルファベットおよびカタカナを一文字単位で分割し、Transformerに入力・出力として与えます。
-詳細は、[train](./train/README.md)をご参照ください。
+- A model that predicts katakana from kanji or Latin-alphabet input
 
+  Used by the name kanji/kana matching and name katakana prediction features.
+  For details about training, see [training.ipynb](./train/training.ipynb).
+  For details about fine-tuning a trained model, see [finetuning.ipynb](./train/finetuning.ipynb).
 
-作成したモデルは以下の2種類です。
-- 漢字・アルファベットからカタカナを推論するモデル
+- A model that predicts kanji or Latin-alphabet names from katakana
 
-  氏名漢字カナ突合機能および氏名カタカナ推計機能で使用します。
-  学習方法の詳細については，[training.ipynb](train/training.ipynb)、
-  学習済みモデルを用いてのファインチューニングの方法の詳細については、[finetuning.ipynb](train/finetuning.ipynb)をご参照ください。
+  Used by the name kanji prediction feature.
 
-- カタカナから漢字・アルファベットを推論するモデル
+  For details about training, see [training_r.ipynb](./train/training_r.ipynb).
 
-  氏名漢字推計機能で使用します。
+- A binary classification model that determines whether a kanji name and a katakana name match
 
-  学習方法の詳細は、[training_r.ipynb](train/training_r.ipynb)をご参照ください。
+  Used by the name kanji/kana matching feature. For details about creating the training data, see [dataset_j.ipynb](./train/dataset_j.ipynb); for training, see [training_j.ipynb](./train/training_j.ipynb).
 
+- A binary classification model that determines whether a Latin-alphabet name and a katakana name match
 
-事前学習済みモデルは、[氏名突合支援サービスサポートサイト](https://kktg.digital.go.jp/support/index.html)の「リソース」で配布しています。
+  Used by the name kanji/kana matching feature. For details about creating the training data, see [dataset_e.ipynb](./train/dataset_e.ipynb); for training, see [training_e.ipynb](./train/training_e.ipynb).
 
+Pretrained models are distributed under “Resources” on the [Name Matching Support Service website](https://kktg.digital.go.jp/support/index.html).
 
-## 実行方法
+## Running the Program
 
-本モデルは、コマンドラインから実行可能なプログラムとして提供されています。
-また，[氏名突合支援サービス](https://api.kktg.digital.go.jp/)の内部でも利用しています。
+This model is provided as a program that can be run from the command line.
+It is also used internally by the [Name Matching Support Service](https://api.kktg.digital.go.jp/).
 
-プログラムの詳細は、[core](./core/README.md)をご参照ください。
+For program details, see the [core](./core/README.md) documentation.
+For Web API setup and usage, see the [api](./api/README.md) documentation.
 
+## MCP Server
 
-## サンプルプログラム
+A Spring AI-based MCP server is available over stdio. It invokes the kanjikana core Java source directly without calling the REST API. See the [MCP server README](./mcp-server/README.md) for architecture diagrams, tool flows, and build/run instructions.
 
+## Sample Programs
 
-AIモデルはPythonのPyTorchで構築されており、PythonおよびJavaによる推計サンプルを提供しています。
+The AI model is built with Python and PyTorch. Sample prediction programs are provided in Python and Java.
 
+For details, see the [sample](./sample/README.md) documentation.
 
-詳細は[sample](./sample/README.md)をご参照ください。
+## References
 
-## 参考文献
-本モデルに含まれる外国人モデル（アルファベット氏名とカタカナ氏名の突合モデル）は、名古屋大学の佐藤理史教授が作成したRubyプログラムをJavaに移植したものです。
-- 佐藤 理史. 2020 東京オリンピック参加者名簿の翻訳. 自然言語処理, Vol.30, No.2, pp748-772, 2023.
-[論文](https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja)
+The foreign-name model included in this project (for matching names in the Latin alphabet with names in katakana) is a Java port of a Ruby program written by Professor Satoshi Sato of Nagoya University.
 
+- Satoshi Sato. Translation of the List of Participants in the 2020 Tokyo Olympics. Journal of Natural Language Processing, Vol. 30, No. 2, pp. 748–772, 2023.
+  [Paper](https://www.jstage.jst.go.jp/article/jnlp/30/2/30_748/_article/-char/ja)
 
+## History
+For release history, see [CHANGES.md](./CHANGES.md).

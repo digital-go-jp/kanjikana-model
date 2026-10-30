@@ -24,20 +24,16 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
-import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
+import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategyEnsemble;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.model.ModelStatus;
 import jp.go.digital.kanjikana.core.model.impl.IDictStatisticsModel;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,15 +41,17 @@ import java.util.List;
  * Ensembleモデルをシングルトンで定義する。
  * このEnsembleでは，あまり信頼度の高くないモデルを組み合わせて実行し，その結果を多数決で判定する
  */
-public final class StrategyOnlyStatistics extends AbstStrategy {
+public final class StrategyOnlyStatistics extends AbstStrategyEnsemble {
     private static StrategyIF sb=null;
-    private static final double EnsembleOkUnderLimit=0.5; // アンサンブルでOKを出したモデルの割合の最小値
+    private static final Logger logger = LogManager.getLogger(StrategyOnlyStatistics.class);
 
-    private final List<List<ModelIF>> UnReliableModels = new ArrayList<>(); //
-    private final Logger logger = LogManager.getLogger(StrategyEnsemble.class);
+    @Override
+    public List<ModelIF> getModelList() throws Exception{
+        return Arrays.asList( new IDictStatisticsModel());
+    }
 
     private StrategyOnlyStatistics() throws Exception{
-        UnReliableModels.add(Arrays.asList( new IDictStatisticsModel())); // 統計モデル
+        setUnReliableModels(getModelList()); // 統計モデル
     }
 
     /**
@@ -69,50 +67,25 @@ public final class StrategyOnlyStatistics extends AbstStrategy {
     }
 
     @Override
-    public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception {
-        //if(super.modelCheck(modelData, kanji, kana)){ // 簡易モデルでチェック。NGならばアンサンブルへ
-        //    return true;
-        //}
-        int idx=0;
-        double okcnt=0.0; // モデルがOKを出した数
-        for(List<ModelIF> unreliable: UnReliableModels){
-            Date stdate=new Date();
-            logger.debug(idx+",start,"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(stdate));
-            ModelData md = SerializationUtils.clone(modelData); // reliableなモデルで計算したものを保存しておく
-            for(ModelIF model: unreliable){
-                md = model.run(kanji,kana, md);
-                logger.debug(model.getClass()+",kanji="+kanji+",isOK="+md.isOk());
-                if(md.isOk()){
-                    break;
-                }
-            }
-            if(!md.isOk()){ // 前の結果を引きずる形で実施した際にダメだった際には，リセットする　「大　阪府」　この場合，「大」「おお」が辞書にあるが，「阪府」「さかふ」は辞書にないので，一家リセットして「大　阪府」でWordモデルで，次にCharモデル「大阪府」でできるようにする
-                md = SerializationUtils.clone(modelData); // reliableなモデルで計算したものを保存しておく
-                md.resetTopResult();
-                for(ModelIF model: unreliable){
-                    md = model.run(kanji,kana, md);
-                    logger.debug(model.getClass()+",kanji="+kanji+",isOK="+md.isOk());
-                    if(md.isOk()){
-                        break;
-                    }
-                }
-            }
-
-            if (md.isOk()) {
-                okcnt+=1.0;  // モデルがOKを出した数を数えておく
-            }
-            modelData.getEnsembleResults().add(md);
-            Date eddate = new Date();
-            logger.debug(idx+",end,"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(eddate));
-            logger.debug(idx+",time,"+(eddate.getTime()-stdate.getTime()));
-            idx = idx+1;
-        }
-
+    protected boolean isModelOk(ModelData modelData) {
         // 複数のモデルでOKが出たモデルの数を数えておき，閾値以上の正解数ならばOKを返す
-        if(okcnt/(double)UnReliableModels.size()>EnsembleOkUnderLimit){
+        if(super.okcnt/(double)getUnReliableModels().size()>=getEnsembleOkUnderLimit()){
             modelData.setStatus(ModelStatus.OK);
             return true;
         }
+        return false;
+    }
+
+    /**
+     * モデルを順次用いてチェックする
+     * @param modelData 前のモデルで判定した結果を入力する
+     * @param kanji　漢字姓名　「山田　太郎」
+     * @param kana　カタカナ姓名　「ヤマダ　タロウ」
+     * @return チェックで漢字とカナが一致したかどうか
+     * @throws Exception 一般的なエラー
+     */
+    @Override
+    public boolean simpleModelCheck(ModelData modelData, String kanji, String kana) throws Exception{
         return false;
     }
 }

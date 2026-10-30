@@ -24,14 +24,16 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class FCharEngineTest {
-    private EngineIF engine;
-    {
+    private static EngineIF engine;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             engine = new FCharEngine();
         }catch(Exception e){

@@ -24,20 +24,25 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.utils.FJClassify;
+
 /**
  * AIを用いて文字単位で検査する
+ * AiClassifyCharEngine, AiGenerateCharEngineを外国人、日本人で使い分ける
  */
-public final class AiCharEngine extends AiWordEngine{
-    /*
-    public AiCharEngine() throws Exception {
-        super();
-    }
-    */
+public final class AiCharEngine extends AbstEngine {
+    private final AiGenerateCharEngine generate_engine;
+    private final AiClassifyCharEngine classify_engine;
 
     public AiCharEngine(boolean hasItaiji) throws Exception{
-        super(hasItaiji);
+        generate_engine = new AiGenerateCharEngine(hasItaiji);
+        classify_engine = new AiClassifyCharEngine(hasItaiji);
     }
 
+    @Override
+    public boolean isValidEngine(){
+        return true;
+    }
     /**
      * 単語単位，文字単位を入力としてマッチング
      * @param kanji_part 田中　太郎
@@ -46,9 +51,10 @@ public final class AiCharEngine extends AiWordEngine{
      */
     @Override
     public ResultEngineParts check(String kanji_part, String kana_part){
-        ResultEngineParts result = super.check(kanji_part.replace("　",""),kana_part.replace("　",""));
-        result.setEngine(this.getClass());
-        result.setCharParams(kanji_part,0,kanji_part.length(),kana_part,0,kana_part.length());
-        return result;
+        if (FJClassify.isForeigner(kanji_part)) {
+            return classify_engine.check(kanji_part,kana_part);
+        }else{
+            return generate_engine.check(kanji_part,kana_part);
+        }
     }
 }

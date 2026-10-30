@@ -55,4 +55,13 @@ public class KanjiKanaMatchRunnerTest {
         KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null,  KanjiKanaMatchRunner.Strategy.BASIC);
         ch.run();
     }
+
+    @Test
+    public void test2() throws Exception{
+        List<String> lines = Arrays.asList("ＹＡＨＩＡ　ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＥＬＧＡＷＡＤ,ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ");
+        Params params = new Params(
+                "",0,1,Params.Separator.CSV,lines );
+        KanjiKanaMatchRunner ch = new KanjiKanaMatchRunner(params,lines, null,null,  KanjiKanaMatchRunner.Strategy.CLASSIFY_ENSEMBLE);
+        ch.run();
+    }
 }

@@ -51,7 +51,7 @@ public final class IReliableWordModel extends ReliableWordModel {
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
         ModelData md =  super.run(kanji_item,kana_item,modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 }

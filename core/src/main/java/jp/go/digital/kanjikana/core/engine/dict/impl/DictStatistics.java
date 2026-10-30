@@ -25,17 +25,14 @@
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
 import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
+import jp.go.digital.kanjikana.core.engine.dict.AbstDict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 大量の漢字カナデータから抽出した，漢字とカナのペアの頻度を保存，統計的に判定する
  * あまり信頼度が高くない，　resource内で最小の頻度を定義している　Resources.DIC_STATISTICS_MINFREQ　参照
  */
-class DictStatistics extends Dict {
+class DictStatistics extends AbstDict {
     protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_STATISTICS);
     protected static final int minFreq = Integer.parseInt(Resources.getProperty(Resources.PropKey.DIC_STATISTICS_MINFREQ));
 

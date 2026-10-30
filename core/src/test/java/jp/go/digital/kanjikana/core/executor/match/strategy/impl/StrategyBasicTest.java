@@ -26,14 +26,17 @@ package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 import jp.go.digital.kanjikana.core.model.ModelData;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class StrategyBasicTest {
-    private StrategyIF strategy;
-    {
+    private static StrategyIF strategy;
+
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             strategy = StrategyBasic.newInstance();
         }catch(Exception e){
@@ -60,5 +63,30 @@ public class StrategyBasicTest {
         ModelData md = new ModelData("美空　飛鳥花","ソラ　アスカ");
         boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
         assertThat(res, equalTo(true));
+    }
+
+    @Test
+    public void test4() throws Exception{
+        ModelData md = new ModelData("ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ","ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
+    }
+    @Test
+    public void test4a() throws Exception{
+        ModelData md = new ModelData("ＳＵＭＡＹＹＡＨ　ＡＬＩ　ＡＢＵＬＨＡＤＩＤ　ＡＬＩ","ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(false));
+    }
+    @Test
+    public void test4b() throws Exception{
+        ModelData md = new ModelData("ＹＯＵＳＵＦ　ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＥＬＧＡＷＡＤ","ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(false));
+    }
+    @Test
+    public void test4c() throws Exception{
+        ModelData md = new ModelData("ＹＡＨＩＡ　ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＥＬＧＡＷＡＤ","ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＵＬＧＡＷＡＤ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(false));
     }
 }

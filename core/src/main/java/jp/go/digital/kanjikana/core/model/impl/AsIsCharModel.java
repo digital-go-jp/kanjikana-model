@@ -49,7 +49,7 @@ public final class AsIsCharModel  extends DictCharModel {
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
         ModelData md = super.run(kanji_item, kana_item, modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 }

@@ -24,8 +24,9 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
-import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+import jp.go.digital.kanjikana.core.Resources;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,52 +36,84 @@ import java.util.List;
  * 辞書の1レコードを保持する。統計情報と，辞書の由来を
  */
 public final class ResultAttr implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -8054973273447626011L;
+    public static final double model_default_min_prob = 1 - Double.parseDouble(Resources.getProperty(Resources.PropKey.MODEL_DEFAULT));
 
-    private  final int freq;
+    private Double prob; // 確率
     private  final List<String> dictTypes;
 
     private String remarks;
 
+
+    /**
+     * 出力の属性を作成する。
+     * 不一致の際のコンストラクタ。確率は０で初期化する。
+     */
     public ResultAttr(){
-        this("");
+        this(model_default_min_prob,null,null);
     }
 
-    /**
-     * 
-     * @param remarks　判定結果の備考
-     */
-    public ResultAttr(String remarks){
-        this.remarks = remarks;
-        this.freq = 0;
-        this.dictTypes = new ArrayList<>();
-    }
 
     /**
+     * 出力の属性を作成する
      *
-     * @param freq 統計情報，実際に何個あったか
-     * @param dictNames 辞書の名前
+     * @param prob 確率 0-1
+     * @param remarks　判定結果の備考 外国人モデルの判定結果など
      */
-    public ResultAttr(int freq, List<String> dictNames) {
-        this.freq = freq;
-
+    /*
+    public ResultAttr(double prob, String remarks){
+        this.remarks = remarks;
+        //this.freq = 0;
+        this.prob = prob;
         this.dictTypes = new ArrayList<>();
-        for(String dictName:dictNames){
-            dictTypes.add(dictName);
-        }
-    }
+    }*/
 
-    public int getFreq() {
-        return freq;
+
+    /**
+     * 出力の属性を作成する。単語や文字単位での判定結果。
+     * 統計モデル、AIモデルなど確率として出力されるものは確率を入力、辞書モデルなどTrue/Falseで判断されるものはnullをProbabilityに入れる。
+     * あとで、ModelData内で、Resourcesで定義した確率に置き換える
+     * @param prob 確率 0-1
+     * @param dictNames 辞書の名前
+     * @param remarks　判定結果の備考 外国人モデルの判定結果など
+     */
+
+    public ResultAttr(Double prob, List<String> dictNames, String remarks) {
+        //this.prob= DictProbs.calcStatisticsProbs(freq);
+        if(remarks==null){
+            this.remarks = "";
+        }else{
+            this.remarks = remarks;
+        }
+        this.prob = prob;
+        this.dictTypes = new ArrayList<>();
+        if(dictNames != null) {
+            for (String dictName : dictNames) {
+                dictTypes.add(dictName);
+            }
+        }
     }
 
     public List<String> getDictNames() {
         return dictTypes;
     }
 
+    public Double getProb() {
+        return prob;
+    }
+
+    public void setProb(Double prob) {
+        this.prob = prob;
+    }
+
+    public void setRemarks(String remarks) {this.remarks = remarks;}
+
     public String toText(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append(freq);
+        //sb.append(freq);
+        sb.append(prob);
         sb.append(":/");
         List<String> names = new ArrayList<>();
         for(String dic :dictTypes) {
@@ -94,6 +127,10 @@ public final class ResultAttr implements Serializable {
         sb.append(";");
         sb.append(remarks);
         return sb.toString();
+    }
+
+    public String toString(){
+        return toText();
     }
 
 }

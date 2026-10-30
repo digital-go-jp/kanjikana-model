@@ -24,17 +24,18 @@
 
 package jp.go.digital.kanjikana.core.executor.generate;
 
-import jp.go.digital.kanjikana.core.engine.ai.SearchResult;
 import jp.go.digital.kanjikana.core.executor.Output;
 import jp.go.digital.kanjikana.core.executor.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Kana2KanjiTest {
-    private Kana2Kanji kk;
-    {
+    private static Kana2Kanji kk;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try {
             kk = new Kana2Kanji();
         }catch(Exception e){

@@ -26,7 +26,6 @@ package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.engine.FCharEngine;
 import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
@@ -54,15 +53,15 @@ public final class FCharModel extends AbstCharModel {
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         if (!Foreigner.en_string_check(kanji_item)) {
             return modelData; // 外人でないのでそのまま返す
         }
         // 全部やり直す
-        //////modelData.setTopResult(new ResultEngineParts(kanji_item,kana_item));
+        modelData.setTopResult(new ResultEngineParts(kanji_item,kana_item));
 
         ModelData md = exec(kanji_item, kana_item, modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
     @Override

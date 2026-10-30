@@ -25,6 +25,9 @@
 package jp.go.digital.kanjikana.core.executor.match.strategy;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
+import jp.go.digital.kanjikana.core.model.ModelIF;
+
+import java.util.List;
 
 /**
  * ストラテジーパターンでモデルを定義するためのIF
@@ -40,4 +43,12 @@ public interface StrategyIF {
      * @throws Exception 一般的なエラー
      */
     boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception;
+
+    /**
+     * モデルの一覧を返す
+     * @return モデル一覧
+     * @throws Exception 一般的なエラー
+     * @since v2.0
+     */
+    List<ModelIF> getModelList() throws Exception;
 }

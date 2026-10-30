@@ -25,15 +25,13 @@
 package jp.go.digital.kanjikana.core.engine;
 
 import jp.go.digital.kanjikana.core.Resources;
+import jp.go.digital.kanjikana.core.engine.dict.AbstDict;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaijiDummy;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaiji;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -113,38 +111,37 @@ public class WordEngine extends  AbstEngine{
     public ResultEngineParts check(String kanji_part, String kana_part){
         // for speedup 20241023 漢字文字数よりもカナ文字数が少ない場合にはスキップ。 英語のみはスキップ　TODO
         if(!kanji_part.matches("^[a-zA-Z0-9ａ-ｚＡ-Ｚ０-９　]+$") && kanji_part.length()>kana_part.length()+SKIP_KANJI_GE_KANA_DIFF){
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(),null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this,null);
         }
 
-
         if(kanji_part.length()>max_key_len || kana_part.length()>max_val_len){
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(),null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this,null);
         }
 
         ResultEngineParts result = check_dict(kanji_part, kana_part);
-        result.setEngine(this.getClass());
+        result.setEngine(this);
         if(result.getType()== ResultEngineParts.Type.OK){
             return result;
         }
         // ALPHABET check
         if(Foreigner.en_string_check(kanji_part)){
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this.getClass(), null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this, null);
         }
 
         // 漢字含むかどうか
         if(!kanji_part.matches("^.*\\p{InCjkUnifiedIdeographs}.*$")){
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this.getClass(), null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this, null);
         }
 
         //  異体字チェック,漢字を一文字ずつずらして異体字に入れ替えて検査
         for(int i=0;i<kanji_part.length();i++){
             ResultEngineParts ires = check_itaiji(kanji_part,i,kana_part);
-            ires.setEngine(this.getClass());
+            ires.setEngine(this);
             if(ires.getType()== ResultEngineParts.Type.OK){
                 return ires;
             }
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(),null);
+        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this,null);
     }
 
 
@@ -165,11 +162,11 @@ public class WordEngine extends  AbstEngine{
             if(dic.containsKey(kanji_part_copy)){
                 if(dic.containsValueKey(kanji_part_copy,kana_part_copy)){
                     ResultAttr resultAttr = dic.getAttr(kanji_part_copy,kana_part_copy);
-                    return new ResultEngineParts(ResultEngineParts.Type.OK, kanji_part,kana_part, resultAttr, this.getClass(), dic.getClass());
+                    return new ResultEngineParts(ResultEngineParts.Type.OK, kanji_part,kana_part, resultAttr, this, dic);
                 }
             }
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(), this.getClass(), null);
+        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(), this, null);
     }
 
     /**
@@ -182,7 +179,7 @@ public class WordEngine extends  AbstEngine{
     private ResultEngineParts check_itaiji(String kanji_part, int kanji_idx, String kana_part){
 
         ResultEngineParts res = check_dict(kanji_part,kana_part);
-        res.setEngine(this.getClass());
+        res.setEngine(this);
         if(res.isOk()){
             return res;
         }
@@ -201,6 +198,6 @@ public class WordEngine extends  AbstEngine{
                 }
             }
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this.getClass(), null);
+        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part,kana_part,new ResultAttr(),this, null);
     }
 }

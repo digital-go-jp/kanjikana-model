@@ -25,16 +25,10 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.EngineIF;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.engine.CharEngine;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 
-import java.util.Arrays;
 
 /**
  *　辞書を用いて，文字単位で分割して検査するモデル
@@ -42,11 +36,6 @@ import java.util.Arrays;
  * 文字単位なので単漢字辞書なども用いるために，信頼度は低くなる
  */
 class DictCharModel extends AbstCharModel  {
-
-    /*
-    public DictCharModel() throws Exception{
-        super(new CharEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),false));
-    }*/
 
     public DictCharModel(EngineIF engine) throws Exception{
         super(engine);
@@ -61,12 +50,12 @@ class DictCharModel extends AbstCharModel  {
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
-        modelData.setModel(this.getClass());
-        if(modelData.getTopResult().getKanji().length()==0){
+        modelData.setModel(this);
+        if(modelData.getTopResult()==null){
             modelData.setTopResult(new ResultEngineParts(modelData.getKanji(),modelData.getKana()));
         }
         ModelData md = exec(kanji_item, kana_item, modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 }

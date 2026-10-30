@@ -24,13 +24,8 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
-import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 大量の漢字カナデータから抽出した，漢字とカナのペアの頻度を保存，統計的に判定する
@@ -38,6 +33,7 @@ import java.util.List;
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
 public class DictStatisticsNormalized extends DictStatistics {
+    protected static DictIF dict = null;
 
     private DictStatisticsNormalized() throws Exception {
         super(true);

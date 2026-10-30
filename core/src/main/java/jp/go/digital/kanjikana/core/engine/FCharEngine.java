@@ -40,8 +40,8 @@ public final class FCharEngine extends FWordEngine{
      */
     @Override
     public ResultEngineParts check(String kanji_part, String kana_part){
-        ResultEngineParts result = super.check(kanji_part.replace("　",""),kana_part.replace("　",""));
-        result.setEngine(this.getClass());
+        ResultEngineParts result = super.check(kanji_part.replace(" ","").replace("　",""),kana_part.replace(" ","").replace("　",""));
+        result.setEngine(this);
         result.setCharParams(kanji_part,0,kanji_part.length(),kana_part,0,kana_part.length());
         return result;
     }

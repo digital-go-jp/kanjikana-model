@@ -61,4 +61,25 @@ public class MojiTest {
 
         assertThat(Moji.isKinsoku("ーアァィゥェォッャュョヮンー　"),equalTo(true));
     }
+
+    @Test
+    public void test6(){
+        assertThat(Moji.isAlphabet("ＹＡＨＩＡ　ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＥＬＧＡＷＡＤ"),equalTo(false));
+    }
+    @Test
+    public void test6a(){
+        assertThat(Moji.isAlphabet("ＹＡＨＩＡ　ＳＡＡＤＥＬＤＩＮ　ＡＢＤＵＬＭＯＮＡＭ　ＳＡＹＥＤ　ＡＢＤＥＬＧＡＷＡＤ".replace("　","")),equalTo(true));
+    }
+    @Test
+    public void test7(){
+        assertThat(Moji.isHiragana("あいうえお　かきくけこ"),equalTo(false));
+    }
+    @Test
+    public void test7b(){
+        assertThat(Moji.isHiragana("あいうえおかきくけこ"),equalTo(true));
+    }
+    @Test
+    public void test7a(){
+        assertThat(Moji.isHiragana("ＹＡＨＩＡあいう".replace("　","")),equalTo(false));
+    }
 }

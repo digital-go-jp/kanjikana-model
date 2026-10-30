@@ -9,6 +9,7 @@ import jp.go.digital.kanjikana.core.utils.Moji;
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
 public class DictReliableNormalized extends DictReliable {
+    private static DictIF dict = null;
 
     private DictReliableNormalized() throws Exception {
         super(true);

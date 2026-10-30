@@ -71,7 +71,7 @@ public class StrategyExecutor {
                 continue;
             }
             // 前の漢字（日本　花子）でのアンサンブルの結果は削除する
-            modelData.getEnsembleResults().clear();
+            modelData.resetEnsembleResult();
             if(strategy.modelCheck(modelData,kanji,kana)){
                 break;
             }
@@ -93,10 +93,14 @@ public class StrategyExecutor {
 
         String[] items = line.split(separator);
         if(kanji_idx>=items.length || kanji_idx < 0){
-            return new ModelData(line, null, ModelStatus.E001);
+            ModelData md = new ModelData(line, null);
+            md.setStatus(ModelStatus.E001);
+            return md;
         }
         if(kana_idx>=items.length || kana_idx < 0){
-            return new ModelData(line , null, ModelStatus.E002);
+            ModelData md = new ModelData(line, null);
+            md.setStatus(ModelStatus.E002);
+            return md;
         }
 
         String kanji = items[kanji_idx];

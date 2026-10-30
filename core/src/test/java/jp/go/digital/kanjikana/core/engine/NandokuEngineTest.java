@@ -6,6 +6,7 @@ import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanji;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -15,8 +16,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class NandokuEngineTest {
 
-    private NandokuEngine engine;
-    {
+    private static NandokuEngine engine;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             engine = new NandokuEngine(Arrays.asList( DictAsIs.newInstance(),  DictTankanji.newInstance()),true);
         }catch(Exception e){

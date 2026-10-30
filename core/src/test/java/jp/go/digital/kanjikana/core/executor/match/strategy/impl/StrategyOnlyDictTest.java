@@ -1,6 +1,7 @@
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,8 +9,9 @@ import static org.hamcrest.Matchers.equalTo;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 
 public class StrategyOnlyDictTest {
-    private StrategyIF strategy;
-    {
+    private static StrategyIF strategy;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             strategy = StrategyOnlyDict.newInstance();
 
@@ -36,5 +38,12 @@ public class StrategyOnlyDictTest {
         ModelData md = new ModelData("山田　圭吾","ヤマダ　トモミ");
         boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
         assertThat(res, equalTo(false));
+    }
+
+    @Test
+    public void test2() throws Exception{
+        ModelData md = new ModelData("山田　ともみ","ヤマダ　トモミ");
+        boolean res = strategy.modelCheck(md, md.getKanji(), md.getKana());
+        assertThat(res, equalTo(true));
     }
 }

@@ -29,16 +29,20 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * jp.go.digital.kanjikana.core.executor.match　以下を用いて作成した結果を表示する
  */
-public enum StatusMatch {
-    OK(90),
-    ENSEMBLE3(80),
-    ENSEMBLE2(70),
-    ENSEMBLE1(30),
-    NG(0);
+
+
+
+public class StatusMatch {
+    public static final StatusMatch OK= new StatusMatch(90);
+    //ENSEMBLE3(80),
+    //ENSEMBLE2(70),
+    //ENSEMBLE1(30),
+    //ENSEMBLE(-1),
+    public static final StatusMatch NG = new StatusMatch(0);
 
     private final int val;
 
-    StatusMatch(int val) {
+    public StatusMatch(int val) {
         this.val = val;
     }
 
@@ -49,7 +53,11 @@ public enum StatusMatch {
      * @param statusMatch　結果
      * @return　OKならばTrue
      */
+
     public static boolean isOk(StatusMatch statusMatch){
+        if(statusMatch == null){
+            return false;
+        }
         if(statusMatch.toValue()>=THRESHOLD){
             return true;
         }else{
@@ -57,7 +65,7 @@ public enum StatusMatch {
         }
     }
 
-
+    /*
     public static StatusMatch getStatus(int modelSize, int okCnt) throws Exception{
         if(okCnt==0){
             return NG;
@@ -83,10 +91,15 @@ public enum StatusMatch {
         }
         throw new Exception("modelSize is invalid");
     }
-
+    */
 
     @JsonValue
     public int toValue(){ // JSON出力の際に，数字で出すため
         return val;
+    }
+
+    @Override
+    public String toString(){
+        return String.valueOf(val);
     }
 }

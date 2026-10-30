@@ -11,6 +11,8 @@
 1. [姓名辞書を異体字辞書の見出しに統一](./replace.ipynb)
 1. [すべての辞書を統合・変換](./merge.ipynb)
 
+異体字用文字優先順の作成については，[daitai/README.md](./daitai/README.md)を参照のこと。
+
 # スクリプト
 各ディレクトリのスクリプトについては次のとおり。
 
@@ -112,6 +114,7 @@
 ## Wikipedia
 
   wikipediaからは，概要部分を抜き出して，文頭に　「漢字（読み）・・」　と記載されている場合に，漢字と読み仮名のペアを抜き出す。多少間違えている可能性があるので注意が必要。
+  抽出手順の詳細は[Wikipedia用README](./oss/wikipedia/README.md)を参照のこと。
 
 - [extract_wiki.py](oss/wikipedia/extract_wiki.py)
   Wikipediaのダンプファイルから，概要部分を抜き出す。

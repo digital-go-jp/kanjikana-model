@@ -31,7 +31,6 @@ import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictStatisticsNormalized;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 
 import java.util.Arrays;
 
@@ -58,9 +57,8 @@ class DictStatisticsModel  extends AbstWordModel {
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
         modelData = exec(kanji_item, kana_item, modelData);
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         setStatus(modelData);
-        modelData.setModel(this.getClass());
         return modelData;
     }
 

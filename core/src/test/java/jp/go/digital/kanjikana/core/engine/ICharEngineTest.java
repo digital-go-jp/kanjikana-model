@@ -28,6 +28,7 @@ import jp.go.digital.kanjikana.core.engine.dict.impl.DictAsIsNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -36,8 +37,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ICharEngineTest {
-    private EngineIF engine;
-    {
+    private static EngineIF engine;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             engine = new CharEngine(Arrays.asList( DictAsIsNormalized.newInstance(), DictReliableNormalized.newInstance(), DictUnReliableNormalized.newInstance(),  DictTankanjiNormalized.newInstance()),true);
         }catch(Exception e){

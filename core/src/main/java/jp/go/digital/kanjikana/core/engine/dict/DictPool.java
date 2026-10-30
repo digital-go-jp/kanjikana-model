@@ -29,20 +29,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.ResultAttr;
 import jp.go.digital.kanjikana.core.utils.Moji;
-import net.sourceforge.argparse4j.ArgumentParsers;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-import net.sourceforge.argparse4j.inf.Namespace;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +104,7 @@ public class DictPool {
      * @throws Exception 一般的なエラー
      */
      synchronized Map<String, Map<String, ResultAttr>> load(String resource, boolean normalized, int min_freq) throws Exception {
-        String poolkey = getMapKey(resource, normalized);
+        String poolkey = getMapKey(resource, normalized) + "_" + min_freq;
         if(pool.containsKey(poolkey)){
             return pool.get(poolkey);
         }
@@ -161,8 +153,13 @@ public class DictPool {
                 for(JsonNode dicNode: attrNode.get("dics")){
                     dicNames.add(dicNode.textValue());
                 }
-
-                ResultAttr resultAttr = new ResultAttr(freq, dicNames);
+                ResultAttr resultAttr;
+                if (freq>0){
+                    double prob = DictProbs.calcStatisticsProbs(freq);
+                    resultAttr = new ResultAttr(prob, dicNames, null);
+                }else{
+                    resultAttr = new ResultAttr();
+                }
                 String normval = Moji.normalize_basic(val);
                 if(normalized){
                     normval = Moji.normalize(val);

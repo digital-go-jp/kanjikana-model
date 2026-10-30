@@ -27,7 +27,6 @@ package jp.go.digital.kanjikana.core.model.impl;
 import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstCharModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.engine.AiCharEngine;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,14 +55,14 @@ public class AiCharModel extends AbstCharModel{
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
 
         // 全部やり直す
         //modelData.setTopResult(new ResultEngineParts(kanji_item, kana_item));
         //modelData.resetTopResult();
 
         ModelData md = exec(kanji_item, kana_item, modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 
@@ -73,5 +72,10 @@ public class AiCharModel extends AbstCharModel{
         // スペースなしで検査
         return super.run_sub(kanji_str.replace("　", ""), kana_str.replace("　", ""))
                 ;
+    }
+
+    @Override
+    public boolean isAiModel(){
+        return true;
     }
 }

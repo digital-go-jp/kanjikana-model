@@ -24,17 +24,22 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.engine.foreigner.Foreigner;
 import jp.go.digital.kanjikana.core.engine.foreigner.ForeignerOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 
 /**
  * 外国人モデルを用いて，単語単位にチェックする
  */
 public class FWordEngine extends  AbstEngine{
     private static final Logger logger = LogManager.getLogger(FWordEngine.class);
-
+    private static final double minProb = Double.parseDouble(Resources.getProperty(Resources.PropKey.PROB_MIN));
+    private static final double maxProb = Double.parseDouble(Resources.getProperty(Resources.PropKey.PROB_MAX));
+    private static final double okLowerProb = Double.parseDouble(Resources.getProperty(Resources.PropKey.STRATEGY_EnsembleOkUnderLimit));
     public FWordEngine() throws Exception{
     }
 
@@ -43,6 +48,21 @@ public class FWordEngine extends  AbstEngine{
         return true;
     }
 
+    private double makeProb(ForeignerOutput o){
+        // 0の数を数える
+
+        long count = o.getCode().chars()
+                .filter(ch -> ch == '0')
+                .count();
+        double p = (double)count/o.getCode().length();
+
+
+        if(o.getCode().endsWith("0")){ // OK
+            return okLowerProb+(maxProb-okLowerProb)*p;
+        }else{ // NG
+            return minProb+(okLowerProb-minProb)*p;
+        }
+    }
 
     /**
      * 単語単位，文字単位を入力としてマッチング
@@ -56,15 +76,16 @@ public class FWordEngine extends  AbstEngine{
             Foreigner foreigner = new Foreigner();
             ForeignerOutput o = foreigner.run(kanji_part, kana_part);
             if(o.getCode().endsWith("0")){
-                return new ResultEngineParts(ResultEngineParts.Type.OK,kanji_part,kana_part,new ResultAttr(o.getCode()), this.getClass(), null);
+                return new ResultEngineParts(ResultEngineParts.Type.OK,kanji_part,kana_part,new ResultAttr(makeProb(o),new ArrayList<>(),o.getCode()), this, null);
             }else{
-                return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(o.getCode()), this.getClass(), null);
+                return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(makeProb(o),new ArrayList<>(),o.getCode()), this, null);
 
             }
         }catch (Exception e){
             e.fillInStackTrace();
             logger.fatal(e);
         }
-        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this.getClass(), null);
+        // not come here
+        return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_part,kana_part,new ResultAttr(), this, null);
     }
 }

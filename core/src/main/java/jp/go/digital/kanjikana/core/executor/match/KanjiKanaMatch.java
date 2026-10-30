@@ -24,6 +24,9 @@
 
 package jp.go.digital.kanjikana.core.executor.match;
 
+import com.google.common.util.concurrent.SimpleTimeLimiter;
+import com.google.common.util.concurrent.TimeLimiter;
+import jp.go.digital.kanjikana.core.Resources;
 import jp.go.digital.kanjikana.core.executor.Output;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyExecutor;
 import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
@@ -31,14 +34,18 @@ import jp.go.digital.kanjikana.core.executor.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * WebAppから呼び出し用のクラス
  */
 public class KanjiKanaMatch {
     private static final Logger logger = LogManager.getLogger(KanjiKanaMatch.class);
-
-
     private final StrategyExecutor executor;
+    private final static int TIMEOUT_SECOND= Integer.parseInt(Resources.getProperty(Resources.PropKey.TIMEOUT_SECOND));
 
     public KanjiKanaMatch(StrategyIF strategy){
         executor = new StrategyExecutor(strategy);
@@ -52,7 +59,6 @@ public class KanjiKanaMatch {
      * @throws Exception 一般的なエラー
      */
     public Output exec(String kanji, String kana) throws Exception{
-
         if(kanji==null || kanji.isEmpty()){
             Output o = new Output();
             o.response = Response.E001;
@@ -63,6 +69,17 @@ public class KanjiKanaMatch {
             o.response = Response.E002;
             return o;
         }
-        return  executor.exec(kanji, kana);
+
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        try {
+            TimeLimiter limiter = SimpleTimeLimiter.create(es);
+            return limiter.callWithTimeout(() -> executor.exec(kanji, kana), TIMEOUT_SECOND, TimeUnit.SECONDS);
+        }catch(TimeoutException e){
+            Output o = new Output();
+            o.response = Response.E101;
+            return o;
+        } finally {
+            es.shutdownNow();
+        }
     }
 }

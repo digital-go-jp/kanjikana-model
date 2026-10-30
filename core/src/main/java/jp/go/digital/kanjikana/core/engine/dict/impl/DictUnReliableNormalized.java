@@ -24,13 +24,8 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
-import jp.go.digital.kanjikana.core.Resources;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -39,6 +34,8 @@ import java.util.List;
  * たまに間違いがあるのであまり信頼度高くない
  */
 public class DictUnReliableNormalized extends DictUnReliable {
+    protected static DictIF dict=null;
+
     protected DictUnReliableNormalized() throws Exception {
         super(true);
     }

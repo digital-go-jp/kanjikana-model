@@ -29,7 +29,8 @@ import jp.go.digital.kanjikana.core.executor.OutputMaker;
 import jp.go.digital.kanjikana.core.executor.Response;
 import jp.go.digital.kanjikana.core.executor.StatusMatch;
 import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyBasic;
-import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyEnsemble;
+import jp.go.digital.kanjikana.core.executor.match.strategy.impl.StrategyGenerateEnsemble;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,12 +38,13 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class KanjiKanaMatchTest {
 
-    private KanjiKanaMatch simple;
-    private KanjiKanaMatch detail;
-    {
+    private static KanjiKanaMatch simple;
+    private static KanjiKanaMatch detail;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try {
             simple = new KanjiKanaMatch(StrategyBasic.newInstance());
-            detail = new KanjiKanaMatch(StrategyEnsemble.newInstance());
+            detail = new KanjiKanaMatch(StrategyGenerateEnsemble.newInstance());
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -126,17 +128,24 @@ public class KanjiKanaMatchTest {
     @Test
     public void test5a() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ＿何　俊","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
 
     @Test
     public void test5b() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ","カ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
     }
     @Test
     public void test5c() throws Exception{
         Output o = detail.exec("ＨＥ　ＪＵＮ","ヘ　シユン");
-        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.ENSEMBLE1));
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.OK));
+    }
+
+
+    @Test
+    public void test6() throws Exception{
+        Output o = detail.exec("山田　　太郎","ヤマダ　シユン");
+        assertThat(o.result.getAdditionalProperties().get(OutputMaker.ADDITIONAL_KEY_STATUS),equalTo(StatusMatch.NG));
     }
 }

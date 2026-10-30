@@ -24,9 +24,9 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.AbstEngine;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.engine.FWordEngine;
 import jp.go.digital.kanjikana.core.engine.ResultAttr;
@@ -51,7 +51,7 @@ public final class FWordModel  extends AbstWordModel {
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         if (!Foreigner.en_string_check(kanji_item)) {
             return modelData; // 外人でないのでそのまま返す
         }
@@ -63,7 +63,7 @@ public final class FWordModel  extends AbstWordModel {
             modelData.resetTopResult();
             md = exec(kanji_item, kana_item, modelData);
         }
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 
@@ -90,7 +90,7 @@ public final class FWordModel  extends AbstWordModel {
         if(topResult!=null){
             return topResult;
         }else{
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_str,kana_str,new ResultAttr(), this.getClass(),null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_str,kana_str,new ResultAttr(), (AbstEngine)this.getEngine(),null);
         }
     }
 }

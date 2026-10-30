@@ -47,11 +47,13 @@ mavenコマンドを実行しJarファイルを作成する。target以下に関
 ```bash
 mvn compile assembly:single
 ```
+Notebookでのビルド手順は[build.ipynb](./build.ipynb)を参照してください。
 
 ## 実行
+Notebookでの実行例は[execute.ipynb](./execute.ipynb)を参照してください。
 
 ### 入力データ仕様
-[入力データ仕様](./DATA.md)を参照のこと。
+[入力データ仕様](./DATA.md)を参照してください。
 
 
 ### 入力ファイル

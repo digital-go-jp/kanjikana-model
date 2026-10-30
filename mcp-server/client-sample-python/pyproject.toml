@@ -1,0 +1,6 @@
+[project]
+name = "kanjikana-mcp-client-sample"
+version = "1.0.0"
+description = "Python client sample for the Kanjikana MCP server"
+requires-python = ">=3.11"
+dependencies = ["mcp>=2.0,<3"]

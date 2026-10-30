@@ -1,6 +1,7 @@
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -10,8 +11,9 @@ import jp.go.digital.kanjikana.core.executor.match.strategy.StrategyIF;
 
 public class StrategyOnlyStatisticsTest {
 
-    private StrategyIF strategy;
-    {
+    private static StrategyIF strategy;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             strategy = StrategyOnlyStatistics.newInstance();
 

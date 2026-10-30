@@ -57,4 +57,11 @@ public interface ModelIF {
      * @return Trueならば利用可能，Falseの場合には辞書データが入っていないなどで利用不可。使ってもFalseしか返ってこない
      */
     boolean isValidModel();
+
+
+    /**
+     * AIモデルかどうかを返す
+     */
+    boolean isAiModel();
+
 }

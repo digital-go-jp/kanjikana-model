@@ -25,7 +25,6 @@
 package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
-import jp.go.digital.kanjikana.core.model.ModelStatus;
 import jp.go.digital.kanjikana.core.engine.CharEngine;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictUnReliableNormalized;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
@@ -59,7 +58,7 @@ public final class IDictCharModel extends DictCharModel {
             return modelData;
         }*/
         ModelData md =  super.run(kanji_item,kana_item,modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 }

@@ -35,6 +35,7 @@ public enum  Response {
     E002("kana not set"),// kanaが未設定
     E010("max is not between 0 to 10"), //
     E100("internal error"),// 内部エラー
+    E101("timeout error"), // watchdog
     E404("not found"), // 404 error
     E500("application error"), // 500 error
     ;

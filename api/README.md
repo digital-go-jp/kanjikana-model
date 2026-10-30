@@ -2,6 +2,9 @@
 
 氏名漢字カナ突合モデルをWeb API形式で使用できるように、SpringBootでWrapしたものです。
 
+## 開発用Notebook
+- [build.ipynb](./build.ipynb)
+- [execute.ipynb](./execute.ipynb)
 
 ## 起動方法
 漢字カナモデルをDockerイメージで提供します。

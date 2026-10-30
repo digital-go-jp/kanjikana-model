@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  Awase23D::Alinger::DP - DPによるアライメント
  */
 public abstract class Dp {
-    Logger logger = LogManager.getLogger(Dp.class);
+    private static final Logger logger = LogManager.getLogger(Dp.class);
 
     protected int ja_max;
     protected int en_max;

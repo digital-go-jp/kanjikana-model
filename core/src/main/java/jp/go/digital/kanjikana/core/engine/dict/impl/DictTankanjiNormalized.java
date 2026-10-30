@@ -24,13 +24,8 @@
 
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.utils.Moji;
-import jp.go.digital.kanjikana.core.Resources;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 単漢字辞書を保持するシングルトンクラス
@@ -39,6 +34,7 @@ import java.util.List;
  *  小書き文字を大書文字へ変換と全銀協で使用できない文字を変換する　Moji.normalizeで定義
  */
 public class DictTankanjiNormalized extends DictTankanji {
+    protected static DictIF dict=null;
 
     private DictTankanjiNormalized() throws Exception {
         super(true);

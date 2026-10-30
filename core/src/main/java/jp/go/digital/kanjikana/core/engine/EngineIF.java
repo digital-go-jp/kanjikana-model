@@ -43,4 +43,5 @@ public interface EngineIF {
      * @return Trueならば利用可能
      */
     boolean isValidEngine();
+
 }

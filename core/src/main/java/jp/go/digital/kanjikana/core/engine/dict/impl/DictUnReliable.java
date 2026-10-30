@@ -25,17 +25,14 @@
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
 import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
+import jp.go.digital.kanjikana.core.engine.dict.AbstDict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 作成した辞書を保持するシングルトンクラス
  * たまに間違いがあるのであまり信頼度高くない
  */
-class DictUnReliable extends Dict {
+class DictUnReliable extends AbstDict {
     protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_UNRELIABLE);
     protected static DictIF dict = null;
 

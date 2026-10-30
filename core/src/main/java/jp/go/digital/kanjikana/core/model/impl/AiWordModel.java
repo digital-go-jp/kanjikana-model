@@ -24,11 +24,10 @@
 
 package jp.go.digital.kanjikana.core.model.impl;
 
+import jp.go.digital.kanjikana.core.engine.AbstEngine;
 import jp.go.digital.kanjikana.core.engine.EngineIF;
 import jp.go.digital.kanjikana.core.model.AbstWordModel;
 import jp.go.digital.kanjikana.core.model.ModelData;
-import jp.go.digital.kanjikana.core.model.ModelIF;
-import jp.go.digital.kanjikana.core.engine.AiWordEngine;
 import jp.go.digital.kanjikana.core.engine.ResultAttr;
 import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 
@@ -41,11 +40,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class AiWordModel extends AbstWordModel{
     private static final Logger logger = LogManager.getLogger(AiWordModel.class);
-
-    /*
-    public AiWordModel() throws Exception{
-        super(new AiWordEngine());
-    }*/
 
     public AiWordModel(EngineIF engine) throws Exception{
         super(engine);
@@ -60,10 +54,10 @@ public class AiWordModel extends AbstWordModel{
 
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         //modelData.resetTopResult();
         ModelData md = exec(kanji_item, kana_item, modelData);
-        md.setModel(this.getClass());
+        md.setModel(this);
         return md;
     }
 
@@ -94,8 +88,13 @@ public class AiWordModel extends AbstWordModel{
             return topResult;
         }else{
             logger.debug("AiWordModel.NG");
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_str,kana_str,new ResultAttr(), this.getClass(),null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND,kanji_str,kana_str,new ResultAttr(), (AbstEngine)this.getEngine(),null);
         }
 
+    }
+
+    @Override
+    public boolean isAiModel(){
+        return true;
     }
 }

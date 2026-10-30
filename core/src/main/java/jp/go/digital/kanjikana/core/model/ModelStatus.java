@@ -63,4 +63,17 @@ public enum ModelStatus {
         }
         return null; // 特定できない場合
     }
+
+    /**
+     * ステータスがエラーのステータスかどうかを判定する
+     * @param value ステータス
+     * @return ステータスがエラーの時true
+     * @since v2.0
+     */
+    public static boolean isError(ModelStatus value) {
+        if(value!=ModelStatus.OK && value!=ModelStatus.NG) {
+            return true;
+        }
+        return false;
+    }
 }

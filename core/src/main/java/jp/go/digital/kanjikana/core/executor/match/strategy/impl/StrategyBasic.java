@@ -24,7 +24,6 @@
 
 package jp.go.digital.kanjikana.core.executor.match.strategy.impl;
 
-import jp.go.digital.kanjikana.core.engine.ResultEngineParts;
 import jp.go.digital.kanjikana.core.executor.match.strategy.AbstStrategy;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
@@ -34,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 簡易モデル
@@ -42,10 +42,14 @@ import java.util.Arrays;
  */
 public class StrategyBasic extends AbstStrategy {
     private static StrategyIF sb=null;
-    private final Logger logger = LogManager.getLogger(StrategyBasic.class);
+    private static final Logger logger = LogManager.getLogger(StrategyBasic.class);
 
+    @Override
+    public List<ModelIF> getModelList() throws Exception {
+        return Arrays.asList(new AsIsWordModel(), new IReliableWordModel(), new FWordModel(),new FCharModel(), new INandokuWordModel(), new AsIsCharModel());
+    }
     protected StrategyBasic() throws Exception{
-        setReliableModels(Arrays.asList(new IReliableWordModel(), new FWordModel(),new INandokuWordModel()));
+        setReliableModels(getModelList());
     }
 
     /**
@@ -70,6 +74,8 @@ public class StrategyBasic extends AbstStrategy {
      */
     @Override
     public boolean modelCheck(ModelData modelData, String kanji, String kana) throws Exception{
+        return super.simpleModelCheck(modelData, kanji, kana);
+        /*
         modelData.setTopResult(new ResultEngineParts("","")); // reset
         for (ModelIF model : models) {
             modelData = model.run(kanji,kana, modelData);
@@ -85,5 +91,7 @@ public class StrategyBasic extends AbstStrategy {
             return true;
         }
         return false;
+
+         */
     }
 }

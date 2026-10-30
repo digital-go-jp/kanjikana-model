@@ -3,15 +3,11 @@ package jp.go.digital.kanjikana.core.engine;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaiji;
 import jp.go.digital.kanjikana.core.engine.dict.impl.DictItaijiDummy;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictReliableNormalized;
-import jp.go.digital.kanjikana.core.engine.dict.impl.DictTankanjiNormalized;
 import jp.go.digital.kanjikana.core.utils.Moji;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -392,6 +388,12 @@ public class NandokuEngine extends AbstEngine{
 
     @Override
     public ResultEngineParts check(String kanji_part_orig, String kana_part) throws Exception {
+        // アルファベットが入っている場合にはNGとする v2.0
+        // 漢字もカナもアルファベットで、かな側のアルファベットが短い場合にマッチしてしまうため。そもそも漢字の難読用なのでアルファベットが入っていたらNGとしても問題ない
+        if(Moji.isAlphabet(kanji_part_orig.replace("　","")) || Moji.isHiragana(kanji_part_orig.replace("　","")) || Moji.isKatakana(kanji_part_orig.replace("　",""))){
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part_orig,kana_part,new ResultAttr(), this, null);
+        }
+
         String kanji_part = replace_itaiji(kanji_part_orig, idic);
 
         YomiList[][] table=initTable(kanji_part);
@@ -402,7 +404,7 @@ public class NandokuEngine extends AbstEngine{
             for(KanjiIdxKana kk :result){
                 String kanji=kanji_part.substring(kk.kanji_begin_idx,kk.kanji_end_idx);
                 String kana=kana_part.substring(kk.kana_begin_idx,kk.kana_end_idx);
-                ResultEngineParts result_engine=new ResultEngineParts(ResultEngineParts.Type.OK, kanji_part,kk.kanji_begin_idx,kk.kanji_end_idx,kanji,kana_part,kk.kana_begin_idx,kk.kana_end_idx,kana,kk.getYomi().getAttr(),this.getClass(),null);
+                ResultEngineParts result_engine=new ResultEngineParts(ResultEngineParts.Type.OK, kanji_part,kk.kanji_begin_idx,kk.kanji_end_idx,kanji,kana_part,kk.kana_begin_idx,kk.kana_end_idx,kana,kk.getYomi().getAttr(),this,null);
                 if(res==null){
                     res=result_engine;
                 }else{
@@ -413,7 +415,7 @@ public class NandokuEngine extends AbstEngine{
             return res;
 
         }else{
-            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part_orig,kana_part,new ResultAttr(), this.getClass(), null);
+            return new ResultEngineParts(ResultEngineParts.Type.NOT_FOUND, kanji_part_orig,kana_part,new ResultAttr(), this, null);
         }
     }
 

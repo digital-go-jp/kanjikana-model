@@ -25,18 +25,15 @@
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
 import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
+import jp.go.digital.kanjikana.core.engine.dict.AbstDict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 異体字の対応を保持するシングルトンクラス
  * oss, クロールから作成している
  *
  */
-public class DictItaiji extends Dict {
+public class DictItaiji extends AbstDict {
     private static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_ITAIJI);
 
     private static DictItaiji dict;

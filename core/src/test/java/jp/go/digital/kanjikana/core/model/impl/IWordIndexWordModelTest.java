@@ -26,6 +26,7 @@ package jp.go.digital.kanjikana.core.model.impl;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,8 +34,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class IWordIndexWordModelTest {
 
-    private ModelIF model;
-    {
+    private static ModelIF model;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             model = new IDictWordModel();
         }catch(Exception e){

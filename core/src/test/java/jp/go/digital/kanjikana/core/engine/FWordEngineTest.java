@@ -25,6 +25,7 @@
 package jp.go.digital.kanjikana.core.engine;
 
 import jp.go.digital.kanjikana.core.model.ModelData;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,8 +33,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class FWordEngineTest {
 
-    private EngineIF engine;
-    {
+    private static EngineIF engine;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             engine = new FWordEngine();
         }catch(Exception e){

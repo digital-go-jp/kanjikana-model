@@ -51,19 +51,25 @@ public class ResultNoteMaker {
      * @param topResult 漢字カナ突合結果のリストの先頭を入力する
      * @return 文字列表現
      */
-    public static String getText(ResultEngineParts topResult){
+    public static String getText(ResultEngineParts topResult) throws Exception{
         StringBuilder sb = new StringBuilder();
         if(topResult==null){
             return "";
         }
 
         ResultEngineParts nowResult=topResult;
-        while(true){
+        for(int i=0;i<Integer.MAX_VALUE;i++){
             if(nowResult==null){
-                break;
+                return sb.toString();
             }
-            String engine=basename(nowResult.getEngine());
-            String dict = basename(nowResult.getDict());
+            String engine="";
+            if (nowResult.getEngine()!=null){
+                engine = basename(nowResult.getEngine().getClass());
+            }
+            String dict = "";
+            if (nowResult.getDict()!=null){
+                dict = basename(nowResult.getDict().getClass());
+            }
             String isok = String.valueOf(nowResult.isOk());
             String kanji = nowResult.getKanji();
             String kana = nowResult.getKana();
@@ -87,6 +93,6 @@ public class ResultNoteMaker {
             sb.append(ss);
             nowResult=nowResult.getNextResult();
         }
-        return sb.toString();
+        throw new RuntimeException("infinite loop,("+ResultNoteMaker.class.getSimpleName()+"),"+topResult);
     }
 }

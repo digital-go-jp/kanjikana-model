@@ -24,7 +24,10 @@
 
 package jp.go.digital.kanjikana.core.engine;
 
+import jp.go.digital.kanjikana.core.engine.dict.DictIF;
+
 import java.io.Serializable;
+
 
 /**
  * リスト形式で結果を作成する。
@@ -53,12 +56,12 @@ public final class ResultEngineParts implements Serializable {
     /**
      * 使用したエンジンがわかるようにクラスを保持する
      */
-    private Class engine;
+    private AbstEngine engine;
 
     /**
      * 使用した辞書がわかるように辞書クラスを保持する
      */
-    private final Class dict;
+    private final DictIF dict;
 
     private final ResultAttr resultAttr;
 
@@ -105,15 +108,15 @@ public final class ResultEngineParts implements Serializable {
         return resultAttr;
     }
 
-    public Class getEngine() {
+    public AbstEngine getEngine() {
         return engine;
     }
 
-    public Class getDict() {
+    public DictIF getDict() {
         return dict;
     }
 
-    public void setEngine(Class engine){
+    public void setEngine(AbstEngine engine){
         this.engine = engine;
     }
 
@@ -172,7 +175,7 @@ public final class ResultEngineParts implements Serializable {
      * @param engine マッチと判定したクラス
      * @param dict 辞書でマッチした辞書のクラス
      */
-    public ResultEngineParts(Type type, String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kanji, String kana_orig, int kana_begin_idx, int kana_end_idx, String kana, ResultAttr resultAttr, Class engine, Class dict){
+    public ResultEngineParts(Type type, String kanji_orig, int kanji_begin_idx, int kanji_end_idx, String kanji, String kana_orig, int kana_begin_idx, int kana_end_idx, String kana, ResultAttr resultAttr, AbstEngine engine, DictIF dict){
         this.type = type;
         this.kanji_orig = new String(kanji_orig);
         this.kanji_begin_idx = kanji_begin_idx;
@@ -195,7 +198,7 @@ public final class ResultEngineParts implements Serializable {
      * @param engine マッチと判定したクラス
      * @param dict 辞書でマッチした辞書のクラス
      */
-    public ResultEngineParts(Type type, String kanji, String kana, ResultAttr resultAttr, Class engine, Class dict){
+    public ResultEngineParts(Type type, String kanji, String kana, ResultAttr resultAttr, AbstEngine engine, DictIF dict){
         this(type,kanji,0,kanji.length(),kanji,kana,0,kana.length(),kana, resultAttr,engine,dict);
     }
 
@@ -204,12 +207,39 @@ public final class ResultEngineParts implements Serializable {
     }
 
     public ResultEngineParts(ResultEngineParts res){
-        this(res.type, res.kanji, res.kana, res.resultAttr, res.engine, res.dict);
-        if(res.nextResult!=null) {
-            this.nextResult = res.nextResult;
+        if(res !=null){
+            this.type = res.type;
+            this.kanji = res.kanji;
+            this.kana = res.kana;
+            this.resultAttr = res.resultAttr;
+            this.engine = res.engine;
+            this.dict = res.dict;
+            if(res.nextResult!=null) {
+                this.nextResult = res.nextResult;
+            }
+            if(res.prevResult!=null) {
+                this.prevResult = res.prevResult;
+            }
+        }else{
+            this.type= null;
+            this.kanji = "";
+            this.kana = "";
+            this.resultAttr = null;
+            this.engine = null;
+            this.dict = null;
         }
-        if(res.prevResult!=null) {
-            this.prevResult = res.prevResult;
+
+    }
+
+    public String toString(){
+        String engineSimpleName="";
+        if(engine!=null){
+            engineSimpleName=engine.getClass().getSimpleName();
         }
+        String dictSimpleName="";
+        if(dict!=null){
+            dictSimpleName=dict.getClass().getSimpleName();
+        }
+        return kanji+","+kana+","+resultAttr+","+engineSimpleName+","+dictSimpleName;
     }
 }

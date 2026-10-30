@@ -49,10 +49,8 @@ import java.util.regex.Pattern;
  */
 public final class Aligner extends Dp {
 
-    //private final Map<String, Integer> table = new HashMap<>();
     public Aligner() throws Exception {
         super();
-
     }
 
     /**

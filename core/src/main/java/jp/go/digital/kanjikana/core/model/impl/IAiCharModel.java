@@ -9,7 +9,7 @@ import jp.go.digital.kanjikana.core.engine.AiCharEngine;
  * 入力する漢字は、異体字辞書で変換する
  * @since 1.7
  */
-public class IAiCharModel extends AiCharModel{
+public class IAiCharModel extends AiCharModel {
     public IAiCharModel() throws Exception{
         super(new AiCharEngine(true));
     }

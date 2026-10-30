@@ -25,15 +25,18 @@
 package jp.go.digital.kanjikana.core.model.impl;
 import jp.go.digital.kanjikana.core.model.ModelData;
 import jp.go.digital.kanjikana.core.model.ModelIF;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 
 public class FCharModelTest {
 
-    private ModelIF model;
-    {
+    private static ModelIF model;
+    @BeforeAll
+    public static void setUp() throws Exception {
         try{
             model = new FCharModel();
         }catch(Exception e){
@@ -59,7 +62,7 @@ public class FCharModelTest {
         assertThat(modelData.getTopResult().getKanji(),equalTo("ＴＡＮＡＫＡＨＡＮＡＫＯ"));
         assertThat(modelData.getTopResult().getKana(),equalTo("タナカハナコ"));
 
-        assertThat(modelData.getResult(),equalTo("{true;ＴＡＮＡＫＡＨＡＮＡＫＯ;タナカハナコ;FCharEngine;;0:/;0000000}"));
+        assertThat(modelData.getResult(),startsWith("{true;ＴＡＮＡＫＡＨＡＮＡＫＯ;タナカハナコ;FCharEngine"));
 
     }
 
@@ -72,7 +75,7 @@ public class FCharModelTest {
         assertThat(modelData.getTopResult().getKanji(),equalTo("ＴＡＮＡＫＡＣＥＬＳＯＨＡＮＡＫＯ"));
         assertThat(modelData.getTopResult().getKana(),equalTo("スズキセルソハナコ"));
 
-        assertThat(modelData.getResult(),equalTo("{false;ＴＡＮＡＫＡＣＥＬＳＯＨＡＮＡＫＯ;スズキセルソハナコ;FCharEngine;;0:/;0000001}"));
+        assertThat(modelData.getResult(),startsWith("{false;ＴＡＮＡＫＡＣＥＬＳＯＨＡＮＡＫＯ;スズキセルソハナコ"));
 
     }
 

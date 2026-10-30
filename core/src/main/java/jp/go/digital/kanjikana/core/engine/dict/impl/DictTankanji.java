@@ -25,18 +25,15 @@
 package jp.go.digital.kanjikana.core.engine.dict.impl;
 
 import jp.go.digital.kanjikana.core.Resources;
-import jp.go.digital.kanjikana.core.engine.dict.Dict;
+import jp.go.digital.kanjikana.core.engine.dict.AbstDict;
 import jp.go.digital.kanjikana.core.engine.dict.DictIF;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 単漢字辞書を保持するシングルトンクラス
  * mjから作成
  * 漢字とカナの文字列から，徐々に切り出しつつ，通常辞書と単漢字辞書などを組み合わせながら読み仮名があっているか推測していくため
  */
-public class DictTankanji extends Dict {
+public class DictTankanji extends AbstDict {
     protected static final String DefaultFile = Resources.getProperty(Resources.PropKey.DIC_TANKANJI);
     protected static DictIF dict=null;
 

@@ -41,9 +41,9 @@ class NandokuCharModel extends AbstCharModel {
     @Override
     public ModelData run(String kanji_item, String kana_item, ModelData modelData) throws Exception {
         modelData = exec(trim(kanji_item), trim(kana_item), modelData);
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         setStatus(modelData);
-        modelData.setModel(this.getClass());
+        modelData.setModel(this);
         return modelData;
     }
 

@@ -40,6 +40,7 @@ import java.util.List;
  * をマッチさせる
  */
 public class DictAsIsNormalized extends DictAsIs {
+    private static DictAsIs dict=null;
     private DictAsIsNormalized(){
         super();
     }
